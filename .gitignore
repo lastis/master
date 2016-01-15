@@ -2,12 +2,15 @@
 *.pdf
 !documents/**
 
+# From 3_1_reconstruction
+!cs_ap*
 
 neuron/
 neurons/
 bbp_models/
 x86_64/
 data/
+
 
 *~
 *.pwc
