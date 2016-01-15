@@ -1,0 +1,101 @@
+\documentclass[fleqn,10pt]{book}  % fleqn left alligns all equations. 
+\usepackage[english]{babel} 
+\usepackage[latin1]{inputenc} 
+\usepackage{times} 			% Default times font style
+\usepackage[T1]{fontenc} 	% Font encoding
+\usepackage{amsmath} 		% Math package
+\usepackage{mathtools} 		% Adds the declare paired 
+							% delimeter command to make costom \abs and \norm
+\usepackage{breqn}		 	% Adds dmath environment for automated brakeline
+\usepackage{xfrac}			% Adds slanted fractions (sfrac)
+\usepackage{cancel}			% Adds the cancel command, a slash through the symbol(s)
+\usepackage{tabularx}		% Adds adjustable width on tabulars
+\usepackage{cuted}			% Adds the \strip command, pagewidth text in a twocolumn
+							% environment. 
+\usepackage{hyperref}
+							% Color library. The options allows using names of colors.
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}			
+\usepackage[a5paper]{geometry}		% Change paper properties such as size. 
+\usepackage{fancyhdr}		% Adds customizable headers and footers. 
+\usepackage{tikz}
+\usepackage{tikz-3dplot}		
+\usepackage{blindtext}
+\usepackage{titlesec}		% Can change properties of sections, such as color. 
+
+% Paper properties. 
+\geometry{margin=2cm}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+% Removes the header bar and text.
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+%\fancyhead[L]{Journal of MatMet Problem Solving, Issue \#1}
+%\fancyhead[R]{Daniel M. B. }
+
+% Change the definition of \vec to \mathbf
+\renewcommand\vec[1]{\mathbf{#1}}
+% Start costum \abs \norm 
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+% End costum \abs \norm 
+
+% Custom colors.
+\definecolor{viridis_01}{rgb}{0.267004, 0.048740, 0.329415}
+\definecolor{viridis_02}{rgb}{0.190631, 0.407061, 0.556089}
+\definecolor{viridis_03}{rgb}{0.208030, 0.718701, 0.472873}
+\definecolor{viridis_04}{rgb}{0.993248, 0.906157, 0.143936}
+
+% Change section formatting. 
+\titleformat
+{\chapter} 			% command
+% shape
+[hang] 				
+% format
+{\bfseries\Huge} 	
+% Chapter number formatting.
+{\color{viridis_01}\thechapter\hspace{20pt}\rule[-3pt]{2pt}{23pt}\hspace{10pt}}
+% Separation
+{0.5ex} 			
+% before-code
+{\color{viridis_01}} 	
+% after-code
+[] 					
+ 
+\titleformat{\section}
+{\color{viridis_02}\Large\bfseries}
+{\color{viridis_02}\thesection}{1em}{} 		
+
+\titleformat{\subsection}
+{\color{viridis_03}\large\bfseries}	
+{\color{viridis_03}\thesubsection}{1em}{}
+
+\begin{document}
+\chapter{Chapster}
+
+\blindtext[1]
+
+\section{section}
+\section{section}
+
+\subsection{subs}
+\subsection{subs}
+\blindtext[1]
+
+
+
+
+
+
+
+
+\end{document}

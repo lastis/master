@@ -1,0 +1,147 @@
+
+%% Use B5 paper (176mm × 250mm)
+\documentclass[altfont]{uiophd}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, amssymb, graphicx, bm}
+\usepackage{relsize, fancyvrb, moreverb, epsfig, framed}
+\usepackage{color, xcolor, listings}
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{chngcntr}
+\usepackage{textcomp}
+\usepackage{rotating}
+\usepackage{afterpage}
+%  \usepackage{epigraph}
+\raggedbottom
+
+\usepackage[utf8]{babel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+
+%% Numbering within sections
+%  \numberwithout{equation}{section}
+%  \numberwithout{figure}{section}
+%  \numberwithout{table}{section}
+
+%% Table of contents
+\setcounter{tocdepth}{2}
+
+%% Fix counters
+\newcommand\resetcounters{\par
+  \setcounter{section}{0}%
+  \setcounter{subsection}{0}%
+  \setcounter{equation}{0}%
+  \setcounter{table}{0}%
+  \setcounter{figure}{0}%
+  \gdef\thesection{\arabic{section}}}
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+\newcommand{\nonum}{\setcounter{secnumdepth}{-1}}
+\newcommand{\num}{\setcounter{secnumdepth}{2}}
+% Home-made cleardoublepage
+\newcommand{\mycleardoublepage}{\newpage\null\thispagestyle{empty}\newpage}
+
+% Bibliography
+\usepackage{bibunits}
+%  \bibliographyunit[\chapter]
+
+%% Command for marginpar
+\let\oldmarginpar\marginpar
+\renewcommand\marginpar[1]{\-\oldmarginpar[\raggedleft\footnotesize #1]%
+{\raggedright\footnotesize #1}}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\LARGE\bfseries}{\hsp\hsp}{0pt}{\LARGE\bfseries\raggedleft}
+\newcommand{\notocsection}[1]{\refstepcounter{section}\section*{\thesection \quad #1}}
+
+\newcommand{\mycleardoublepage}{
+\thispagestyle{empty}
+\newpage\null
+\thispagestyle{empty}
+\newpage
+\thispagestyle{empty}
+}
+\pagestyle{plain}
+\pagenumbering{roman}
+\thispagestyle{empty}
+
+% % Margins
+% \topmargin = -40pt
+% \textheight = 550pt
+% \footskip = 50pt
+% \bottom
+
+\newcommand{\mypaper}[3]{%
+  \thispagestyle{empty}
+  \begin{flushright}
+  \phantomsection\chapter[Paper #1: #2]{}
+    \Huge\textbf{Paper #1}
+  \end{flushright}
+  \vspace{0cm}
+  \begin{center}
+    \LARGE\textbf{#2}
+  \end{center}
+  \normalsize
+  \newpage
+  \null
+  \thispagestyle{empty}
+  \cleardoublepage
+  \begin{verse}
+    \begin{center}
+      \LARGE
+      #2
+    \end{center}
+  \end{verse}
+  \vspace{0.5cm}
+  \begin{center}
+    \large
+    #3
+  \end{center}
+  \normalsize
+  \chaptermark{Paper #1}
+  \thispagestyle{empty}
+  }
+
+% orddelingsfeil
+\tolerance = 9000
+\hbadness = \tolerance
+\pretolerance = 200
+\hyphenpenalty= 9000
+
+\newcommand{\E}[1]{\mathbb{E}\!\left[#1\right]}
+\newcommand{\hatE}[1]{\widehat{\mathbb{E}}\!\left[#1\right]}
+\newcommand{\Var}[1]{\mbox{Var}\!\left[#1\right]}
+\newcommand{\hatVar}[1]{\widehat{\mbox{Var}}\!\left[#1\right]}
+\newcommand{\Cov}[1]{\mbox{Cov}\!\left(#1\right)}
+\newcommand{\inner}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ud}{\,\mbox{d}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\mycleardoublepage}{\newpage\null\thispagestyle{empty}\newpage}
+
+% \newcommand{\hpl}[1]{[{\bf hpl:} \emph{#1}]}
+% \newcommand{\jf}[1]{[{\bf jf:} \emph{#1}]}
+\newcommand{\hpl}[1]{}
+\newcommand{\jf}[1]{}
+
+% \newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\red}[1]{\textcolor{black}{#1}}
+
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+%\newcommand{\helpheading}[1]{\subsubsection*{#1}}
+\newcommand{\helpheading}[1]{}
+
