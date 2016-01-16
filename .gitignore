@@ -1,6 +1,8 @@
 *.png
 *.pdf
 !documents/**
+*.js
+*.pkl
 
 # From 3_1_reconstruction
 !cs_ap*
@@ -16,7 +18,6 @@ data/
 *.pwc
 *.swp
 *.ptc
-*.js
 *.swc
 
 # TeX gitignore

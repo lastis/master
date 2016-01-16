@@ -60,9 +60,9 @@ axes = LFPy_util.data_extraction.findMajorAxes()
 LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
 
 # sh.push(sim_grid,True)
-sh.push(sim_disc_elec,True)
+sh.push(sim_disc_elec,False)
 # sh.push(sim_morph,True)
-sh.push(sim_intra,True)
+# sh.push(sim_intra,True)
 
 sh.simulate()
 sh.plot()
