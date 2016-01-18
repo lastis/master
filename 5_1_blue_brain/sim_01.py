@@ -1,11 +1,29 @@
 # Simulation: Gather different data about single neurons.
 import blue_brain
 import LFPy_util
-
 import os
+import sys
+from pprint import pprint
 from glob import glob
 from multiprocessing import Process
-import sys
+
+cores = 8
+
+# Process command input.
+simulate = False
+plot = False
+plot_all = False
+for input in sys.argv:
+    if input == "run" :
+        simulate = True
+    if input == "plot" :
+        plot = True
+    if input == "pall" :
+        plot_all = True
+if len(sys.argv) == 1:
+    simulate = True
+    plot = True
+    plot_all = True
 
 # Gather directory paths. 
 model_dir = blue_brain.model_dir
@@ -16,39 +34,76 @@ dir_neurons = os.path.join(dir_current,"sim_01/neurons")
 blue_brain.download_all_models(model_dir)
 
 # Load pyramidal cells in L5.
+nrn_cnt = 1
 os.chdir(model_dir)
-PC = glob('L5_*PC*')
-NBC = glob('L5_*NBC*')
-SBC = glob('L5_*SBC*')
-DBC = glob('L5_*DBC*')
+TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
+TTPC2 = glob('L5_*TTPC2*')[:nrn_cnt]
+UTPC = glob('L5_*UTPC*')[:nrn_cnt]
+STPC = glob('L5_*STPC*')[:nrn_cnt]
+MC = glob('L5_*MC*')[:nrn_cnt]
+BTC = glob('L5_*BTC*')[:nrn_cnt]
+DBC = glob('L5_*DBC*')[:nrn_cnt]
+BP = glob('L5_*BP*')[:nrn_cnt]
+NGC = glob('L5_*NGC*')[:nrn_cnt]
+LBC = glob('L5_*LBC*')[:nrn_cnt]
+NBC = glob('L5_*NBC*')[:nrn_cnt]
+SBC = glob('L5_*SBC*')[:nrn_cnt]
+ChC = glob('L5_*ChC*')[:nrn_cnt]
 
-# group_labels = ['SBC', 'DBC']
-# neurons_grouped = [SBC,DBC]
-# group_labels = ['PC', 'NBC', 'SBC', 'DBC']
-# neurons_grouped = [PC,NBC,SBC,DBC]
-# group_labels = ['PC', 'NBC']
-# neurons_grouped = [PC,NBC]
-group_labels = ['NBC']
-neurons_grouped = [NBC]
+# Gather neurons to be simulated.
+neurons =\
+         TTPC1\
+        + TTPC2\
+        + UTPC\
+        + STPC
+        # + MC \
+        # + BTC \
+        # + DBC \
+        # + BP \
+        # + NGC \
+        # + LBC \
+        # + NBC \
+        # + SBC \
+        # + ChC
+group_labels = [
+        'TTPC1',
+        'TTPC2',
+        'UTPC',
+        'STPC',
+        # 'MC',
+        # 'BTC',
+        # 'DBC',
+        # 'BP',
+        # 'NGC',
+        # 'LBC',
+        # 'NBC',
+        # 'SBC',
+        # 'ChC',
+        ]
 
 # Compile and load the extra mod file(s).
-mod_dir = os.path.join(blue_brain.res_dir,'extra_mod/')
-LFPy_util.nrnivmodl(mod_dir)
+if simulate:
+    mod_dir = os.path.join(blue_brain.res_dir,'extra_mod/')
+    LFPy_util.nrnivmodl(mod_dir)
 
 # Define a simulation method so different neurons can be run in parallel.
 def run(nrn_full):
     # Load cell objects from bluebrain.
     cell_list = blue_brain.load_model(nrn_full)
-    # Assume only one morphology of each neuron.
     cell = cell_list[0]
 
     # Configure simulation objects.
     sim_grid            = LFPy_util.sims.Grid()
     sim_single_spike    = LFPy_util.sims.SingleSpike()
-    sim_disc_elec       = LFPy_util.sims.DiscElectrodes()
+    sim_disc_elec_xz    = LFPy_util.sims.DiscElectrodes()
+    sim_disc_elec_xy    = LFPy_util.sims.DiscElectrodes()
+    sim_disc_elec_yz    = LFPy_util.sims.DiscElectrodes()
     sim_morph           = LFPy_util.sims.Morphology()
     sim_intra           = LFPy_util.sims.Intracellular()
     sim_single_spike.run_param['pptype'] = 'ISyn'
+    sim_disc_elec_xz.set_plane(['x','z'])
+    sim_disc_elec_xy.set_plane(['x','y'])
+    sim_disc_elec_yz.set_plane(['y','z'])
 
     sh = LFPy_util.SimulationHelper()
     sh.set_cell(cell)
@@ -58,35 +113,82 @@ def run(nrn_full):
 
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.findMajorAxes()
+    # Aligns y to axis[0] and x to axis[1]
     LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
 
     sh.push(sim_single_spike,False)
-    sh.push(sim_grid,True)
-    sh.push(sim_disc_elec,True)
+    # sh.push(sim_grid,True)
+    sh.push(sim_disc_elec_xz,True)
+    # sh.push(sim_disc_elec_xy,True)
+    # sh.push(sim_disc_elec_yz,True)
     sh.push(sim_morph,True)
-    sh.push(sim_intra,True)
+    # sh.push(sim_intra,True)
 
-    sh.simulate()
-    sh.plot()
+    if simulate: 
+        sh.simulate()
+    if plot: 
+        sh.plot()
 
 # Start simulation(s)
-p_arr = []
-for neurons in neurons_grouped:
-    processes = []
+if simulate or plot:
+    p_arr = []
     for cnt, nrn in enumerate(neurons):
-        if cnt > 1: break
         nrn_full = os.path.join(model_dir,nrn)
-
         p = Process(target=run, args=(nrn_full,))
         p.start()
         p_arr.append(p)
-for p in p_arr:
-    p.join()
+    for p in p_arr:
+        p.join()
 
-# Collect data about all neurons.
-dc = LFPy_util.DataCollector()
-dc.set_dir_neurons(dir_neurons)
-dc.run()
+if plot_all:
+    grouped_widths = [[] for _ in xrange(len(group_labels))]
+    grouped_amps = [[] for _ in xrange(len(group_labels))]
+    grouped_elec_pos = [[] for _ in xrange(len(group_labels))]
+    def gatherData(neuron_name, file_name, data):
+        if file_name == "disc_x_z_results":
+            for i in xrange(len(group_labels)):
+                if group_labels[i] not in neuron_name:
+                    continue
+                grouped_widths[i].append(data["widths"])
+                grouped_amps[i].append(data["amps"])
+                grouped_elec_pos[i].append(data["electrode_pos_r"])
+
+    # Collect data about all neurons.
+    dc = LFPy_util.DataCollector()
+    dc.set_dir_neurons(dir_neurons)
+    dc.set_collection_func(gatherData)
+    dc.run()
+
+    LFPy_util.plot.spike_widths_grouped(
+            grouped_widths,
+            grouped_elec_pos,
+            show=False,
+            fname='width_plot',
+            group_labels=group_labels,
+            mode='std',
+            scale='linear',
+            plot_save_dir=dir_neurons,
+            )
+    LFPy_util.plot.spike_amps_grouped(
+            grouped_amps,
+            grouped_elec_pos,
+            show=False,
+            fname='amp_plot',
+            group_labels=group_labels,
+            mode='std',
+            scale='linear',
+            plot_save_dir=dir_neurons
+            )
+    LFPy_util.plot.spike_widths_and_amp_grouped(
+            grouped_widths,
+            grouped_amps,
+            grouped_elec_pos,
+            show=False,
+            fname='amp_and_width_plot',
+            group_labels=group_labels,
+            plot_save_dir=dir_neurons
+            )
+
 
 
 
