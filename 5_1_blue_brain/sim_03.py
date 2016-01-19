@@ -34,7 +34,8 @@ SBC = glob('L5_*SBC*')[:nrn_cnt]
 ChC = glob('L5_*ChC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
-neurons = TTPC1 + UTPC
+# neurons = TTPC1 + UTPC
+neurons = TTPC1
 
 # Process command input.
 simulate = False
@@ -69,6 +70,10 @@ def run(nrn_full):
     sim_morph           = LFPy_util.sims.Morphology()
     sim_single_spike.run_param['pptype'] = 'ISyn'
     sim_disc_elec_xz.set_plane(['x','z'])
+    sim_disc_elec_xz.run_param['wave_def'] = 'top_bottom'
+    sim_disc_elec_xz.run_param['n_theta'] = 3
+    sim_disc_elec_xz.plot_detailed = True
+    sim_disc_elec_xz.load_run_param = False
 
     sh = LFPy_util.SimulationHelper()
     sh.set_cell(cell)
