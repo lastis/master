@@ -16,15 +16,15 @@ group_labels = [
         'TTPC2',
         'UTPC',
         'STPC',
-        # 'MC',
-        # 'BTC',
-        # 'DBC',
-        # 'BP',
-        # 'NGC',
-        # 'LBC',
-        # 'NBC',
-        # 'SBC',
-        # 'ChC',
+        'MC',
+        'BTC',
+        'DBC',
+        'BP',
+        'NGC',
+        'LBC',
+        'NBC',
+        'SBC',
+        'ChC',
         ]
 
 # Gather directory paths. 
@@ -51,35 +51,38 @@ dc.set_dir_neurons(dir_neurons)
 dc.set_collection_func(gatherData)
 dc.run()
 
-LFPy_util.plot.spike_widths_grouped(
-        grouped_widths,
-        grouped_elec_pos,
-        show=False,
-        fname='width_plot',
-        group_labels=group_labels,
-        mode='std',
-        scale='linear',
-        plot_save_dir=dir_output,
-        )
-LFPy_util.plot.spike_amps_grouped(
-        grouped_amps,
-        grouped_elec_pos,
-        show=False,
-        fname='amp_plot',
-        group_labels=group_labels,
-        mode='std',
-        scale='linear',
-        plot_save_dir=dir_output
-        )
-LFPy_util.plot.spike_widths_and_amp_grouped(
-        grouped_widths,
-        grouped_amps,
-        grouped_elec_pos,
-        show=False,
-        fname='amp_and_width_plot',
-        group_labels=group_labels,
-        plot_save_dir=dir_output
-        )
+for i, group in enumerate(group_labels):
+    if len(grouped_widths[i]) == 0:
+        continue
+    LFPy_util.plot.spike_widths_grouped(
+            [grouped_widths[i]],
+            [grouped_elec_pos[i]],
+            show=False,
+            fname=group+'_width_plot',
+            group_labels=[group],
+            mode='std',
+            scale='linear',
+            plot_save_dir=dir_output,
+            )
+    LFPy_util.plot.spike_amps_grouped(
+            [grouped_amps[i]],
+            [grouped_elec_pos[i]],
+            show=False,
+            fname=group+'_amp_plot',
+            group_labels=[group],
+            mode='std',
+            scale='linear',
+            plot_save_dir=dir_output
+            )
+    LFPy_util.plot.spike_widths_and_amp_grouped(
+            [grouped_widths[i]],
+            [grouped_amps[i]],
+            [grouped_elec_pos[i]],
+            show=False,
+            fname=group+'_amp_and_width_plot',
+            group_labels=[group],
+            plot_save_dir=dir_output
+            )
 
 
 
