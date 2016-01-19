@@ -8,22 +8,11 @@ from glob import glob
 from multiprocessing import Process
 
 cores = 4
-neuron_folder = 'sim_00/neurons'
-
-# Process command input.
-simulate = False
-plot = False
-for input in sys.argv:
-    if input == "run" :
-        simulate = True
-    if input == "plot" :
-        plot = True
-if len(sys.argv) == 1:
-    simulate = True
-    plot = True
+output_dir = "sim_00/neurons"
+# How many neurons from each group to simulate.
+nrn_cnt = 2
 
 # Load pyramidal cells in L5.
-nrn_cnt = 2
 os.chdir(model_dir)
 TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
 TTPC2 = glob('L5_*TTPC2*')[:nrn_cnt]
@@ -42,9 +31,9 @@ ChC = glob('L5_*ChC*')[:nrn_cnt]
 # Gather neurons to be simulated.
 neurons =\
          TTPC1\
-        + TTPC2\
-        + UTPC\
-        + STPC
+        + TTPC2
+        # + UTPC\
+        # + STPC
         # + MC \
         # + BTC \
         # + DBC \
@@ -55,14 +44,26 @@ neurons =\
         # + SBC \
         # + ChC
 
+# Process command input.
+simulate = False
+plot = False
+for input in sys.argv:
+    if input == "run" :
+        simulate = True
+    if input == "plot" :
+        plot = True
+if len(sys.argv) == 1:
+    simulate = True
+    plot = True
 
 # Gather directory paths. 
 model_dir = blue_brain.model_dir
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_neurons = os.path.join(dir_current,neuron_folder)
+dir_neurons = os.path.join(dir_current,output_dir)
 
 # Download if they do not exist.
 blue_brain.download_all_models(model_dir)
+
 
 # Compile and load the extra mod file(s).
 if simulate:
@@ -117,11 +118,3 @@ if simulate or plot:
             p_arr = []
     for p in p_arr:
         p.join()
-
-
-
-
-
-
-
-
