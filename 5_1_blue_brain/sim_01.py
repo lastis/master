@@ -7,7 +7,7 @@ from pprint import pprint
 from glob import glob
 from multiprocessing import Process
 
-cores = 8
+cores = 4
 
 # Process command input.
 simulate = False
@@ -34,7 +34,7 @@ dir_neurons = os.path.join(dir_current,"sim_01/neurons")
 blue_brain.download_all_models(model_dir)
 
 # Load pyramidal cells in L5.
-nrn_cnt = 1
+nrn_cnt = 2
 os.chdir(model_dir)
 TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
 TTPC2 = glob('L5_*TTPC2*')[:nrn_cnt]
@@ -119,10 +119,10 @@ def run(nrn_full):
     sh.push(sim_single_spike,False)
     # sh.push(sim_grid,True)
     sh.push(sim_disc_elec_xz,True)
-    # sh.push(sim_disc_elec_xy,True)
-    # sh.push(sim_disc_elec_yz,True)
+    sh.push(sim_disc_elec_xy,True)
+    sh.push(sim_disc_elec_yz,True)
     sh.push(sim_morph,True)
-    # sh.push(sim_intra,True)
+    sh.push(sim_intra,True)
 
     if simulate: 
         sh.simulate()
@@ -137,6 +137,11 @@ if simulate or plot:
         p = Process(target=run, args=(nrn_full,))
         p.start()
         p_arr.append(p)
+        # Wait if the number of simulations reaches the number of cores.
+        if cnt % cores == cores-1:
+            for p in p_arr:
+                p.join()
+            p_arr = []
     for p in p_arr:
         p.join()
 
