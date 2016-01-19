@@ -8,9 +8,9 @@ from glob import glob
 from multiprocessing import Process
 
 cores = 4
-output_dir = "sim_00/neurons"
+output_dir = "sim_03/neurons"
 # How many neurons from each group to simulate.
-nrn_cnt = 2
+nrn_cnt = 1
 
 # Gather directory paths. 
 model_dir = blue_brain.model_dir
@@ -34,20 +34,7 @@ SBC = glob('L5_*SBC*')[:nrn_cnt]
 ChC = glob('L5_*ChC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
-neurons =\
-         TTPC1\
-        + TTPC2\
-        + UTPC\
-        + STPC
-        # + MC \
-        # + BTC \
-        # + DBC \
-        # + BP \
-        # + NGC \
-        # + LBC \
-        # + NBC \
-        # + SBC \
-        # + ChC
+neurons = TTPC1 + UTPC
 
 # Process command input.
 simulate = False
@@ -64,7 +51,6 @@ if len(sys.argv) == 1:
 
 # Download if they do not exist.
 blue_brain.download_all_models(model_dir)
-
 
 # Compile and load the extra mod file(s).
 if simulate:

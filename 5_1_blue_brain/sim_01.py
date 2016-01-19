@@ -12,6 +12,11 @@ output_dir = "sim_01/neurons"
 # How many neurons from each group to simulate.
 nrn_cnt = 1
 
+# Gather directory paths. 
+model_dir = blue_brain.model_dir
+dir_current = os.path.dirname(os.path.realpath(__file__))
+dir_neurons = os.path.join(dir_current,output_dir)
+
 # Load pyramidal cells in L5.
 os.chdir(model_dir)
 TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
@@ -56,14 +61,8 @@ if len(sys.argv) == 1:
     simulate = True
     plot = True
 
-# Gather directory paths. 
-model_dir = blue_brain.model_dir
-dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_neurons = os.path.join(dir_current,output_dir)
-
 # Download if they do not exist.
 blue_brain.download_all_models(model_dir)
-
 
 # Compile and load the extra mod file(s).
 if simulate:
