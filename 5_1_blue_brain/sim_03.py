@@ -10,7 +10,7 @@ from multiprocessing import Process
 cores = 4
 output_dir = "sim_03/neurons"
 # How many neurons from each group to simulate.
-nrn_cnt = 1
+nrn_cnt = 2
 
 # Gather directory paths. 
 model_dir = blue_brain.model_dir
