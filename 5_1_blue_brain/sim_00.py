@@ -10,7 +10,7 @@ from multiprocessing import Process
 cores = 4
 output_dir = "sim_00/neurons"
 # How many neurons from each group to simulate.
-nrn_cnt = 2
+nrn_cnt = 1
 
 # Gather directory paths. 
 model_dir = blue_brain.model_dir
@@ -35,10 +35,10 @@ ChC = glob('L5_*ChC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
 neurons =\
-         TTPC1\
-        + TTPC2\
-        + UTPC\
-        + STPC
+         TTPC1
+        # + TTPC2\
+        # + UTPC\
+        # + STPC
         # + MC \
         # + BTC \
         # + DBC \
