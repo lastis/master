@@ -36,21 +36,17 @@ dir_output = os.path.join(dir_current,output_dir)
 grouped_widths = [[] for _ in xrange(len(group_labels))]
 grouped_amps = [[] for _ in xrange(len(group_labels))]
 grouped_elec_pos = [[] for _ in xrange(len(group_labels))]
-def gatherData(neuron_name, file_name, run_param, data):
-    if "disc_x_z_results" in file_name:
-        for i in xrange(len(group_labels)):
-            if group_labels[i] not in neuron_name:
-                continue
-            LFPy_util.sims.DiscElectrodes.process_results(data,run_param)
-            grouped_widths[i].append(data["widths"])
-            grouped_amps[i].append(data["amps"])
-            grouped_elec_pos[i].append(data["electrode_pos_r"])
+def gather_data(neuron_name, file_name, run_param, data):
+    for i in xrange(len(group_labels)):
+        if group_labels[i] not in neuron_name:
+            continue
+        grouped_widths[i].append(data["widths"])
+        grouped_amps[i].append(data["amps"])
+        grouped_elec_pos[i].append(data["electrode_pos_r"])
 
 # Collect data about all neurons.
-dc = LFPy_util.DataCollector()
-dc.set_dir_neurons(dir_neurons)
-dc.set_collection_func(gatherData)
-dc.run()
+sim = LFPy_util.sims.DiscElectrodes()
+LFPy_util.other.collect_data(dir_neurons,sim,gather_data)
 
 for i, group in enumerate(group_labels):
     if len(grouped_widths[i]) == 0:

@@ -63,20 +63,21 @@ def run(nrn_full):
     cell_list = blue_brain.load_model(nrn_full)
     cell = cell_list[0]
 
-    # Configure simulation objects.
-    sim_single_spike    = LFPy_util.sims.SingleSpike()
-    sim_disc_elec_xz    = LFPy_util.sims.DiscElectrodes()
-    sim_morph           = LFPy_util.sims.Morphology()
-    sim_single_spike.run_param['pptype'] = 'ISyn'
-    sim_disc_elec_xz.set_plane(['x','z'])
-    sim_disc_elec_xz.run_param['wave_def'] = 'top_bottom'
-    sim_disc_elec_xz.plot_detailed = True
-
     sh = LFPy_util.SimulationHelper()
     sh.set_cell(cell)
     sh.set_dir_neurons(dir_neurons)
     sh.set_neuron_name(nrn)
     print sh
+
+    # Configure simulation objects.
+    sim_single_spike    = LFPy_util.sims.SingleSpike()
+    sim_single_spike.prev_data = sh.get_path_data(sim_single_spike)
+    sim_disc_elec_xz    = LFPy_util.sims.DiscElectrodes()
+    sim_morph           = LFPy_util.sims.Morphology()
+    sim_single_spike.run_param['pptype'] = 'ISyn'
+    sim_disc_elec_xz.set_plane('x','z')
+    sim_disc_elec_xz.run_param['wave_def'] = 'top_bottom'
+    sim_disc_elec_xz.plot_detailed = True
 
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.findMajorAxes()

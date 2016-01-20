@@ -11,9 +11,9 @@ dir_neurons = dir_project
 
 # Configure simulation objects.
 sim_grid            = LFPy_util.sims.Grid()
-sim_disc_elec       = LFPy_util.sims.DiscElectrodes()
 sim_morph           = LFPy_util.sims.Morphology()
 sim_intra           = LFPy_util.sims.Intracellular()
+sim_disc_elec       = LFPy_util.sims.DiscElectrodes()
 sim_disc_elec.plot_detailed = True
 sim_disc_elec.run_param['pre_dur'] = 0
 sim_disc_elec.run_param['post_dur'] = 0
@@ -62,9 +62,9 @@ axes = LFPy_util.data_extraction.findMajorAxes()
 LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
 
 sh.push(sim_grid,True)
-sh.push(sim_disc_elec,True)
-sh.push(sim_morph,True)
-sh.push(sim_intra,True)
+# sh.push(sim_disc_elec,True)
+# sh.push(sim_morph,True)
+# sh.push(sim_intra,True)
 
 sh.simulate()
 sh.plot()
