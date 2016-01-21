@@ -6,3 +6,5 @@ Simulations using models from the blue brain project.
 * `sim_02.py` : Plots spike width and amp from previously simulated neurons.
                 Uses `sim_00.py` data.
 * `sim_03.py` : Testing results from different spike width definitions. 
+* `sim_04.py` : Sampling action potentials at random locations. 
+
