@@ -3,24 +3,23 @@ import urllib
 import tarfile
 import zipfile
 import shutil
-import sys
 from glob import glob
 import subprocess
 import neuron
 import LFPy
 
-# Gather directory paths. 
+# Gather directory paths.
 # Find the location of 5_1_blue_brain folder.
-project_dir = os.path.dirname(os.path.realpath(__file__))
-res_dir     = os.path.join(project_dir,'res/')
-model_dir   = os.path.join(project_dir,'res/bbp_models')
+dir_project = os.path.dirname(os.path.realpath(__file__))
+dir_res = os.path.join(dir_project, 'res/')
+dir_model = os.path.join(dir_project, 'res/bbp_models')
 
 def load_model(nrn, add_synapses=False, compile=True, suppress=True):
-    # Load some dependencies. 
+    # Load some dependencies.
     neuron.h.load_file('stdrun.hoc')
     neuron.h.load_file('import3d.hoc')
 
-    # Suppress neuron output. 
+    # Suppress neuron output.
     if suppress:
         # Open a pair of null files
         null_fds =  [os.open(os.devnull,os.O_RDWR) for x in range(2)]
@@ -44,35 +43,35 @@ def load_model(nrn, add_synapses=False, compile=True, suppress=True):
     f = file("template.hoc", 'r')
     templatename = get_templatename(f)
     f.close()
-    
+
     #get biophys template name
     f = file("biophysics.hoc", 'r')
     biophysics = get_templatename(f)
     f.close()
-    
+
     #get morphology template name
     f = file("morphology.hoc", 'r')
     morphology = get_templatename(f)
     f.close()
-    
+
     #get synapses template name
     f = file(os.path.join("synapses", "synapses.hoc"), 'r')
     synapses = get_templatename(f)
     f.close()
-    
+
     neuron.h.load_file('constants.hoc')
 
-    if not hasattr(neuron.h, morphology): 
+    if not hasattr(neuron.h, morphology):
         """Create the cell model"""
         # Load morphology
         neuron.h.load_file(1, "morphology.hoc")
-    if not hasattr(neuron.h, biophysics): 
+    if not hasattr(neuron.h, biophysics):
         # Load biophysics
         neuron.h.load_file(1, "biophysics.hoc")
     if not hasattr(neuron.h, synapses):
         # load synapses
         neuron.h.load_file(1, os.path.join('synapses', 'synapses.hoc'))
-    if not hasattr(neuron.h, templatename): 
+    if not hasattr(neuron.h, templatename):
         # Load main cell template
         neuron.h.load_file(1, "template.hoc")
 
@@ -101,31 +100,30 @@ def load_model(nrn, add_synapses=False, compile=True, suppress=True):
         os.close(null_fds[1])
     return cells
 
-
 def get_templatename(f):
     '''
     Assess from hoc file the templatename being specified within
-    
+
     Arguments
     ---------
     f : file, mode 'r'
-    
+
     Returns
     -------
     templatename : str
-    
-    '''    
+
+    '''
     f = file("template.hoc", 'r')
     for line in f.readlines():
         if 'begintemplate' in line.split():
             templatename = line.split()[-1]
             # print 'template {} found!'.format(templatename)
             continue
-    
+
     return templatename
 
 def download_all_models(model_dir='bbp_models'):
-    # Download the cell models if they do not exist. 
+    # Download the cell models if they do not exist.
     if not os.path.isdir(model_dir):
         print 'Model files not found. '
         print 'Downloading all bbp models. About 785 mb, can take time.'
@@ -156,7 +154,7 @@ def download_all_models(model_dir='bbp_models'):
         os.chdir(untarred_folder)
         for zip_file_name in glob('*.zip'):
             zf = zipfile.ZipFile(zip_file_name)
-            # Exract the file to the model dir. 
+            # Exract the file to the model dir.
             zf.extractall(model_dir)
         print 'Removing   : {}'.format(untarred_folder)
         shutil.rmtree(untarred_folder)

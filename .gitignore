@@ -12,6 +12,8 @@ neurons/
 bbp_models/
 x86_64/
 data/
+.ropeproject/
+.metadata/
 
 
 *~

@@ -13,12 +13,12 @@ output_dir = "sim_03/neurons"
 nrn_cnt = 1
 
 # Gather directory paths. 
-model_dir = blue_brain.model_dir
+dir_model = blue_brain.dir_model
 dir_current = os.path.dirname(os.path.realpath(__file__))
 dir_neurons = os.path.join(dir_current,output_dir)
 
 # Load pyramidal cells in L5.
-os.chdir(model_dir)
+os.chdir(dir_model)
 TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
 TTPC2 = glob('L5_*TTPC2*')[:nrn_cnt]
 UTPC = glob('L5_*UTPC*')[:nrn_cnt]
@@ -50,11 +50,11 @@ if len(sys.argv) == 1:
 
 
 # Download if they do not exist.
-blue_brain.download_all_models(model_dir)
+blue_brain.download_all_models(dir_model)
 
 # Compile and load the extra mod file(s).
 if simulate:
-    mod_dir = os.path.join(blue_brain.res_dir,'extra_mod/')
+    mod_dir = os.path.join(blue_brain.dir_res,'extra_mod/')
     LFPy_util.nrnivmodl(mod_dir)
 
 # Define a simulation method so different neurons can be run in parallel.
@@ -97,7 +97,7 @@ def run(nrn_full):
 if simulate or plot:
     p_arr = []
     for cnt, nrn in enumerate(neurons):
-        nrn_full = os.path.join(model_dir,nrn)
+        nrn_full = os.path.join(dir_model,nrn)
         p = Process(target=run, args=(nrn_full,))
         p.start()
         p_arr.append(p)

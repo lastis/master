@@ -27,7 +27,7 @@ group_labels = [
         'ChC',
         ]
 
-# Gather directory paths. 
+# Gather directory paths.
 dir_current = os.path.dirname(os.path.realpath(__file__))
 dir_neurons = os.path.join(dir_current,input_dir)
 dir_output = os.path.join(dir_current,output_dir)
@@ -36,6 +36,8 @@ dir_output = os.path.join(dir_current,output_dir)
 grouped_widths = [[] for _ in xrange(len(group_labels))]
 grouped_amps = [[] for _ in xrange(len(group_labels))]
 grouped_elec_pos = [[] for _ in xrange(len(group_labels))]
+
+
 def gather_data(neuron_name, file_name, run_param, data):
     for i in xrange(len(group_labels)):
         if group_labels[i] not in neuron_name:

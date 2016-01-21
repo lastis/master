@@ -1,24 +1,22 @@
-# Simulation: Gather different data about single neurons.
 import blue_brain
 import LFPy_util
 import os
 import sys
-from pprint import pprint
 from glob import glob
 from multiprocessing import Process
 
 cores = 1
-output_dir = "sim_03"
+output_dir = "sim_04"
 # How many neurons from each group to simulate.
 nrn_cnt = 1
 
-# Gather directory paths. 
-model_dir = blue_brain.model_dir
+# Gather directory paths.
+dir_model = blue_brain.dir_model
 dir_current = os.path.dirname(os.path.realpath(__file__))
 dir_neurons = os.path.join(dir_current,output_dir)
 
 # Load pyramidal cells in L5.
-os.chdir(model_dir)
+os.chdir(dir_model)
 TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
 NBC = glob('L5_*NBC*')[:nrn_cnt]
 
@@ -39,11 +37,11 @@ if len(sys.argv) == 1:
 
 
 # Download if they do not exist.
-blue_brain.download_all_models(model_dir)
+blue_brain.download_all_models(dir_model)
 
 # Compile and load the extra mod file(s).
 if simulate:
-    mod_dir = os.path.join(blue_brain.res_dir,'extra_mod/')
+    mod_dir = os.path.join(blue_brain.dir_res,'extra_mod/')
     LFPy_util.nrnivmodl(mod_dir)
 
 # Define a simulation method so different neurons can be run in parallel.
@@ -63,6 +61,7 @@ def run(nrn_full):
     sim_single_spike.prev_data = sh.get_path_data(sim_single_spike)
     sim_single_spike.run_param['pptype'] = 'ISyn'
     sim_morph           = LFPy_util.sims.Morphology()
+    sim_sphere = LFPy_util.sims.SphereElectrodes()
 
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.findMajorAxes()
@@ -71,17 +70,18 @@ def run(nrn_full):
 
     sh.push(sim_single_spike,False)
     sh.push(sim_morph,True)
+    sh.push(sim_sphere,True)
 
-    if simulate: 
+    if simulate:
         sh.simulate()
-    if plot: 
+    if plot:
         sh.plot()
 
 # Start simulation(s)
 if simulate or plot:
     p_arr = []
     for cnt, nrn in enumerate(neurons):
-        nrn_full = os.path.join(model_dir,nrn)
+        nrn_full = os.path.join(dir_model,nrn)
         p = Process(target=run, args=(nrn_full,))
         p.start()
         p_arr.append(p)

@@ -12,8 +12,8 @@ output_dir = "sim_01/neurons"
 # How many neurons from each group to simulate.
 nrn_cnt = 1
 
-# Gather directory paths. 
-model_dir = blue_brain.model_dir
+# Gather directory paths.
+model_dir = blue_brain.dir_model
 dir_current = os.path.dirname(os.path.realpath(__file__))
 dir_neurons = os.path.join(dir_current,output_dir)
 
@@ -66,7 +66,7 @@ blue_brain.download_all_models(model_dir)
 
 # Compile and load the extra mod file(s).
 if simulate:
-    mod_dir = os.path.join(blue_brain.res_dir,'extra_mod/')
+    mod_dir = os.path.join(blue_brain.dir_res,'extra_mod/')
     LFPy_util.nrnivmodl(mod_dir)
 
 # Define a simulation method so different neurons can be run in parallel.
@@ -108,9 +108,9 @@ def run(nrn_full):
     sh.push(sim_morph,True)
     sh.push(sim_intra,True)
 
-    if simulate: 
+    if simulate:
         sh.simulate()
-    if plot: 
+    if plot:
         sh.plot()
 
 # Start simulation(s)
