@@ -160,16 +160,3 @@ def download_all_models(model_dir='bbp_models'):
             zf.extractall(model_dir)
         print 'Removing   : {}'.format(untarred_folder)
         shutil.rmtree(untarred_folder)
-
-        # if compile_all_models :
-        #     print 'nrnivmodl  : {}/*/mechanisms'.format(model_dir)
-        #     os.chdir(model_dir)
-        #     neurons = glob(os.path.join(model_dir,'*'))
-        #     for cnt, nrn in enumerate(neurons):
-        #         # For each mod file in the mechanism folder.
-        #         mechanism_mod_dir = os.path.join(nrn,'mechanisms')
-        #         os.chdir(mechanism_mod_dir)
-        #         # Write compilation output to an empty black hole.
-        #         devnull = open(os.devnull,'w')
-        #         subprocess.call(['nrnivmodl'],stdout=devnull)
-        #         print cnt
