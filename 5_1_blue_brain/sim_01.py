@@ -75,7 +75,7 @@ def run(nrn_full):
     cell_list = blue_brain.load_model(nrn_full)
     cell = cell_list[0]
 
-    sh = LFPy_util.SimulationHelper()
+    sh = LFPy_util.Simulator()
     sh.set_cell(cell)
     sh.set_dir_neurons(dir_neurons)
     sh.set_neuron_name(nrn)

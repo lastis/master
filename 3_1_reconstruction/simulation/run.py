@@ -51,7 +51,7 @@ for idx, sec in enumerate(cell.somalist):
         v_vec.play(seg._ref_v, t_vec)
 
 # Engage the simulation helper
-sh = LFPy_util.SimulationHelper()
+sh = LFPy_util.Simulator()
 sh.set_cell(cell)
 sh.set_dir_neurons(dir_neurons)
 sh.set_neuron_name("L5_Mainen96")
