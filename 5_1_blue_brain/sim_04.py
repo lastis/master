@@ -4,7 +4,7 @@ import os
 from glob import glob
 
 output_dir = "sim_04"
-simulate = False
+simulate = True
 plot = True
 # How many neurons from each group to simulate.
 nrn_cnt = 1
@@ -50,10 +50,12 @@ sim_single_spike.run_param['pptype'] = 'ISyn'
 sim_intra = LFPy_util.sims.Intracellular()
 sim_sphere = LFPy_util.sims.SphereElectrodes()
 sim_sphere.elec_to_plot = [0,99]
+sim_sym = LFPy_util.sims.Symmetry()
 
 # sim.push(sim_single_spike,False)
 # sim.push(sim_intra,True)
-sim.push(sim_sphere,True)
+# sim.push(sim_sphere,True)
+sim.push(sim_sym,True)
 
 print sim
 sim.run()
