@@ -1,10 +1,11 @@
 import blue_brain
 import LFPy_util
 import os
-import sys
 from glob import glob
 
 output_dir = "sim_04"
+simulate = False
+plot = True
 # How many neurons from each group to simulate.
 nrn_cnt = 1
 
@@ -20,19 +21,6 @@ NBC = glob('L5_*NBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
 neurons = TTPC1
-
-# Process command input.
-simulate = False
-plot = False
-for input in sys.argv:
-    if input == "run" :
-        simulate = True
-    if input == "plot" :
-        plot = True
-if len(sys.argv) == 1:
-    simulate = True
-    plot = True
-
 
 # Download if they do not exist.
 blue_brain.download_all_models(dir_model)
@@ -61,8 +49,9 @@ sim_single_spike.prev_data = sim.get_path_sim_data(sim_single_spike)
 sim_single_spike.run_param['pptype'] = 'ISyn'
 sim_intra = LFPy_util.sims.Intracellular()
 sim_sphere = LFPy_util.sims.SphereElectrodes()
+sim_sphere.elec_to_plot = [0,99]
 
-sim.push(sim_single_spike,False)
+# sim.push(sim_single_spike,False)
 # sim.push(sim_intra,True)
 sim.push(sim_sphere,True)
 
