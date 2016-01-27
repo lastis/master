@@ -58,7 +58,7 @@ sh.set_neuron_name("L5_Mainen96")
 print sh
 
 # Find the principal component axes and rotate cell.
-axes = LFPy_util.data_extraction.findMajorAxes()
+axes = LFPy_util.data_extraction.find_major_axes()
 LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
 
 sh.push(sim_grid,True)

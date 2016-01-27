@@ -1,7 +1,6 @@
 # Simulation: Gather different data about single neurons.
 import os
 import numpy as np
-import blue_brain
 import LFPy_util
 import LFPy_util.plot as lplot
 
@@ -27,7 +26,6 @@ grouped_widths_std = [[] for _ in xrange(len(group_labels))]
 grouped_amps_mean = [[] for _ in xrange(len(group_labels))]
 grouped_amps_std = [[] for _ in xrange(len(group_labels))]
 grouped_distance = [[] for _ in xrange(len(group_labels))]
-
 
 def gather_data(neuron_name, file_name, run_param, data):
     print neuron_name, file_name

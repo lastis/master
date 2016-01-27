@@ -35,10 +35,10 @@ def load_func(neuron):
     nrn_full = os.path.join(dir_model,neuron)
     cell_list = blue_brain.load_model(nrn_full)
     cell = cell_list[0]
-    # # Find the principal component axes and rotate cell.
-    # axes = LFPy_util.data_extraction.findMajorAxes()
-    # # Aligns y to axis[0] and x to axis[1]
-    # LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
+    # Find the principal component axes and rotate cell.
+    axes = LFPy_util.data_extraction.find_major_axes()
+    # Aligns y to axis[0] and x to axis[1]
+    LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
     return cell
 
 sim = LFPy_util.Simulator()

@@ -46,7 +46,7 @@ def run(cell):
             v_vec.play(seg._ref_v, t_vec)
 
     # Find the principal component axes and rotate cell.
-    axes = LFPy_util.data_extraction.findMajorAxes()
+    axes = LFPy_util.data_extraction.find_major_axes()
     LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
 
     # Soma.
