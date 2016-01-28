@@ -1,10 +1,15 @@
+"""
+Simulation run on several neurons.
+"""
+# pylint: disable=invalid-name
+
 import os
 from glob import glob
 import LFPy_util
 import blue_brain
 
 # Gather directory paths.
-dir_model = blue_brain.dir_model
+dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
 dir_neurons = os.path.join(dir_current, "sim_00")
 
@@ -23,16 +28,18 @@ LBC = glob('L5_*LBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
 # neurons = TTPC1 + TTPC2 + MC + LBC
-neurons = TTPC1
-# neurons = MC + LBC
+# neurons = TTPC1
+neurons = MC + LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
-mod_dir = os.path.join(blue_brain.dir_res, 'extra_mod/')
-LFPy_util.nrnivmodl(mod_dir)
+mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
+LFPy_util.other.nrnivmodl(mod_dir)
 
 
-# Create a load function that loads a cell using the name of the neuron.
 def load_func(neuron):
+    """
+    Function that loads a cell using the name of the neuron.
+    """
     nrn_full = os.path.join(dir_model, neuron)
     cell_list = blue_brain.load_model(nrn_full)
     cell = cell_list[0]
@@ -42,27 +49,28 @@ def load_func(neuron):
     LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
     return cell
 
+
 sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_func)
 sim.set_dir_neurons(dir_neurons)
 sim.set_neuron_name(neurons)
-sim.simulate = False
+sim.simulate = True
 sim.plot = True
 
 # Simulation objects.
 sim_single_spike = LFPy_util.sims.SingleSpike()
-sim_single_spike.prev_data = sim.get_path_sim_data(sim_single_spike)
 sim_single_spike.run_param['pptype'] = 'ISyn'
 sim_intra = LFPy_util.sims.Intracellular()
 sim_sphere = LFPy_util.sims.SphereElectrodes()
+sim_sphere.elec_to_plot = range(10)
 sim_sym = LFPy_util.sims.Symmetry()
 sim_morph = LFPy_util.sims.Morphology()
 
 sim.push(sim_single_spike, False)
 sim.push(sim_intra, True)
-sim.push(sim_sphere, True)
-sim.push(sim_sym, True)
-sim.push(sim_morph, True)
+# sim.push(sim_sphere, True)
+# sim.push(sim_sym, True)
+# sim.push(sim_morph, True)
 
 print sim
 sim.run()

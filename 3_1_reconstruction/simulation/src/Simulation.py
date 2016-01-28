@@ -14,8 +14,8 @@ from multiprocessing import Process
 
 file_path = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(file_path)
-result_dir = os.path.join(project_dir,'results')
-plot_dir = os.path.join(project_dir,'results/plot')
+result_dir = os.path.join(project_dir, 'results')
+plot_dir = os.path.join(project_dir, 'results/plot')
 param_dir = os.path.join(project_dir, 'res/plot_param')
 
 electrodes = []
@@ -31,9 +31,10 @@ n = 11
 n_theta = 36
 r_0 = 20
 
+
 def run(cell):
     # Play an action potential.
-    path = os.path.join(project_dir,'res/cs_ap.js')
+    path = os.path.join(project_dir, 'res/cs_ap.js')
     param = LFPy_util.plot.getDictFromPlotParamFile(path)
 
     v_vec = np.array(param['v_vec'])
@@ -47,38 +48,28 @@ def run(cell):
 
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
-    LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
+    LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
 
     # Soma.
-    LFPy_util.simulations.soma(cell,param_dir)
+    LFPy_util.simulations.soma(cell, param_dir)
     # Grid electrodes.
-    x = np.linspace(-200,200,nx)
-    y = np.linspace(-200,200,ny)
-    grid_elec = LFPy_util.simulations.gridXY(cell,x,y,param_dir)
+    x = np.linspace(-200, 200, nx)
+    y = np.linspace(-200, 200, ny)
+    grid_elec = LFPy_util.simulations.gridXY(cell, x, y, param_dir)
     # Circular electrodes.
-    circ_elec = LFPy_util.simulations.circularXZ(cell,n,n_theta,r,r_0,param_dir)
+    circ_elec = LFPy_util.simulations.circularXZ(cell, n, n_theta, r, r_0,
+                                                 param_dir)
 
-    LFPy_util.simulations.morphology(cell,param_dir)
+    LFPy_util.simulations.morphology(cell, param_dir)
 
     electrodes = circ_elec + grid_elec
-    LFPy_util.meshgen.visualizeNeuron(electrodes,result_dir)
+    LFPy_util.meshgen.visualizeNeuron(electrodes, result_dir)
+
 
 def plot():
-    LFPy_util.simulations.soma(
-        param_dir   = param_dir,
-        plot_dir    = plot_dir,
-    )
-    LFPy_util.simulations.circularXZ(
-        param_dir   = param_dir,
-        plot_dir    = plot_dir,
-        show_points=True,
-    )
-    LFPy_util.simulations.gridXY(
-        param_dir   = param_dir,
-        plot_dir    = plot_dir,
-    )
-    LFPy_util.simulations.morphology(
-        param_dir   = param_dir,
-        plot_dir    = plot_dir,
-    )
-
+    LFPy_util.simulations.soma(param_dir=param_dir, plot_dir=plot_dir, )
+    LFPy_util.simulations.circularXZ(param_dir=param_dir,
+                                     plot_dir=plot_dir,
+                                     show_points=True, )
+    LFPy_util.simulations.gridXY(param_dir=param_dir, plot_dir=plot_dir, )
+    LFPy_util.simulations.morphology(param_dir=param_dir, plot_dir=plot_dir, )

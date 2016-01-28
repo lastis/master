@@ -6,39 +6,38 @@ import numpy as np
 import neuron
 
 dir_project = os.path.dirname(os.path.realpath(__file__))
-dir_res = os.path.join(dir_project,"res")
+dir_res = os.path.join(dir_project, "res")
 dir_neurons = dir_project
 
 # Configure simulation objects.
-sim_grid            = LFPy_util.sims.Grid()
-sim_morph           = LFPy_util.sims.Morphology()
-sim_intra           = LFPy_util.sims.Intracellular()
-sim_disc_elec       = LFPy_util.sims.DiscElectrodes()
+sim_grid = LFPy_util.sims.Grid()
+sim_morph = LFPy_util.sims.Morphology()
+sim_intra = LFPy_util.sims.Intracellular()
+sim_disc_elec = LFPy_util.sims.DiscElectrodes()
 sim_disc_elec.plot_detailed = True
 sim_disc_elec.run_param['pre_dur'] = 0
 sim_disc_elec.run_param['post_dur'] = 0
 sim_disc_elec.debug = True
 
 cellParameters = {
-    'morphology' : os.path.join(dir_res,'morphology/L5_Mainen96_LFPy.hoc'),
-    'rm' : 30000,               # membrane resistance
-    'cm' : 1.0,                 # membrane capacitance
-    'Ra' : 150,                 # axial resistance
-    'v_init' : -0,             # initial crossmembrane potential
-    'e_pas' : -0,              # reversal potential passive mechs
-    'passive' : True,           # switch on passive mechs
-    'timeres_NEURON' : 2**-5,   # dt of LFP and NEURON simulation.
-    'timeres_python' : 2**-5,
-    'tstartms' : -00,           #start time, recorders start at t=0
-    'tstopms' : 16.7,             #stop time of simulation
-    'pt3d' : True,
+    'morphology': os.path.join(dir_res, 'morphology/L5_Mainen96_LFPy.hoc'),
+    'rm': 30000,  # membrane resistance
+    'cm': 1.0,  # membrane capacitance
+    'Ra': 150,  # axial resistance
+    'v_init': -0,  # initial crossmembrane potential
+    'e_pas': -0,  # reversal potential passive mechs
+    'passive': True,  # switch on passive mechs
+    'timeres_NEURON': 2** -5,  # dt of LFP and NEURON simulation.
+    'timeres_python': 2** -5,
+    'tstartms': -00,  #start time, recorders start at t=0
+    'tstopms': 16.7,  #stop time of simulation
+    'pt3d': True,
 }
-
 
 #Initialize cell instance, using the LFPy.Cell class
 cell = LFPy.Cell(**cellParameters)
 
-path = os.path.join(dir_res,'cs_ap.js')
+path = os.path.join(dir_res, 'cs_ap.js')
 param = LFPy_util.other.load_kwargs_json(path)
 
 # Play vectors back into all soma segments.
@@ -59,33 +58,12 @@ print sh
 
 # Find the principal component axes and rotate cell.
 axes = LFPy_util.data_extraction.find_major_axes()
-LFPy_util.rotation.alignCellToAxes(cell,axes[0],axes[1])
+LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
 
-sh.push(sim_grid,True)
+sh.push(sim_grid, True)
 # sh.push(sim_disc_elec,True)
 # sh.push(sim_morph,True)
 # sh.push(sim_intra,True)
 
 sh.simulate()
 sh.plot()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
