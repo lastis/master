@@ -41,6 +41,7 @@ def download_all_models():
     if not os.path.exists(DIR_MODELS):
         os.makedirs(DIR_MODELS)
 
+        print "Downloading allen models."
         # Download models.
         bpa = BiophysicalPerisomaticApi('http://api.brain-map.org')
         # change to False to not download the large stimulus NWB file
@@ -78,7 +79,8 @@ def load_cell_by_id(model_id, start_ms=0., stop_ms=300.):
     path_morp = glob(os.path.join(dir_model, "*.swc"))[0]
 
     # Compile the mod files.
-    LFPy_util.other.nrnivmodl(dir_modfiles, suppress=True)
+    # LFPy_util.other.nrnivmodl(dir_modfiles, suppress=True)
+    LFPy_util.other.nrnivmodl(dir_modfiles)
 
     cell = LFPy.Cell(
         morphology=path_morp,

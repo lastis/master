@@ -7,7 +7,8 @@ import allen
 # pylint: disable=invalid-name
 
 allen.download_all_models()
-model_index = [0,1]
+# model_index = [1,2,3,4]
+model_index = range(2,len(allen.MODEL_NUMS))
 model_names = [str(model_id) for i, model_id in enumerate(allen.MODEL_NUMS) if i in model_index]
 
 # Compile and load the extra mod file(s). The ISyn electrode.
@@ -37,6 +38,8 @@ sim.plot = True
 # Simulation objects.
 sim_single_spike = LFPy_util.sims.SingleSpike()
 sim_single_spike.run_param['pptype'] = 'ISyn'
+sim_single_spike.run_param['threshold'] = 4
+sim_single_spike.debug = True
 sim_intra = LFPy_util.sims.Intracellular()
 sim_sphere = LFPy_util.sims.SphereElectrodes()
 sim_sphere.elec_to_plot = range(10)
