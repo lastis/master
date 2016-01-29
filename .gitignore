@@ -10,6 +10,7 @@
 neuron/
 neurons/
 bbp_models/
+allen_models/
 x86_64/
 data/
 sim*/

@@ -16,9 +16,12 @@ if not os.path.exists(model_dir):
 # # change to False to not download the large stimulus NWB file
 # bp.cache_stimulus = False 
 # # get this from the web site as above
-# neuronal_model_id = 472451419    
+# neuronal_model_id = 472424854    
 # bp.cache_data(neuronal_model_id, working_directory=model_dir)
+
+
 os.chdir(model_dir)
+# LFPy_util.other.nrnivmodl('modfiles')
 import LFPy_util
 import LFPy
 from glob import glob
@@ -47,7 +50,6 @@ utils.load_cell_parameters()
 # util = bp.utils.Utils(config)
 
 
-# LFPy_util.other.nrnivmodl(os.path.join(model_dir,'modfiles'))
 # Instantiate the cell(s) using LFPy
 
 sim = LFPy_util.Simulator()
@@ -69,9 +71,9 @@ sim_morph = LFPy_util.sims.Morphology()
 
 sim.push(sim_single_spike, False)
 sim.push(sim_intra, True)
-# sim.push(sim_sphere, True)
-# sim.push(sim_sym, True)
-# sim.push(sim_morph, True)
+sim.push(sim_sphere, True)
+sim.push(sim_sym, True)
+sim.push(sim_morph, True)
 
 print sim
 sim.run()

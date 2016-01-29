@@ -28,8 +28,8 @@ LBC = glob('L5_*LBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
 # neurons = TTPC1 + TTPC2 + MC + LBC
-# neurons = TTPC1
-neurons = MC + LBC
+neurons = TTPC1
+# neurons = MC + LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
@@ -68,9 +68,9 @@ sim_morph = LFPy_util.sims.Morphology()
 
 sim.push(sim_single_spike, False)
 sim.push(sim_intra, True)
-# sim.push(sim_sphere, True)
-# sim.push(sim_sym, True)
-# sim.push(sim_morph, True)
+sim.push(sim_sphere, True)
+sim.push(sim_sym, True)
+sim.push(sim_morph, True)
 
 print sim
 sim.run()
