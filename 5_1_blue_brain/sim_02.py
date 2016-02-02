@@ -1,35 +1,29 @@
 """
-Simulation run on several neurons.
+Simulation: Get the same results as torbjorn.
 """
 # pylint: disable=invalid-name
 
 import os
 from glob import glob
 import LFPy_util
+import LFPy
 import blue_brain
 
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_neurons = os.path.join(dir_current, "sim_00")
+dir_neurons = os.path.join(dir_current, "sim_02")
 
 # Download models if they do not exist.
 blue_brain.download_all_models(dir_model)
 
-# How many neurons from each group to simulate.
-nrn_cnt = 1
 
 # Load pyramidal cells in L5.
 os.chdir(dir_model)
-TTPC1 = glob('L5_*TTPC1*')[:nrn_cnt]
-TTPC2 = glob('L5_*TTPC2*')[:nrn_cnt]
-MC = glob('L5_*MC*')[:nrn_cnt]
-LBC = glob('L5_*LBC*')[:nrn_cnt]
+TTPC2 = glob('L5_*TTPC2*232_2')
 
 # Gather neurons to be simulated.
-# neurons = TTPC1 + TTPC2 + MC + LBC
-neurons = TTPC1
-# neurons = MC + LBC
+neurons = TTPC2
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
@@ -49,6 +43,29 @@ def load_func(neuron):
     LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
     return cell
 
+def insert_sym(cell):
+    """
+    Function to be run by simulator.
+    """
+    cell.tstopms = 1200
+    cell.tstartms = 0
+    # for sec in cell.allseclist:
+    #     if 'soma' in sec.name():
+    #         syn = neuron.h.ISyn(0.5,sec=sec)
+    # syn.dur = 1000
+    # syn.delay = 200
+    # ...
+    soma_clamp_params = {
+        'idx': cell.somaidx,
+        'record_current': True,
+        'amp': 0.23,  #  [nA]
+        'dur': 1000,  # [ms]
+        'delay': 200,  # [ms]
+        'pptype': 'ISyn',
+    }
+    stim = LFPy.StimIntElectrode(cell, **soma_clamp_params)
+
+    
 
 sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_func)
@@ -61,18 +78,9 @@ sim.plot = True
 sim_single_spike = LFPy_util.sims.SingleSpike()
 sim_single_spike.run_param['pptype'] = 'ISyn'
 sim_intra = LFPy_util.sims.Intracellular()
-sim_sphere = LFPy_util.sims.SphereElectrodes()
-sim_sphere.elec_to_plot = range(10)
-sim_sym = LFPy_util.sims.Symmetry()
-sim_morph = LFPy_util.sims.Morphology()
-sim_grid_dense = LFPy_util.sims.GridDense()
 
-sim.push(sim_single_spike, False)
-# sim.push(sim_intra, True)
-# sim.push(sim_sphere, True)
-# sim.push(sim_sym, True)
-# sim.push(sim_morph, True)
-sim.push(sim_grid_dense, True)
+sim.push(insert_sym, False)
+sim.push(sim_intra, False)
 
 print sim
 sim.run()

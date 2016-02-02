@@ -34,7 +34,7 @@ sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_cell)
 sim.set_dir_neurons("sim_00")
 sim.set_neuron_name(model_names)
-sim.simulate = False
+sim.simulate = True
 sim.plot = True
 
 # Simulation objects.
