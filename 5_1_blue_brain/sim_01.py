@@ -35,10 +35,10 @@ def gather_data(neuron_name, file_name, run_param, data):
     for group_i in xrange(len(group_labels)):
         if group_labels[group_i] not in neuron_name:
             continue
-        grouped_widths_mean[group_i].append(data["widths_II_mean"])
-        grouped_widths_std[group_i].append(data["widths_II_std"])
-        grouped_amps_mean[group_i].append(data["amps_mean"])
-        grouped_amps_std[group_i].append(data["amps_std"])
+        grouped_widths_mean[group_i].append(data["widths_I_mean"])
+        grouped_widths_std[group_i].append(data["widths_I_std"])
+        grouped_amps_mean[group_i].append(data["amps_I_mean"])
+        grouped_amps_std[group_i].append(data["amps_I_std"])
         grouped_distance[group_i].append(data["bins"])
 
 # Collect data about all neurons.

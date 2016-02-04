@@ -21,13 +21,13 @@ def load_cell(neuron_name):
     """
     # start_ms = 0.
     # stop_ms = 1400.
-    start_ms = -150.
-    stop_ms = 500.
-    cell = allen.load_cell_by_id(int(neuron_name),start_ms,stop_ms)
+    cell = allen.load_cell_by_id(int(neuron_name))
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
     # Aligns y to axis[0] and x to axis[1]
     LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
+    cell.tstartms = 0
+    cell.tstopms = 1400
     return cell
 
 sim = LFPy_util.Simulator()
@@ -37,30 +37,38 @@ sim.set_neuron_name(model_names)
 sim.simulate = True
 sim.plot = True
 
-# Simulation objects.
-sim_single_spike = LFPy_util.sims.SingleSpike()
-sim_single_spike.run_param['pptype'] = 'ISyn'
-sim_single_spike.run_param['threshold'] = 4
-# sim_single_spike.run_param['delay'] = 200
-# sim_single_spike.run_param['duration'] = 1000
-sim_single_spike.run_param['delay'] = 0
-sim_single_spike.run_param['duration'] = 500
-sim_single_spike.debug = True
+### Simulation objects.
+sim_multi = LFPy_util.sims.MultiSpike()
+sim_multi.run_param['pptype'] = 'ISyn'
+sim_multi.run_param['threshold'] = 4
+sim_multi.run_param['delay'] = 200
+sim_multi.run_param['duration'] = 1000
+sim_multi.run_param['pre_dur'] = 16.7*0.2
+sim_multi.run_param['post_dur'] = 16.7*0.8
+sim_multi.run_param['spikes'] = 7
+sim_multi.verbose = True
+
 sim_intra = LFPy_util.sims.Intracellular()
+
 sim_sphere = LFPy_util.sims.SphereElectrodes()
 sim_sphere.elec_to_plot = range(10)
+
 sim_sym = LFPy_util.sims.Symmetry()
+
 sim_morph = LFPy_util.sims.Morphology()
+
 sim_grid = LFPy_util.sims.Grid()
 sim_grid_dense = LFPy_util.sims.GridDense()
+###
 
-sim.push(sim_single_spike, False)
+sim.push(sim_multi, True)
+sim.push(sim_multi_n, True)
 # sim.push(sim_intra, True)
 # sim.push(sim_sphere, True)
 # sim.push(sim_sym, True)
 # sim.push(sim_morph, True)
 # sim.push(sim_grid, True)
-sim.push(sim_grid_dense, True)
+# sim.push(sim_grid_dense, True)
 
 print sim
 sim.run()

@@ -17,7 +17,7 @@ dir_neurons = os.path.join(dir_current, "sim_00")
 blue_brain.download_all_models(dir_model)
 
 # How many neurons from each group to simulate.
-nrn_cnt = 1
+nrn_cnt = 2
 
 # Load pyramidal cells in L5.
 os.chdir(dir_model)
@@ -27,8 +27,8 @@ MC = glob('L5_*MC*')[:nrn_cnt]
 LBC = glob('L5_*LBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
-# neurons = TTPC1 + TTPC2 + MC + LBC
-neurons = TTPC1
+neurons = TTPC1 + TTPC2 + MC + LBC
+# neurons = TTPC1
 # neurons = MC + LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
@@ -68,11 +68,11 @@ sim_morph = LFPy_util.sims.Morphology()
 sim_grid_dense = LFPy_util.sims.GridDense()
 
 sim.push(sim_single_spike, False)
-# sim.push(sim_intra, True)
-# sim.push(sim_sphere, True)
-# sim.push(sim_sym, True)
-# sim.push(sim_morph, True)
-sim.push(sim_grid_dense, True)
+sim.push(sim_intra, True)
+sim.push(sim_sphere, True)
+sim.push(sim_sym, True)
+sim.push(sim_morph, True)
+# sim.push(sim_grid_dense, True)
 
 print sim
 sim.run()
