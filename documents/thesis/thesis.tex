@@ -1,12 +1,18 @@
 %\documentclass[fleqn,10pt]{book}  % fleqn left alligns all equations. 
-\documentclass[altfont]{uiophd}
+\documentclass[altfont, fleqn]{uiophd}
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}			
 \usepackage{titlesec}		% Can change properties of sections, such as color. 
 \usepackage{fancyhdr}		% Adds customizable headers and footers. 
 \usepackage{titletoc}		% Adds small toc lists. 
 \usepackage{hyperref}
+\usepackage{cleveref}
 \usepackage{graphicx}
-\usepackage{bm,upgreek,textcomp} % Some extra signs and other fonts.
+\usepackage{amsmath}		% Essential math package.
+\usepackage{commath}		% \abs and \norm.
+\usepackage{textcomp}
+\usepackage[redefsymbols=false]{siunitx}		% SI units package.
+\usepackage{bm,upgreek} % Some extra signs and other fonts.
+\usepackage{appendix}
 \usepackage[
 	backend=bibtex,
 	style=numeric,
@@ -102,12 +108,18 @@
 \AtEveryCite{\color{viridis_03}}
 
 % Hyperlink colors. 
+% Empty color disables coloring.
 \hypersetup{
-	colorlinks,
+	colorlinks=true,
 	citecolor=viridis_03,
 	filecolor=black,
-	linkcolor=black,
+	linkcolor={},
 	urlcolor=black
+}
+
+\AtBeginDocument{
+	\let\myref\autoref
+	\renewcommand{\autoref}[1]{{\color{viridis_03}\myref{#1}}}
 }
 
 \begin{document}
@@ -206,7 +218,7 @@ is known.
 This
 information can be hard to obtain in vitro, but if these
 values are obtained either using neuron models
-or physical recordings the extracellular potental is in theory 
+or physical recordings the extracellular potental is 
 easy to calculate in a computer. \\
 
 \noindent
@@ -214,9 +226,13 @@ To make calculation easier, some assumptions are made:
 \begin{enumerate}
 	\item The permeability $\mu $ of 
 	the extracellular medium is the same as that of vacuum $\mu_0$.
-	\item Assume a quasistatic approximation which lets the $\partial E/\partial t$
-	be ignored and as source terms. Link to appendix for proof. 
+	\item Assume a quasistatic approximation which lets the 
+	time derivatives, $\partial E/\partial t$, 
+	be ignored as source terms.  See \cref{sec:quasi}
 \end{enumerate}
+In the quasistatic approximation, since $\nabla\times\bf E = 0$, the
+electric field can be expressed with a scalar potential.
+
 Forward problem = calculate the potential from the current source, inverse problem is used
 in magnetoenchephalography (important).
 The amplitude of a spike in the
@@ -368,7 +384,7 @@ resolution to $dt=2\cdot10^{-6}ms$ the spike width rose to $0.625ms$.
 \subsection{Results}
 The action potental that was used in \textcite{pettersen_amplitude_2008} 
 is similar to the one used here.  The fourier specter is displayed in
-Figure \ref{fig:3_1_fourier}. The graph displayed in the paper and 
+\autoref{fig:3_1_fourier}. The graph displayed in the paper and 
 the one shown here are nearly identical. 
 (TODO: Rewrite, be more spsific here?) \\
 
@@ -380,7 +396,7 @@ the one shown here are nearly identical.
 \end{figure}
 
 The spike width increases with the distance from soma as seen in 
-Figure \ref{fig:3_1_spike_width}. These results are 
+\autoref{fig:3_1_spike_width}. These results are 
 lower than the widths reported in \textcite{pettersen_amplitude_2008}.
 (Use more time on editing the Connor-Stevens model to come closer to 
 an max.amplitude on 20mV?).   
@@ -399,7 +415,7 @@ This was also reported in \textcite{pettersen_amplitude_2008}.\\
 
 \textcite{pettersen_amplitude_2008} reports a spike amplitude above $150\mu V$ at 
 $20\mu m$, this does not match current findings.  
-Figure \ref{fig:3_1_spike_amp} shows spike amplitude with logarithmic axes.  
+\autoref{fig:3_1_spike_amp} shows spike amplitude with logarithmic axes.  
 (TODO: Is numbers on the power law decays necessaryy?) Although 
 the data does not match \textcite{pettersen_amplitude_2008}, 
 it is comparable with what is
@@ -466,6 +482,85 @@ Use membrane potentials from Allen Brain Institute and Blue Brain and look at wi
 \chapter{Discussion}
 
 
+\begin{appendix}
+\chapter{Appendix}
+\section{Quasistatic Approximation in Neural Tissue}
+\label{sec:quasi}
+A quasistatic approximation implies that the equations have a form that does
+not include time derivatives (static). Some quantaties can be allowed to vary over 
+time, but slowly. 
+	Here we show that the quasistatic approximation is a valid assumption in
+neural tissue. First start with Maxwell's equations.
+\begin{align}
+	\nabla \cdot {\bf E} &= p / e \nonumber\\
+	\nabla \times {\bf E} &= -\partial \bf{B} / \partial t \label{eq:max_1}\\
+	\nabla \cdot {\bf B} &= 0\nonumber\\
+	\nabla \times {\bf B} &= \mu_0({\bf J} + \epsilon_0\partial{\bf E}/\partial t)
+	\label{eq:max_3}
+\end{align}
+
+In a passive nonmagnetic medium, {\bf J} is the sum of ohmic volume current 
+and the polarization current
+\begin{align}
+	\bf J &= \sigma{\bf E} + \partial {\bf P}/\partial t \label{eq:cur_den_0}
+\end{align}
+where ${\bf P} = (\epsilon - \epsilon_0){\bf E}$ is the polarization and $\epsilon$
+is the permitivity of the material.In neuromagnetism, we generally deal with
+frequencies that are below 100 \si{\hertz}. Cellular electrical
+phenomena contain mostly frequencies below \si{1\kilo\hertz}. 
+Let $\sigma$ and $\epsilon$ be uniform and let us consider elctromagnetic 
+wave at frequencty $f$.
+\begin{align}
+	{\bf E} = {\bf E}_0({\bf r})\exp(i2\pi ft)
+\end{align}
+With \ref{eq:max_3} \autoref{eq:cur_den_0} we get,
+\begin{align}
+	\nabla \times {\bf B} &= \mu_0(
+		\sigma{\bf E} + 
+		(\epsilon - \epsilon_0)\partial{\bf E}/\partial t + 
+		\epsilon_0\partial{\bf E}/\partial t
+		)
+\end{align}
+For the quasistatic approximation to be valid, it is necessary
+that the time-derivative terms be small compared to the 
+ohmic current. 
+\begin{align}
+	\abs{\epsilon{\bf E}/\partial t} \ll \abs{\bf \sigma E} 
+		\rightarrow 2\pi f \epsilon/\sigma \ll 1
+\end{align}
+With $\sigma = 0.3\,\si{\per\ohm\per\meter}$, the value of brain tissue, 
+$\epsilon = 10^5\cdot\epsilon_0$, and $f = 100\,\si{\hertz}$, we find
+\begin{align}
+	2\pi f\epsilon/\sigma = 2\cdot10^{-3} \ll 1
+\end{align}
+In addition, $\partial {\bf B} /\partial t$ must be small. from eq. (\autoref{eq:max_1})
+and (\autoref{eq:max_3}), 
+\begin{align}
+	\nabla\times\nabla\times{\bf E} &= 
+		-\frac{\partial}{\partial t}(\nabla\times{\bf B})\nonumber\\
+	&= -\mu_0\frac{\partial}{\partial t}
+		(
+		\sigma{\bf E} + \epsilon\partial{\bf E}/\partial t
+		) \nonumber \\
+	&= -i2\pi f\mu_0(\sigma + i2\pi f\epsilon){\bf E}
+\end{align}
+
+Solutions of this equation have spatial changes on the characteristic
+length scale
+\begin{align}
+	\lambda_c = \abs{2\pi f \mu_0 \sigma(1+i2\pi f \epsilon/\sigma)}^{-1/2}
+		\approx65\,\si{\meter}
+\end{align}
+This length is much longer than the diameter of the head. This implies that the
+contribution of $\partial {\bf B}/\partial t$ to $\bf E$ is small. Theautorefor,
+the quaasistatic approximation appears justified. This does not
+mean that we should forget time-dependent phenomena altogether. 
+For example, the capacitative current through the cell membrane is significant in
+determining the properties of the action potential. 
+Nevertheless, this so-called displacement current, 
+$\epsilon_0\partial{\bf E}/\partial t$, need not be taken into account in the 
+calculation of $\bf B$.
+\end{appendix}
 
 \nocite{*}
 \printbibliography[heading=bibintoc]
