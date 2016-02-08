@@ -32,7 +32,6 @@ DIR_PROJECT = os.path.dirname(os.path.realpath(__file__))
 DIR_RES = os.path.join(DIR_PROJECT, 'res/')
 DIR_MODELS = os.path.join(DIR_PROJECT, 'res/allen_models')
 
-
 def download_all_models():
     """
     Import models specified in the module constant.

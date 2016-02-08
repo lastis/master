@@ -1,30 +1,38 @@
-%\documentclass[fleqn,10pt]{book}  % fleqn left alligns all equations. 
+%{{{ preamble
+% fleqn left alligns all equations. 
 \documentclass[altfont, fleqn]{uiophd}
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}			
-\usepackage{titlesec}		% Can change properties of sections, such as color. 
-\usepackage{fancyhdr}		% Adds customizable headers and footers. 
-\usepackage{titletoc}		% Adds small toc lists. 
+% Can change properties of sections, such as color. 
+\usepackage{titlesec}		
+% Adds customizable headers and footers. 
+\usepackage{fancyhdr}		
+% Adds small toc lists. 
+\usepackage{titletoc}		
 \usepackage{hyperref}
-\usepackage{cleveref}
 \usepackage{graphicx}
-\usepackage{amsmath}		% Essential math package.
-\usepackage{commath}		% \abs and \norm.
+% Essential math package.
+\usepackage{amsmath}		
+% \abs and \norm.
+\usepackage{commath}		
 \usepackage{textcomp}
-\usepackage[redefsymbols=false]{siunitx}		% SI units package.
-\usepackage{bm,upgreek} % Some extra signs and other fonts.
+% SI units package.
+\usepackage[redefsymbols=false]{siunitx}		
+% Some extra signs and other fonts.
+\usepackage{bm,upgreek} 
 \usepackage{appendix}
 \usepackage[
-	backend=bibtex,
+	backend=biber,
 	style=numeric,
-	sorting=none,
 	url=false,
 	doi=false,
 	isbn=false, 
 	maxcitenames=2,
 ]{biblatex}
-%\usepackage{cite}
-%\bibliography{master}
+% Have to import this at the end for this to work somehow.
+\usepackage{cleveref}		
+
 \addbibresource{master.bib}
+
 \AtEveryBibitem{\clearfield{month}}
 \AtEveryBibitem{\clearfield{day}}
 \AtEveryCitekey{\clearfield{month}}
@@ -61,48 +69,11 @@
 {0.5ex} 			
 {\color{viridis_01}} 	
 [
+    % This will be applied after each chapter?
 	%\small
 	%\startcontents
 	%\printcontents{}{1}{\setcounter{tocdepth}{1}}
 ]		
-
-% Remap \cite to \mycite.
-\DeclareCiteCommand{\mycite}
-  {\usebibmacro{prenote}}
-  {%
-    \printnames{labelname}
-    \usebibmacro{date} %
-    [\usebibmacro{cite}] %
-  }
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-  
-\renewcommand{\cite}[1]{\mycite{#1}}
-
-% Remap \citetitle to \mycitetitle.
-\DeclareCiteCommand{\mycitetitle}
-  {\usebibmacro{prenote}}
-  {%
-    \thefield{title} 
-    \usebibmacro{date} %
-    [\usebibmacro{cite}] %
-  }
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-  
-\renewcommand{\citetitle}[1]{\mycitetitle{#1}}
-
-% Remap \textcite to \mytextcite
-\DeclareCiteCommand{\mytextcite}
-  {\usebibmacro{prenote}}
-  {%
-    \printnames{labelname}
-    (\usebibmacro{date})%
-  }
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-  
-\renewcommand{\textcite}[1]{\mytextcite{#1}}
 
 % Change the color of every citation.
 \AtEveryCite{\color{viridis_03}}
@@ -117,29 +88,32 @@
 	urlcolor=black
 }
 
+% Change color of clever ref.
 \AtBeginDocument{
-	\let\myref\autoref
-	\renewcommand{\autoref}[1]{{\color{viridis_03}\myref{#1}}}
+	\let\mycref\cref
+	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}} }
 }
-
+%}}} end of preamble
 \begin{document}
-
+%{{{ Abstract
 \chapter*{Abstract}
-(Abstracts do not include sources, but are here for the purpose of notes.) \\
+Abstracts do not include sources, but are here for the purpose of notes.) \\
 
 \noindent
 The physical processes that creates electrical signals in neurons are well understood, 
 but how the signals are processed into actions and thoughts has yet to 
 receive a scientifically robust answer
 (add more sources) 
-\cite{sterratt2011principles}. 
+\cite{sterratt_principles_2011}. 
 Cell type classification is of high importance because the function of different 
 neurons is still largely a mystery. 
-
+%}}} end of Abstract
+%{{{ Table of Contents
 \setcounter{tocdepth}{1}
 \startcontents
 \tableofcontents
-
+%}}} end of Table of Contents
+%{{{ Introduction
 \chapter{Introduction}
 Introduce the topic, the problem and how the problem is being solved. 
 
@@ -150,6 +124,8 @@ from a single neuron level to networks of neurons with chemistry, physics, medic
 and psychology to name some. 
 
 
+%}}} end of Introduction
+%{{{ Theory
 \chapter{Theory}
 Each section introduces topics that are referenced frequently in the article. 
 At the end of each section there is a background subsection. 
@@ -161,6 +137,7 @@ about the current state of research on the topic and previous work.
 \startcontents
 \printcontents{}{1}{\setcounter{tocdepth}{2}}
   
+%{{{ The Neuron
 \section{The Neuron}
 Neurons are excitiable brain cells capable of transmitting voltage changes across its 
 structure which again can excite other neurons. These sharp voltage changes are called 
@@ -186,13 +163,16 @@ responsible for all cognitive functions.
 What information is transmitted in the action potentials and how 
 the information is processed is still under much research.  
 
-
+%}}} end of The Neuron
+%{{{ Action Potential
 \section{Action Potentials}
 Describe how actionpotentials are created. 
 
 \subsection*{Background}
 Write about hodking and huxley. \cite{hodgkin_quantitative_1952}
 
+%}}} end of Action Potential
+%{{{ Neuronal Models
 \section{Neuronal Models}
 There are multiple models for neurons, some of the main groups are 
 point models and compartmental models. List many models?
@@ -201,35 +181,57 @@ can be useful to understand the processing of neurons with
 complex morphological structures
 \cite{sterratt_principles_2011}. 
 \subsection*{Background}
-\cite{hodgkin_quantitative_1952} \cite{connor_prediction_1971} \cite{sterratt_principles_2011}
+\textcites{hodgkin_quantitative_1952,connor_prediction_1971,sterratt_principles_2011}
 
+%}}} end of Neuronal Models
+%{{{ Electrodes
 \section{Electrodes}
 
-
+%}}} end of Electrodes
+%{{{ Extracellular
 \section{Calculating Extracellular Potential}
 The extracellular potential is the electric potential generated from the transmembrane
 currents in the neurons. When a neuron fires this can be seen from the extracellular
-potential, which will have a spike which is similar to the intracellular spike.
+potential which will have a spike which is similar to the intracellular spike.
 
-The extracellular potential can be calculated
-using Maxwell's eqations and the continuity equation if the spatial
-distribution (morphology) of transmembrane currents and the extracellular conductivity
-is known. 
-This
-information can be hard to obtain in vitro, but if these
-values are obtained either using neuron models
-or physical recordings the extracellular potental is 
-easy to calculate in a computer. \\
+By modelling the neuron as
+compartments and approximating each compartment as
+a spherical volume current source at position $\bf r_0$, the potential at 
+at position $\bf r$ at time $t$ will be,
+\begin{align}
+    {\bf E(r, t)} = \frac{1}{4\pi\sigma}\frac{I_0(t)}{\abs{\bf r - r_0}}
+\end{align}
 
-\noindent
-To make calculation easier, some assumptions are made: 
+\begin{align}
+    {\bf E(r, t)} = \sum^N_{n=1} \frac{1}{4\pi\sigma}\frac{I_n(t)}{\abs{\bf r - r_0}}
+\end{align}
+
+Potential from compartments modelled as line sources. 
+\begin{align}
+    {\bf E(r, t)} &= \frac{1}{4\pi\sigma}\sum^N_{n=1}I_n(t)\frac{dr_n}{\abs{\bf r - r_0}}\\
+    &= \frac{1}{4\pi\sigma}\sum^N_{n=1}I_n(t)
+        \frac{1}{\Delta s_n}
+        \log\abs{\frac{\sqrt{h_n^2 + \rho_n^2} - h_n}{\sqrt{l_n^2 + \rho_n^2} - l_n}}
+\end{align}
+Taken from \textcite{linden_lfpy:_2013}
+
+
+This equation rests on two assumptions,
 \begin{enumerate}
 	\item The permeability $\mu $ of 
 	the extracellular medium is the same as that of vacuum $\mu_0$.
-	\item Assume a quasistatic approximation which lets the 
+	\item The quasistatic approximation which lets the 
 	time derivatives, $\partial E/\partial t$, 
 	be ignored as source terms.  See \cref{sec:quasi}
 \end{enumerate}
+
+The extracellular potential can be calculated
+using Maxwell's equations and the continuity equation if the spatial
+distribution (morphology) of transmembrane currents and the extracellular conductivity
+is known. 
+
+
+
 In the quasistatic approximation, since $\nabla\times\bf E = 0$, the
 electric field can be expressed with a scalar potential.
 
@@ -264,58 +266,65 @@ field $E$ and magnetic field $B$. (TODO: Copied text)
 (\cite{hamalainen_magnetoencephalography-_1993})
 
 \subsection*{Background}
-Electric potential from neurons can either be obtained 
-by measuring the membrane potential or measured from the the extracellular
-medium. 
+% Electric potential from neurons can either be obtained 
+% by measuring the membrane potential or measured from the extracellular
+% medium. 
 %Recording the membrane potential is easier to interpret but harder to execute 
 %while 
 %extracellular recordings are harder to interpret but easier to execute. 
 Recording is usually done using electrodes, this makes recording the membrane potential
 more challenging than recording from the extracellular medium as the electrode
 has to be very close or inside the cell. 
-At the time of writing  
+At the time of writing,
 recording the membrane potential of a concious subject is nearly impossible,
 this makes understanding extracellular potentials vital for current research. 
-As such it is useful to know the physical origin of the extracellular potential. 
+
 
 Early calculations was done by Rall 1962 investigating 
 the interaction between action potentials and synapes using cylinders
 as the current source. (TODO: Read article, make more understandble.)
 Holt and Koch 1999 added comparmental models to reconstruct pyramidal neurons. 
 
+The information about the transmembrane current is usually difficult to obtain,
+as well as the morphology.
+
+
+%}}} end of Extracellular
+%{{{ Neuron and lfpy
 \section{Neuron \& LFPy }
 LFPy is a Python module that uses Neuron and the mentioned methods to calculate the 
 electric field outside the neuron. 
 \cite{linden_lfpy:_2013}
 \subsection*{Background}
 
+%}}} end of Neuron and lfpy
+%{{{ Cell classification
 \section{Cell Type Classification}
-\subsection*{Background}
+
 It was early observed that the shape of action potentials are different for 
 individual neurons and it has been suggested that action potentials
 can be used to identify classes of neurons. This the main focus of this article. 
 (Use this source?
+
 \cite{mountcastle_cortical_1969}.
 
-
-
-
+%}}} end of Cell classification
+%{{{ Allen Cell Types Database
 \section{Allen Cell Types Database}
 The Allen Brain Institute have gather individual neuron data from lateral geniculate
 nucleus (LGN) and primary visual cortex (V1) of young laboratory mice. 
-The data's main categories are electrophysiology, morphology and modeling
-.
+The data's main categories are electrophysiology, morphology and modeling.
 With the morphological data the extracellular potential can be calculated given
 a model for the transmembrane currents. 
-\citetitle{_allen_2015}
-\subsection*{Background}
-
-
+% \subsection{Background}
+%}}} end of Allen Cell Types Database
+%}}} end of Theory
+%{{{ Methods
 \chapter{Methods}
 \vspace{1em} 
 \startcontents
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
-
+%{{{ Pettersen and Einvoll
 \section{Pettersen \& Einevoll (2008) Reproduction}
 \textcite{pettersen_amplitude_2008} shows some features of extracellular 
 spike modulation and
@@ -337,13 +346,13 @@ the y and x-axis. (TODO: show the morphology of the neuron)\\
 
 \noindent\emph{Spike Generation:}
 An action potental was generated using the Connor-Stevens model 
-(\cite{connor_prediction_1971}, \cite{connor_neural_1977}) 
+\cites{connor_prediction_1971, connor_neural_1977}
 using the same parameters as \textcite{dayan_theoretical_2001}. 
 This had an amplitude of $107.6mV$ from baseline with the peak at $48.21mV$. 
 These values are similar (TODO: how similar?) to \textcite{dayan_theoretical_2001}, but not
 with \textcite{pettersen_amplitude_2008} which had an amplitude of 
 $83mV$ from baseline. To compensate for the difference the action potental was 
-normalized to $83mV$ manually (Figure \ref{fig:3_1_soma_mem}).
+normalized to $83mV$ manually (\cref{fig:3_1_soma_mem}).
 \\
 
 \begin{figure}[h]
@@ -384,7 +393,7 @@ resolution to $dt=2\cdot10^{-6}ms$ the spike width rose to $0.625ms$.
 \subsection{Results}
 The action potental that was used in \textcite{pettersen_amplitude_2008} 
 is similar to the one used here.  The fourier specter is displayed in
-\autoref{fig:3_1_fourier}. The graph displayed in the paper and 
+\cref{fig:3_1_fourier}. The graph displayed in the paper and 
 the one shown here are nearly identical. 
 (TODO: Rewrite, be more spsific here?) \\
 
@@ -396,7 +405,7 @@ the one shown here are nearly identical.
 \end{figure}
 
 The spike width increases with the distance from soma as seen in 
-\autoref{fig:3_1_spike_width}. These results are 
+\cref{fig:3_1_spike_width}. These results are 
 lower than the widths reported in \textcite{pettersen_amplitude_2008}.
 (Use more time on editing the Connor-Stevens model to come closer to 
 an max.amplitude on 20mV?).   
@@ -415,7 +424,7 @@ This was also reported in \textcite{pettersen_amplitude_2008}.\\
 
 \textcite{pettersen_amplitude_2008} reports a spike amplitude above $150\mu V$ at 
 $20\mu m$, this does not match current findings.  
-\autoref{fig:3_1_spike_amp} shows spike amplitude with logarithmic axes.  
+\cref{fig:3_1_spike_amp} shows spike amplitude with logarithmic axes.  
 (TODO: Is numbers on the power law decays necessaryy?) Although 
 the data does not match \textcite{pettersen_amplitude_2008}, 
 it is comparable with what is
@@ -435,7 +444,8 @@ data points.}
 
 \subsection{Discussion?}
 
-\newpage
+%}}} end of Pettersen and Einvoll
+%{{{ Blue Brain
 \section{Blue Brain}
 Use the models. Write code to capture one action potential. Bursting neurons
 often hav adapting action potential, what to do there. 
@@ -443,6 +453,8 @@ often hav adapting action potential, what to do there.
 Have a volume of electrodes, calculate the amplitude and where they stop being 
 noticable. Plot where the signal can be recoqnized. 
 
+%}}} end of Blue Brain
+%{{{ Allen Brain Institute
 \section{Allen Brain Institute}
 
 My spesific implementation of LFPy and Neuron. 
@@ -455,7 +467,6 @@ Write how the simulation is set up.
 
 Create convincing results that shows that the simulations are correct and can be trusted. 
 
-Reproduction of results from \cite{pettersen2008amplitude}. 
 \begin{itemize}
 	\item Action potential width and amplitude is correct. 
 	\item Fourier specter is correct. 
@@ -474,14 +485,20 @@ Allen Brain Institute Questions:
 	\item How much does the experimental spikes differ. 
 \end{itemize}
 
+%}}} end of Allen Brain Institute
+%}}} end of Methods
+%{{{ Results
 \chapter{Results}
 Use membrane potentials from Allen Brain Institute and Blue Brain and look at width from different cells. 
 
-
-
+%}}} end of Results
+%{{{ Discussion
 \chapter{Discussion}
+Nothing here yet.
 
 
+%}}} end of Discussion
+%{{{ Appendix
 \begin{appendix}
 \chapter{Appendix}
 \section{Quasistatic Approximation in Neural Tissue}
@@ -513,7 +530,7 @@ wave at frequencty $f$.
 \begin{align}
 	{\bf E} = {\bf E}_0({\bf r})\exp(i2\pi ft)
 \end{align}
-With \ref{eq:max_3} \autoref{eq:cur_den_0} we get,
+With \cref{eq:max_3,eq:cur_den_0} we get,
 \begin{align}
 	\nabla \times {\bf B} &= \mu_0(
 		\sigma{\bf E} + 
@@ -533,8 +550,8 @@ $\epsilon = 10^5\cdot\epsilon_0$, and $f = 100\,\si{\hertz}$, we find
 \begin{align}
 	2\pi f\epsilon/\sigma = 2\cdot10^{-3} \ll 1
 \end{align}
-In addition, $\partial {\bf B} /\partial t$ must be small. from eq. (\autoref{eq:max_1})
-and (\autoref{eq:max_3}), 
+In addition, $\partial {\bf B} /\partial t$ must be small. from
+\cref{eq:max_1,eq:max_3}, 
 \begin{align}
 	\nabla\times\nabla\times{\bf E} &= 
 		-\frac{\partial}{\partial t}(\nabla\times{\bf B})\nonumber\\
@@ -560,9 +577,14 @@ determining the properties of the action potential.
 Nevertheless, this so-called displacement current, 
 $\epsilon_0\partial{\bf E}/\partial t$, need not be taken into account in the 
 calculation of $\bf B$.
+
+Copied from
+\textcite{hamalainen_magnetoencephalography-_1993}
+
 \end{appendix}
-
-\nocite{*}
+%}}} end of Appendix
+%{{{ Bibliography
+%\nocite{*}
 \printbibliography[heading=bibintoc]
-
+%}}} end of Bibliography
 \end{document}
