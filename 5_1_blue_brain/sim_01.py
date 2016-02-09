@@ -6,6 +6,7 @@ import os
 import numpy as np
 import LFPy_util
 import LFPy_util.plot as lplot
+import LFPy_util.data_extraction as de
 
 input_dir = "sim_00"
 output_dir = "sim_01"
@@ -25,16 +26,19 @@ grouped_amps_mean = [[] for _ in xrange(len(group_labels))]
 grouped_amps_std = [[] for _ in xrange(len(group_labels))]
 grouped_distance = [[] for _ in xrange(len(group_labels))]
 
+grouped_widths = [[] for _ in xrange(len(group_labels))]
+grouped_amps = [[] for _ in xrange(len(group_labels))]
+
 
 def gather_data(neuron_name, file_name, run_param, data):
     """
     Gathers data from the simulations into lists.
     """
     # pylint: disable=unused-argument
-    print neuron_name, file_name
     for group_i in xrange(len(group_labels)):
         if group_labels[group_i] not in neuron_name:
             continue
+        print neuron_name, file_name
         grouped_widths_mean[group_i].append(data["widths_I_mean"])
         grouped_widths_std[group_i].append(data["widths_I_std"])
         grouped_amps_mean[group_i].append(data["amps_I_mean"])
@@ -50,11 +54,13 @@ LFPy_util.other.collect_data(dir_neurons, sim, gather_data)
 for i, group in enumerate(group_labels):
     if len(grouped_distance[i]) == 0:
         continue
-    grouped_widths_mean[i] = np.mean(grouped_widths_mean[i], 0)
-    grouped_widths_std[i] = np.mean(grouped_widths_std[i], 0)
-    grouped_amps_mean[i] = np.mean(grouped_amps_mean[i], 0)
-    grouped_amps_std[i] = np.mean(grouped_amps_std[i], 0)
     grouped_distance[i] = np.array(grouped_distance[i][0])
+
+    grouped_widths_mean[i], grouped_widths_std[i] \
+            = de.combined_mean_std(grouped_widths_mean[i], grouped_widths_std[i])
+
+    grouped_amps_mean[i], grouped_amps_std[i] \
+            = de.combined_mean_std(grouped_amps_mean[i], grouped_amps_std[i])
 # # New plot.
 fname = 'amps_all'
 lplot.spike_amps_grouped_new(grouped_amps_mean,

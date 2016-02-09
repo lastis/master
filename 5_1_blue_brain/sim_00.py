@@ -27,14 +27,13 @@ MC = glob('L5_*MC*')[:nrn_cnt]
 LBC = glob('L5_*LBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
-neurons = TTPC1 + TTPC2 + MC + LBC
+# neurons = TTPC1 + TTPC2 + MC + LBC
 # neurons = TTPC1
-# neurons = MC + LBC
+neurons = MC + LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
 LFPy_util.other.nrnivmodl(mod_dir)
-
 
 def load_func(neuron):
     """
@@ -48,7 +47,6 @@ def load_func(neuron):
     # Aligns y to axis[0] and x to axis[1]
     LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
     return cell
-
 
 sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_func)

@@ -36,6 +36,7 @@ sim.set_dir_neurons("sim_00")
 sim.set_neuron_name(model_names)
 sim.simulate = True
 sim.plot = True
+sim.parallel_plot = True
 
 ### Simulation objects.
 sim_multi = LFPy_util.sims.MultiSpike()
@@ -45,15 +46,17 @@ sim_multi.run_param['delay'] = 200
 sim_multi.run_param['duration'] = 1000
 sim_multi.run_param['pre_dur'] = 16.7*0.2
 sim_multi.run_param['post_dur'] = 16.7*0.8
-sim_multi.run_param['spikes'] = 7
+sim_multi.run_param['spikes'] = 3
 sim_multi.verbose = True
 
 sim_intra = LFPy_util.sims.Intracellular()
 
 sim_sphere = LFPy_util.sims.SphereElectrodes()
 sim_sphere.elec_to_plot = range(10)
+sim_sphere.process_param['spike_to_measure'] = 1
 
 sim_sym = LFPy_util.sims.Symmetry()
+sim_sym.process_param['spike_to_measure'] = 1
 
 sim_morph = LFPy_util.sims.Morphology()
 
@@ -61,10 +64,9 @@ sim_grid = LFPy_util.sims.Grid()
 sim_grid_dense = LFPy_util.sims.GridDense()
 ###
 
-sim.push(sim_multi, True)
-sim.push(sim_multi_n, True)
+sim.push(sim_multi, False)
 # sim.push(sim_intra, True)
-# sim.push(sim_sphere, True)
+sim.push(sim_sphere, True)
 # sim.push(sim_sym, True)
 # sim.push(sim_morph, True)
 # sim.push(sim_grid, True)
