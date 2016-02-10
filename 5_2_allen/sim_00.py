@@ -55,7 +55,7 @@ sim_sphere = LFPy_util.sims.SphereElectrodes()
 sim_sphere.elec_to_plot = range(10)
 sim_sphere.process_param['spike_to_measure'] = 1
 
-sim_sym = LFPy_util.sims.Symmetry()
+sim_sym = LFPy_util.sims.SymmetryFiltered()
 sim_sym.process_param['spike_to_measure'] = 1
 
 sim_morph = LFPy_util.sims.Morphology()
@@ -66,8 +66,8 @@ sim_grid_dense = LFPy_util.sims.GridDense()
 
 sim.push(sim_multi, False)
 # sim.push(sim_intra, True)
-sim.push(sim_sphere, True)
-# sim.push(sim_sym, True)
+# sim.push(sim_sphere, True)
+sim.push(sim_sym, True)
 # sim.push(sim_morph, True)
 # sim.push(sim_grid, True)
 # sim.push(sim_grid_dense, True)
