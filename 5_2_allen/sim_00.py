@@ -34,7 +34,7 @@ sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_cell)
 sim.set_dir_neurons("sim_00")
 sim.set_neuron_name(model_names)
-sim.simulate = True
+sim.simulate = False
 sim.plot = True
 sim.parallel_plot = True
 
@@ -55,8 +55,26 @@ sim_sphere = LFPy_util.sims.SphereElectrodes()
 sim_sphere.elec_to_plot = range(10)
 sim_sphere.process_param['spike_to_measure'] = 1
 
-sim_sym = LFPy_util.sims.SymmetryFiltered()
+sim_sym = LFPy_util.sims.Symmetry()
+sim_sym.run_param['n'] = 3
+sim_sym.run_param['n_phi'] = 3
+sim_sym.run_param['theta'] = [10,90,170]
+sim_sym.process_param['pre_dur'] = 16.7*0.5
+sim_sym.process_param['post_dur'] = 16.7*0.5
 sim_sym.process_param['spike_to_measure'] = 1
+# sim_sym.plot_param['plot_detailed'] = True
+detailed = True
+
+sim_symf = LFPy_util.sims.SymmetryFiltered()
+sim_symf.run_param['n'] = 3
+sim_symf.run_param['n_phi'] = 3
+sim_symf.run_param['theta'] = [10,90,170]
+sim_symf.process_param['pre_dur'] = 16.7*0.5
+sim_symf.process_param['post_dur'] = 16.7*0.5
+sim_symf.process_param['spike_to_measure'] = 1
+sim_symf.process_param['low_cut'] = 0.6
+sim_symf.process_param['high_cut'] = 6.7
+# sim_symf.plot_param['plot_detailed'] = True
 
 sim_morph = LFPy_util.sims.Morphology()
 
@@ -64,10 +82,11 @@ sim_grid = LFPy_util.sims.Grid()
 sim_grid_dense = LFPy_util.sims.GridDense()
 ###
 
-sim.push(sim_multi, False)
+# sim.push(sim_multi, False)
 # sim.push(sim_intra, True)
 # sim.push(sim_sphere, True)
 sim.push(sim_sym, True)
+sim.push(sim_symf, True)
 # sim.push(sim_morph, True)
 # sim.push(sim_grid, True)
 # sim.push(sim_grid_dense, True)
