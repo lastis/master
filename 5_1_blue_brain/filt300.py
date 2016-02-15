@@ -17,7 +17,7 @@ dir_neurons = os.path.join(dir_current, "filt300")
 blue_brain.download_all_models(dir_model)
 
 # How many neurons from each group to simulate.
-nrn_cnt = 2
+nrn_cnt = 1
 
 # Load pyramidal cells in L5.
 os.chdir(dir_model)
@@ -29,8 +29,8 @@ LBC = glob('L5_*LBC*')[:nrn_cnt]
 # Gather neurons to be simulated.
 # neurons = TTPC1 + TTPC2 + MC + LBC
 # neurons = TTPC1 + TTPC2
-# neurons = TTPC1
-neurons = MC + LBC
+neurons = TTPC1
+# neurons = MC + LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
@@ -55,9 +55,9 @@ sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_func)
 sim.set_dir_neurons(dir_neurons)
 sim.set_neuron_name(neurons)
-sim.simulate = True
+sim.simulate = False
 sim.plot = True
-# sim.parallel_plot = True
+sim.parallel_plot = True
 
 # Simulation objects.
 sim_multi = LFPy_util.sims.MultiSpike()
@@ -78,16 +78,18 @@ sim_sphere = LFPy_util.sims.SphereRandFilt()
 sim_sphere.process_param['spike_to_measure'] = spike_to_measure
 sim_sphere.process_param['freq_low'] = freq_low
 sim_sphere.process_param['freq_high'] = freq_high
+sim_sphere.plot_param['elec_to_plot'] = range(3)
 sim_symf = LFPy_util.sims.SymmetryFiltered()
 sim_symf.process_param['spike_to_measure'] = spike_to_measure
 sim_symf.process_param['freq_low'] = freq_low
 sim_symf.process_param['freq_high'] = freq_high
+# sim_symf.plot_param['plot_detailed'] = True
 
-sim.push(sim_multi, False)
-sim.push(sim_symf, True)
-sim.push(sim_intra, True)
+# sim.push(sim_multi, False)
+# sim.push(sim_symf, True)
+# sim.push(sim_intra, True)
 sim.push(sim_sphere, True)
-sim.push(sim_morph, True)
+# sim.push(sim_morph, True)
 
 print sim
 sim.run()

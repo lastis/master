@@ -17,7 +17,7 @@ dir_neurons = os.path.join(dir_current, "filt0")
 blue_brain.download_all_models(dir_model)
 
 # How many neurons from each group to simulate.
-nrn_cnt = 2
+nrn_cnt = 1
 
 # Load pyramidal cells in L5.
 os.chdir(dir_model)
@@ -29,8 +29,8 @@ LBC = glob('L5_*LBC*')[:nrn_cnt]
 # Gather neurons to be simulated.
 # neurons = TTPC1 + TTPC2 + MC + LBC
 # neurons = TTPC1 + TTPC2
-# neurons = TTPC1
-neurons = MC + LBC + TTPC2
+neurons = TTPC1
+# neurons = MC + LBC + TTPC2
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
@@ -79,9 +79,9 @@ sim_symf.process_param['spike_to_measure'] = spike_to_measure
 
 sim.push(sim_multi, False)
 sim.push(sim_symf, True)
-sim.push(sim_intra, True)
-sim.push(sim_sphere, True)
-sim.push(sim_morph, True)
+# sim.push(sim_intra, True)
+# sim.push(sim_sphere, True)
+# sim.push(sim_morph, True)
 
 print sim
 sim.run()
