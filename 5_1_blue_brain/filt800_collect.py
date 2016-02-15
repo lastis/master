@@ -8,8 +8,8 @@ import LFPy_util
 import LFPy_util.plot as lplot
 import LFPy_util.data_extraction as de
 
-input_dir = "sim_00"
-output_dir = "sim_01"
+input_dir = "filt800"
+output_dir = "filt800_collect"
 
 # Select which neuron types to gather data from.
 group_labels = ['TTPC1', 'TTPC2', 'MC', 'LBC', ]
@@ -46,8 +46,7 @@ def gather_data(neuron_name, file_name, run_param, data):
         grouped_distance[group_i].append(data["bins"])
 
 # Collect data about all neurons.
-sim = LFPy_util.sims.SphereElectrodes()
-sim.amp_threshold = 0
+sim = LFPy_util.sims.SphereRandFilt()
 LFPy_util.other.collect_data(dir_neurons, sim, gather_data)
 
 # Format the gathered data.
