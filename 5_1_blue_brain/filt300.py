@@ -33,15 +33,15 @@ neurons = TTPC1
 # neurons = MC + LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
-mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod/')
-LFPy_util.other.nrnivmodl(mod_dir)
+mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
+LFPy_util.other.nrnivmodl(mod_dir, suppress=True)
 
 def load_func(neuron):
     """
     Function that loads a cell using the name of the neuron.
     """
     nrn_full = os.path.join(dir_model, neuron)
-    cell_list = blue_brain.load_model(nrn_full)
+    cell_list = blue_brain.load_model(nrn_full, suppress=True)
     cell = cell_list[0]
     cell.tstartms = 0
     cell.tstopms = 300
@@ -51,50 +51,35 @@ def load_func(neuron):
     LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
     return cell
 
-sim = LFPy_util.Simulator()
-sim.set_cell_load_func(load_func)
-sim.set_dir_neurons(dir_neurons)
-sim.set_neuron_name(neurons)
-sim.simulate = False
-sim.plot = True
-# sim.parallel_plot = True
 
 # Simulation objects.
 sim_multi = LFPy_util.sims.MultiSpike()
 sim_multi.run_param['pptype'] = 'ISyn'
 sim_multi.run_param['threshold'] = 4
 sim_multi.run_param['delay'] = 100
-sim_multi.run_param['duration'] = 300
+sim_multi.run_param['duration'] = 200
 sim_multi.run_param['spikes'] = 3
 sim_multi.verbose = True
 sim_intra = LFPy_util.sims.Intracellular()
 sim_morph = LFPy_util.sims.Morphology()
-# Param.
-spike_to_measure = 1
-freq_low = 0.3 #kHz
-freq_high = 8.0 #kHz
 # More simulation objects.
-sim_sphere = LFPy_util.sims.SphereRandFilt()
-sim_sphere.process_param['spike_to_measure'] = spike_to_measure
-sim_sphere.process_param['freq_low'] = freq_low
-sim_sphere.process_param['freq_high'] = freq_high
-sim_sphere.plot_param['elec_to_plot'] = range(3)
 sim_symf = LFPy_util.sims.SymmetryFiltered()
-sim_symf.process_param['spike_to_measure'] = spike_to_measure
-sim_symf.process_param['freq_low'] = freq_low
-sim_symf.process_param['freq_high'] = freq_high
-sim_symf.process_param['order'] = 1
-sim_symf.plot_param['plot_detailed'] = True
+sim_symf.process_param['spike_to_measure'] = 1
+sim_symf.process_param['order'] = 2
+sim_symf.process_param['filter'] = 'filtfilt'
+# sim_symf.plot_param['plot_detailed'] = True
 sim_sym = LFPy_util.sims.Symmetry()
-sim_sym.process_param['spike_to_measure'] = spike_to_measure
+sim_sym.process_param['spike_to_measure'] = 1
 # sim_sym.plot_param['plot_detailed'] = True
 
-# sim.push(sim_multi, False)
-sim.push(sim_symf, True)
-# sim.push(sim_sym, True)
-# sim.push(sim_intra, True)
-# sim.push(sim_sphere, True)
-# sim.push(sim_morph, True)
+sim = LFPy_util.Simulator()
+sim.set_cell_load_func(load_func)
+sim.set_dir_neurons(dir_neurons)
+sim.set_neuron_name(neurons)
+# sim.parallel_plot = True
 
+sim.push(sim_multi, False)
+sim.push(sim_symf, True)
 print sim
-sim.run()
+sim.simulate()
+# sim.plot()

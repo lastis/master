@@ -10,6 +10,7 @@ from glob import glob
 import subprocess
 import neuron
 import LFPy
+import LFPy_util
 
 # Gather directory paths.
 # Find the location of 5_1_blue_brain folder.
@@ -18,7 +19,7 @@ DIR_RES = os.path.join(DIR_PROJECT, 'res/')
 DIR_MODELS = os.path.join(DIR_PROJECT, 'res/bbp_models')
 
 
-def load_model(nrn, add_synapses=False, comp=True, suppress=True):
+def load_model(nrn, add_synapses=False, comp=True, suppress=False):
     """
     Load a model from the bluebrain model folder. Returns a list of cells.
     """
@@ -38,13 +39,13 @@ def load_model(nrn, add_synapses=False, comp=True, suppress=True):
 
     # Load mod files of the neuron.
     mechanism_mod_dir = os.path.join(nrn, 'mechanisms')
-    os.chdir(mechanism_mod_dir)
-    if comp:
-        # subprocess.call(['nrnivmodl'])
-        devnull = open(os.devnull, 'w')
-        subprocess.call(['nrnivmodl'], stdout=devnull)
-
-    neuron.load_mechanisms('.')
+    LFPy_util.other.nrnivmodl(mechanism_mod_dir, suppress)
+    # os.chdir(mechanism_mod_dir)
+    # if comp:
+    #     # subprocess.call(['nrnivmodl'])
+    #     devnull = open(os.devnull, 'w')
+    #     subprocess.call(['nrnivmodl'], stdout=devnull)
+    # neuron.load_mechanisms('.')
 
     os.chdir(nrn)
     #get the template name
