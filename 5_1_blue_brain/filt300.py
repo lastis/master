@@ -57,7 +57,7 @@ sim.set_dir_neurons(dir_neurons)
 sim.set_neuron_name(neurons)
 sim.simulate = False
 sim.plot = True
-sim.parallel_plot = True
+# sim.parallel_plot = True
 
 # Simulation objects.
 sim_multi = LFPy_util.sims.MultiSpike()
@@ -72,7 +72,7 @@ sim_morph = LFPy_util.sims.Morphology()
 # Param.
 spike_to_measure = 1
 freq_low = 0.3 #kHz
-freq_high = 6.7 #kHz
+freq_high = 8.0 #kHz
 # More simulation objects.
 sim_sphere = LFPy_util.sims.SphereRandFilt()
 sim_sphere.process_param['spike_to_measure'] = spike_to_measure
@@ -83,12 +83,17 @@ sim_symf = LFPy_util.sims.SymmetryFiltered()
 sim_symf.process_param['spike_to_measure'] = spike_to_measure
 sim_symf.process_param['freq_low'] = freq_low
 sim_symf.process_param['freq_high'] = freq_high
-# sim_symf.plot_param['plot_detailed'] = True
+sim_symf.process_param['order'] = 1
+sim_symf.plot_param['plot_detailed'] = True
+sim_sym = LFPy_util.sims.Symmetry()
+sim_sym.process_param['spike_to_measure'] = spike_to_measure
+# sim_sym.plot_param['plot_detailed'] = True
 
 # sim.push(sim_multi, False)
-# sim.push(sim_symf, True)
+sim.push(sim_symf, True)
+# sim.push(sim_sym, True)
 # sim.push(sim_intra, True)
-sim.push(sim_sphere, True)
+# sim.push(sim_sphere, True)
 # sim.push(sim_morph, True)
 
 print sim
