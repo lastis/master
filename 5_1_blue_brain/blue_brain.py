@@ -40,12 +40,6 @@ def load_model(nrn, add_synapses=False, comp=True, suppress=False):
     # Load mod files of the neuron.
     mechanism_mod_dir = os.path.join(nrn, 'mechanisms')
     LFPy_util.other.nrnivmodl(mechanism_mod_dir, suppress)
-    # os.chdir(mechanism_mod_dir)
-    # if comp:
-    #     # subprocess.call(['nrnivmodl'])
-    #     devnull = open(os.devnull, 'w')
-    #     subprocess.call(['nrnivmodl'], stdout=devnull)
-    # neuron.load_mechanisms('.')
 
     os.chdir(nrn)
     #get the template name
