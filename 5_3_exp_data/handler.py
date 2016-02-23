@@ -3,6 +3,7 @@ Collection of function to setup necessary files.
 """
 
 import os
+import warnings
 import urllib
 import neo
 
@@ -35,6 +36,8 @@ def get_data():
                         # spiketrain is SpikeTrain object.
                         spiketrain = unit.spiketrains[0]
     """
-    reader = neo.io.NeoHdf5IO(PATH_SPIKE_DATA)
-    blocks = reader.read()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=DeprecationWarning)
+        reader = neo.io.NeoHdf5IO(PATH_SPIKE_DATA)
+        blocks = reader.read()
     return blocks
