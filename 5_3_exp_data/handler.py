@@ -24,6 +24,16 @@ def get_data():
     Return neo blocks.
 
     Can be iterated with for loop returning a block.
+
+    Example:
+        .. code-block:: python
+            blocks = handler.get_data()
+            
+            for block in blocks:
+                for rcg in block.recordingchannelgroups:
+                    for unit in rcg.units:
+                        # spiketrain is SpikeTrain object.
+                        spiketrain = unit.spiketrains[0]
     """
     reader = neo.io.NeoHdf5IO(PATH_SPIKE_DATA)
     blocks = reader.read()
