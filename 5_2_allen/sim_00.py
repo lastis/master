@@ -28,6 +28,7 @@ def load_cell(neuron_name):
     LFPy_util.rotation.alignCellToAxes(cell, axes[0], axes[1])
     cell.tstartms = 0
     cell.tstopms = 1400
+    neuron.h.celsius = 20.0
     return cell
 
 sim = LFPy_util.Simulator()
@@ -44,6 +45,7 @@ sim_multi.run_param['duration'] = 1000
 sim_multi.run_param['pre_dur'] = 8
 sim_multi.run_param['post_dur'] = 8
 sim_multi.run_param['spikes'] = 3
+sim_multi.run_param['init_amp'] = 0.1
 sim_multi.verbose = True
 
 
@@ -64,11 +66,11 @@ import neuron
 def print_stats(cell):
     print neuron.h.celsius
 
-# sim.push(sim_multi, False)
-# sim.push(sim_intra, True)
-# sim.push(sim_sym, True)
-sim.push(sim_morph, True)
+sim.push(sim_multi, False)
 sim.push(print_stats)
+# sim.push(sim_intra, True)
+sim.push(sim_sym, True)
+# sim.push(sim_morph, True)
 
 print sim
 sim.simulate()
