@@ -78,8 +78,8 @@ def load_cell_by_id(model_id, start_ms=0., stop_ms=300.):
     path_morp = glob(os.path.join(dir_model, "*.swc"))[0]
 
     # Compile the mod files.
-    # LFPy_util.other.nrnivmodl(dir_modfiles, suppress=True)
-    LFPy_util.other.nrnivmodl(dir_modfiles)
+    LFPy_util.other.nrnivmodl(dir_modfiles, suppress=True)
+    # LFPy_util.other.nrnivmodl(dir_modfiles)
 
     cell = LFPy.Cell(
         morphology=path_morp,
