@@ -1,10 +1,12 @@
 # Using rubber version 1.4
 .PHONY: clean
 
-default: thesis.tex $(DEPENDS)
-		rubber -f --pdf -s $<
-		# rubber-info --check $<
-		rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.ptc *.toc *.nav *.run.xml tags
+default: 
+	touch thesis.glo
+	rubber -m glossaries -f --pdf -s thesis
+	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind tags
 
 clean:
-		rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.ptc *.toc *.nav *.run.xml tags
+	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind tags

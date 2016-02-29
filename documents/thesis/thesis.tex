@@ -4,6 +4,8 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}			
+% Supposed to rebind commands safer than using \let\mycref\cref.
+\usepackage{letltxmacro}
 % Can change properties of sections, such as color. 
 \usepackage{titlesec}		
 % Adds customizable headers and footers. 
@@ -32,6 +34,9 @@
 ]{biblatex}
 % Have to import this at the end for this to work somehow.
 \usepackage{cleveref}		
+% 
+\usepackage[toc]{glossaries}
+\makeglossaries
 
 \addbibresource{master.bib}
 
@@ -89,12 +94,19 @@
 	linkcolor={},
 	urlcolor=black
 }
+% Change the color of \gls and \Gls
+\LetLtxMacro{\mygls}{\gls}
+\renewcommand{\gls}[1]{{\color{viridis_03}\mygls{#1}} }
+\LetLtxMacro{\myGls}{\Gls}
+\renewcommand{\Gls}[1]{{\color{viridis_03}\myGls{#1}} }
 
 % Change color of clever ref.
 \AtBeginDocument{
-	\let\mycref\cref
+    \LetLtxMacro{\mycref}{\cref}
 	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}} }
 }
+% Include the glossary file. 
+\input{glossary}
 %}}} end of preamble
 \begin{document}
 %{{{ Abstract
@@ -159,11 +171,10 @@ Impulse. Apical dendrites. Grey matter. Spines. Synapses. Quiescent neuron.
 \subsection*{Background}
 The physical processes in and around neurons are well understood in comparison
 to the function they serve. 
-The consensus is that the basic function of a neuron is to receive and send 
-action potentials and that action potentials are 
-responsible for all cognitive functions.
-What information is transmitted in the action potentials and how 
-the information is processed is still under much research.  
+The basic function of a neuron is to receive and send 
+action potentials to process information.
+What information is transmitted and how 
+it is processed is still being researched.
 
 %}}} end of The Neuron
 %{{{ Action Potential
@@ -305,10 +316,11 @@ electric field outside the neuron.
 %{{{ Cell classification
 \section{Cell Type Classification}
 
+
+\subsection*{Background}
 It was early observed that the shape of action potentials are different for 
-individual neurons and it has been suggested that action potentials
-can be used to identify classes of neurons. This the main focus of this article. 
-(Use this source?
+individual neurons. \textcite{mountcastle_cortical_1969} discovered what
+they called \gls{regspike}, \gls{fastspike}
 
 \cite{mountcastle_cortical_1969}.
 
@@ -587,6 +599,7 @@ Copied from
 
 \end{appendix}
 %}}} end of Appendix
+\printglossaries
 %{{{ Bibliography
 %\nocite{*}
 \printbibliography[heading=bibintoc]
