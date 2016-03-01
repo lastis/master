@@ -18,7 +18,7 @@ dir_neurons = os.path.join(dir_current, "filt")
 blue_brain.download_all_models(dir_model)
 
 # How many neurons from each group to simulate.
-nrn_cnt = 1
+nrn_cnt = 2
 
 # Load pyramidal cells in L5.
 os.chdir(dir_model)
@@ -29,9 +29,9 @@ LBC = glob('L5_*LBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
 # neurons = TTPC1 + TTPC2 + MC + LBC
-# neurons = TTPC1 + TTPC2
+neurons = TTPC1 + TTPC2
 # neurons = TTPC1
-neurons = MC
+# neurons = MC
 # neurons =  LBC
 
 # Compile and load the extra mod file(s). The ISyn electrode.
@@ -86,42 +86,44 @@ sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_func)
 sim.set_dir_neurons(dir_neurons)
 sim.set_neuron_name(neurons)
-# sim.concurrent_neurons = 1
+sim.concurrent_neurons = 2
 # sim.parallel = False
 print sim
 
 # Simulation
-sim.push(sim_multi, False)
+# sim.push(sim_multi, False)
 # sim.push(sim_symf, True)
 # sim.push(sim_spheref, True)
 # sim.push(sim_intra, True)
 # sim.push(sim_morph, True)
-sim.push(sim_dgrid, True)
-sim.simulate()
+# sim.push(sim_dgrid, True)
+sim.push(sim_morph)
+# sim.simulate()
+sim.plot()
 
 # Plotting
-sim_symf.process_param['freq_low'] = 0.3
-sim_symf.name = 'symfilt300'
-sim_sym_1 = copy.deepcopy(sim_symf)
-sim_symf.process_param['freq_low'] = 0.5
-sim_symf.name = 'symfilt500'
-sim_sym_2 = copy.deepcopy(sim_symf)
-sim_symf.process_param['freq_low'] = 0.8
-sim_symf.name = 'symfilt800'
-sim_sym_3 = copy.deepcopy(sim_symf)
+# sim_symf.process_param['freq_low'] = 0.3
+# sim_symf.name = 'symfilt300'
+# sim_sym_1 = copy.deepcopy(sim_symf)
+# sim_symf.process_param['freq_low'] = 0.5
+# sim_symf.name = 'symfilt500'
+# sim_sym_2 = copy.deepcopy(sim_symf)
+# sim_symf.process_param['freq_low'] = 0.8
+# sim_symf.name = 'symfilt800'
+# sim_sym_3 = copy.deepcopy(sim_symf)
 
-sim_spheref.process_param['freq_low'] = 0.3
-sim_spheref.name = 'spherefilt300'
-sim_sphere_1 = copy.deepcopy(sim_spheref)
-sim_spheref.process_param['freq_low'] = 0.5
-sim_spheref.name = 'spherefilt500'
-sim_sphere_2 = copy.deepcopy(sim_spheref)
-sim_spheref.process_param['freq_low'] = 0.8
-sim_spheref.name = 'spherefilt800'
-sim_sphere_3 = copy.deepcopy(sim_spheref)
+# sim_spheref.process_param['freq_low'] = 0.3
+# sim_spheref.name = 'spherefilt300'
+# sim_sphere_1 = copy.deepcopy(sim_spheref)
+# sim_spheref.process_param['freq_low'] = 0.5
+# sim_spheref.name = 'spherefilt500'
+# sim_sphere_2 = copy.deepcopy(sim_spheref)
+# sim_spheref.process_param['freq_low'] = 0.8
+# sim_spheref.name = 'spherefilt800'
+# sim_sphere_3 = copy.deepcopy(sim_spheref)
 
-sim.clear_list()
-sim.push(sim_dgrid, True)
+# sim.clear_list()
+# sim.push(sim_dgrid, True)
 # sim.push(sim_multi, False)
 # sim.push(sim_sym_1, True)
 # sim.push(sim_sym_2, True)
@@ -133,4 +135,4 @@ sim.push(sim_dgrid, True)
 # sim.push(sim_sphere, True)
 # sim.push(sim_intra, True)
 # sim.push(sim_morph, True)
-sim.plot()
+# sim.plot()
