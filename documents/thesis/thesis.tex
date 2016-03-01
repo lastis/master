@@ -1,10 +1,11 @@
 %{{{ preamble
-% fleqn left alligns all equations. 
+% Note: The order of some of these packages are important.
+% fleqn left alligns all equations. Using settings from uiophd.cls.
 \documentclass[altfont, fleqn]{uiophd}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}			
-% Supposed to rebind commands safer than using \let\mycref\cref.
+% Rebinds commands safer than using \let\mycref\cref.
 \usepackage{letltxmacro}
 % Can change properties of sections, such as color. 
 \usepackage{titlesec}		
@@ -18,6 +19,7 @@
 \usepackage{amsmath}		
 % \abs and \norm.
 \usepackage{commath}		
+% Do not know.
 \usepackage{textcomp}
 % SI units package.
 \usepackage[redefsymbols=false]{siunitx}		
@@ -34,8 +36,11 @@
 ]{biblatex}
 % Have to import this at the end for this to work somehow.
 \usepackage{cleveref}		
-% 
-\usepackage[toc]{glossaries}
+\usepackage{multicol}
+\usepackage[nopostdot,toc]{glossaries}
+% Enables multi column glossary.
+\usepackage{glossary-mcols}
+% Necessary for the glossaries package.
 \makeglossaries
 
 \addbibresource{master.bib}
@@ -46,8 +51,9 @@
 
 % Use ampersand "&" instead of "and". 
 \renewcommand*{\finalnamedelim}{%
-  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
-  \addspace\&\space}
+    \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+    \addspace\&\space%
+}
 
 % Paper properties. 
 \pagestyle{fancy}
@@ -62,25 +68,25 @@
 \definecolor{viridis_04}{rgb}{0.993248, 0.906157, 0.143936}
 
 \titleformat{\section}
-{\color{viridis_02}\Large\bfseries}
-{\color{viridis_02}\thesection}{1em}{} 		
+    {\color{viridis_02}\Large\bfseries}
+    {\color{viridis_02}\thesection}{1em}{} 		
 
 \titleformat{\subsection}
-{\color{viridis_02}\large\bfseries}	
-{\color{viridis_02}\thesubsection}{1em}{}
+    {\color{viridis_02}\large\bfseries}	
+    {\color{viridis_02}\thesubsection}{1em}{}
 
 % Change section formatting.
 \titleformat{\chapter}[hang] 				
-{\bfseries\Huge} 	
-{\color{viridis_01}\thechapter\hspace{20pt}\rule[-3pt]{2pt}{23pt}\hspace{10pt}}
-{0.5ex} 			
-{\color{viridis_01}} 	
-[
-    % This will be applied after each chapter?
-	%\small
-	%\startcontents
-	%\printcontents{}{1}{\setcounter{tocdepth}{1}}
-]		
+    {\bfseries\Huge} 	
+    {\color{viridis_01}\thechapter\hspace{20pt}\rule[-3pt]{2pt}{23pt}\hspace{10pt}}
+    {0.5ex} 			
+    {\color{viridis_01}} 	
+    [
+        % This will be applied after each chapter?
+        %\small
+        %\startcontents
+        %\printcontents{}{1}{\setcounter{tocdepth}{1}}
+    ]		
 
 % Change the color of every citation.
 \AtEveryCite{\color{viridis_03}}
@@ -94,7 +100,7 @@
 	linkcolor={},
 	urlcolor=black
 }
-% Change the color of \gls and \Gls
+% Change the color of the glossary commands \gls and \Gls.
 \LetLtxMacro{\mygls}{\gls}
 \renewcommand{\gls}[1]{{\color{viridis_03}\mygls{#1}} }
 \LetLtxMacro{\myGls}{\Gls}
@@ -187,12 +193,26 @@ Write about hodking and huxley. \cite{hodgkin_quantitative_1952}
 %}}} end of Action Potential
 %{{{ Neuronal Models
 \section{Neuronal Models}
+The electrical activity of neurons are caused by different concentrations of 
+ions
+in the \gls{glos:extcell} and \gls{glos:intcell} medium. The cell membrane
+consists of a \SI{5}{\nano\metre} \gls{glos:lipidbilayer} and is impenetrable 
+to ions. 
+The gradient is created by differnt \gls{glos:ionchannels} and 
+\gls{glos:ionpumps} in the 
+cell membrane which can have selective permeability to ions. 
+The most significant ions in this process are sodium (Na^+), potassium (K^+), 
+calcium (Ca^{2+}), magnecium (Mg^{2+}) and chloride (Cl^-). 
+
+Ion channels are divided between \gls{glos:passivechannels} and 
+\gls{glos:activechannels}
+
+
 There are multiple models for neurons, some of the main groups are 
 point models and compartmental models. List many models?
 Multi-compartmental models 
 can be useful to understand the processing of neurons with
 complex morphological structures
-\cite{sterratt_principles_2011}. 
 \subsection*{Background}
 \textcites{hodgkin_quantitative_1952,connor_prediction_1971,sterratt_principles_2011}
 
@@ -320,7 +340,7 @@ electric field outside the neuron.
 \subsection*{Background}
 It was early observed that the shape of action potentials are different for 
 individual neurons. \textcite{mountcastle_cortical_1969} discovered what
-they called \gls{regspike}, \gls{fastspike}
+they called \gls{glos:regspike}, \gls{glos:fastspike}
 
 \cite{mountcastle_cortical_1969}.
 
@@ -599,7 +619,9 @@ Copied from
 
 \end{appendix}
 %}}} end of Appendix
-\printglossaries
+%{{{ Glossary
+\printglossary[style=mcolindex]
+%}}} end of Glossary
 %{{{ Bibliography
 %\nocite{*}
 \printbibliography[heading=bibintoc]
