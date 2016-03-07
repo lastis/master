@@ -17,7 +17,7 @@ spike_mean = de.tetrode_spikes_mean(signal)
 
 sample_freq = spiketrain.sampling_rate
 dt = 1.0/sample_freq
-t_vec = dt*np.arange(signal.shape[-1])*pq.microsecond/pq.micro
+t_vec = dt*np.arange(signal.shape[-1])*pq.microsecond*1000
 
 plt.figure()
 plt.plot(t_vec, spike_mean)
