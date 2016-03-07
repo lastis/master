@@ -21,19 +21,29 @@ t_vec = dt*np.arange(signal.shape[-1])*pq.microsecond/pq.micro
 
 plt.figure()
 plt.plot(t_vec, spike_mean)
+plt.title("original")
+plt.savefig("original.png")
 
-freq, amp, phase = de.find_freq_and_fft(dt, spike_mean)
-freq = freq / 1000
+# freq, amp, phase = de.find_freq_and_fft(dt, spike_mean)
+# freq = freq / 1000
 
-plt.figure()
-plt.plot(freq, amp)
+# plt.figure()
+# plt.plot(freq, amp)
 
 nyq = 0.5 * sample_freq
 high = 6700/nyq
 low = 300/nyq
 b, a = butter(1, [low, high])
-spike_mean = lfilter(b, a, spike_mean) 
-plt.figure()
-plt.plot(t_vec, spike_mean)
 
-plt.show()
+filtered_spike = filtfilt(b, a, spike_mean) 
+plt.figure()
+plt.plot(t_vec, filtered_spike)
+plt.title("filtfilt")
+plt.savefig("filtfilt.png")
+
+filtered_spike = lfilter(b, a, spike_mean) 
+plt.figure()
+plt.plot(t_vec, filtered_spike)
+plt.title("lfilter")
+plt.savefig("lfilter.png")
+
