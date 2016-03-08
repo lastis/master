@@ -37,11 +37,15 @@
 % Have to import this at the end for this to work somehow.
 \usepackage{cleveref}		
 \usepackage{multicol}
-\usepackage[nopostdot,toc]{glossaries}
-% Enables multi column glossary.
-\usepackage{glossary-mcols}
-% Necessary for the glossaries package.
-\makeglossaries
+% Commands that help placing figures side by side.
+\usepackage{subcaption}
+
+% Glossary packages.
+% \usepackage[nopostdot,toc]{glossaries}
+% % Enables multi column glossary.
+% \usepackage{glossary-mcols}
+% % Necessary for the glossaries package.
+% \makeglossaries
 
 \addbibresource{master.bib}
 
@@ -100,19 +104,20 @@
 	linkcolor={},
 	urlcolor=black
 }
-% Change the color of the glossary commands \gls and \Gls.
-\LetLtxMacro{\mygls}{\gls}
-\renewcommand{\gls}[1]{{\color{viridis_03}\mygls{#1}} }
-\LetLtxMacro{\myGls}{\Gls}
-\renewcommand{\Gls}[1]{{\color{viridis_03}\myGls{#1}} }
+% Glossary settings commented out:
+% % Change the color of the glossary commands \gls and \Gls.
+% \LetLtxMacro{\mygls}{\gls}
+% \renewcommand{\gls}[1]{{\color{viridis_03}\mygls{#1}} }
+% \LetLtxMacro{\myGls}{\Gls}
+% \renewcommand{\Gls}[1]{{\color{viridis_03}\myGls{#1}} }
+% % Include the glossary file. 
+% \input{glossary}
 
 % Change color of clever ref.
 \AtBeginDocument{
     \LetLtxMacro{\mycref}{\cref}
 	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}} }
 }
-% Include the glossary file. 
-\input{glossary}
 %}}} end of preamble
 \begin{document}
 %{{{ Abstract
@@ -147,11 +152,11 @@ and psychology to name some.
 %}}} end of Introduction
 %{{{ Theory
 \chapter{Theory}
-Each section introduces topics that are referenced frequently in the article. 
-At the end of each section there is a background subsection. 
-These subsections contain information
-about the current state of research on the topic and previous work. 
-%Introduce topics so a bachelor student can understand. 
+% Each section introduces topics that are referenced frequently in the article. 
+% At the end of each section there is a background subsection. 
+% These subsections contain information
+% about the current state of research on the topic and previous work. 
+% NOTE: Introduce topics so a bachelor student can understand. 
 
 \vspace{1em} 
 \startcontents
@@ -159,61 +164,67 @@ about the current state of research on the topic and previous work.
   
 %{{{ The Neuron
 \section{The Neuron}
+% (TODO: Add picture of neuron and explain all the parts.)
+\begin{figure}[h]
+    \centering
+    \includegraphics[angle=-90,width=1.0\textwidth]{images/2_1/neuron_structure.pdf}
+    \caption{Stuff about this neuron.}
+    \label{fig:2_1_neuron}
+\end{figure}
+\noindent
 Neurons are excitiable brain cells capable of transmitting voltage changes across its 
 structure which again can excite other neurons. These sharp voltage changes are called 
-action potentials and when a neuron creates an action potential it is said to "fire".
+action potentials and when an action potential is created the neuron is said to 
+{\color{viridis_03} fire}.
 
-(TODO: Add picture of neuron and explain all the parts.)
+% NOTE: Topic to mention:
+% Neuron cell types, pyramidal neurons, basket neurons interneurons, what 
+% are they. The term "morphology". Intracellular also referred to as membrane potential.
+% Subcortical. Se hemalainen p.421. for a good summary. What is transmembrane current. 
+% Impulse. Apical dendrites. Grey matter. Spines. Synapses. Quiescent neuron.
 
-(TODO: Add more, citations.)
+% NOTE: Include this?
+% \subsection*{Background}
+% The physical processes in and around neurons are well understood in comparison
+% to the function they serve. 
+% The basic function of a neuron is to receive and send 
+% action potentials, 
+% but what exact information is being transmitted or how 
+% it is processed into thoughts does still not have a conclusive answer.
 
-Topic to mention:
-Neuron cell types, pyramidal neurons, basket neurons interneurons, what 
-are they. The term "morphology". Intracellular also referred to as membrane potential.
-Subcortical. Se hemalainen p.421. for a good summary. What is transmembrane current. 
-Impulse. Apical dendrites. Grey matter. Spines. Synapses. Quiescent neuron.
-
-
-\subsection*{Background}
-The physical processes in and around neurons are well understood in comparison
-to the function they serve. 
-The basic function of a neuron is to receive and send 
-action potentials to process information.
-What information is transmitted and how 
-it is processed is still being researched.
-\begin{figure}[h]
-\centering
-\includegraphics[angle=-90,width=\textwidth]{images/2_1/neuron_structure.pdf}
-\caption{Stuff about this neuron.}
-\label{fig:2_1_neuron}
-\end{figure}
 
 %}}} end of The Neuron
-%{{{ Action Potential
-\section{Action Potentials}
-Describe how actionpotentials are created. 
-
-\subsection*{Background}
-Write about hodking and huxley. \cite{hodgkin_quantitative_1952}
-
-%}}} end of Action Potential
-%{{{ Neuronal Models
+%{{{ Electrical Activity
 \section{Electrical Activity}
+\begin{figure}[h]
+    \centering
+    \includegraphics[angle=-90,width=1.0\textwidth]{images/2_1/ion_pumps_0.pdf}
+    \caption{Stuff about this neuron.}
+\end{figure}
 The electrical activity of neurons are caused by different concentrations of 
 ions
-in the \gls{glos:extcell} and \gls{glos:intcell} medium. The cell membrane
-consists of a \SI{5}{\nano\metre} \gls{glos:lipidbilayer} and is impenetrable 
+in the extracellular and intracellular medium. The cell membrane
+consists of a \SI{5}{\nano\metre} lipid bilayer which is impenetrable 
 to ions. 
-The gradient is created by differnt \gls{glos:ionchannels} and 
-\gls{glos:ionpumps} in the 
-cell membrane which can have selective permeability to ions. 
-The most significant ions in this process are sodium (Na$^+$), potassium (K$^+$), 
-calcium (Ca$^{2+}$), magnecium (Mg$^{2+}$) and chloride (Cl$^{-}$). 
-Ion channels are divided between \gls{glos:passivechannels} and 
-\gls{glos:activechannels} where the active can change the
+In the membrane sits differnt \emph{ion channels} and 
+\emph{ion pumps} which can have selective permeability to ions, this creates 
+a potential gradient across the membrane. 
+The most significant ions in this process are Sodium (Na$^+$), Potassium (K$^+$), 
+Calcium (Ca$^{2+}$), Magnecium (Mg$^{2+}$) and Chloride (Cl$^{-}$). 
+Ion channels are divided between passive channels and 
+active channels where the active can change 
 permeability under certain conditions while passive channels have a constant
-permeability.
+permeability. 
 
+The ion pumps differ from the channels by activly transporting certain
+ions through the membrane. 
+For instance, the Sodium-Pottasium exchanger pushes two Na$^+$ ions out of the cell
+for every three K$^+$ it pushes into the cell. Doing this creates a net 
+loss of charge inside the cell and the pump is therefore electrogenic. 
+Not all pumps are electrogenic, the Sodium-Hydrogen exchanger transports
+H$^+$ and Na$^+$ without effecting the net charge.
+For each H$^+$ ion out of the cell the pump pushes one Na$^+$
+into the cell. 
 
 There are multiple models for neurons, some of the main groups are 
 point models and compartmental models. List many models?
@@ -227,6 +238,29 @@ complex morphological structures
 The temperature is important.
 
 %}}} end of Neuronal Models
+%{{{ Action Potential
+\section{Action Potential}
+Action potentials are sharp increases in the membrane potential
+followed by a less sharp decrease towards the resting potential. 
+In the the depolarization phase the potential rises towards the peak magnitude, 
+while in the repolarization phase the potential decreases towards
+the cells resting potential.
+After the repolarization the potential can decrease further below the resting
+potental, this is the afterhyperpolarization phase. 
+
+Because the action potential is regenerative its magnitude will
+not change as it propagate along the neuron. This is an important feature
+that allows the action potential to propagate to distances much longer than
+a passive signal. 
+
+
+% \subsection*{Background}
+% Write about hodking and huxley. \cite{hodgkin_quantitative_1952}
+
+%}}} end of Action Potential
+% Compartmental Models {{{ %
+\section{Compartmental Models}
+% }}} Compartmental Models %
 %{{{ Electrodes
 \section{Electrodes}
 
@@ -342,25 +376,26 @@ electric field outside the neuron.
 
 %}}} end of Neuron and lfpy
 %{{{ Cell classification
-\section{Cell Type Classification}
 
+% \section{Cell Type Classification}
+% \subsection*{Background}
+% It was early observed that the shape of action potentials are different for 
+% individual neurons. \textcite{mountcastle_cortical_1969} discovered what
+% they called regular spiking and fast spiking.
 
-\subsection*{Background}
-It was early observed that the shape of action potentials are different for 
-individual neurons. \textcite{mountcastle_cortical_1969} discovered what
-they called \gls{glos:regspike}, \gls{glos:fastspike}
-
-\cite{mountcastle_cortical_1969}.
+% \cite{mountcastle_cortical_1969}.
 
 %}}} end of Cell classification
 %{{{ Allen Cell Types Database
-\section{Allen Cell Types Database}
-The Allen Brain Institute have gather individual neuron data from lateral geniculate
-nucleus (LGN) and primary visual cortex (V1) of young laboratory mice. 
-The data's main categories are electrophysiology, morphology and modeling.
-With the morphological data the extracellular potential can be calculated given
-a model for the transmembrane currents. 
-% \subsection{Background}
+
+% \section{Allen Cell Types Database}
+% The Allen Brain Institute have gather individual neuron data from lateral geniculate
+% nucleus (LGN) and primary visual cortex (V1) of young laboratory mice. 
+% The data's main categories are electrophysiology, morphology and modeling.
+% With the morphological data the extracellular potential can be calculated given
+% a model for the transmembrane currents. 
+% % \subsection{Background}
+
 %}}} end of Allen Cell Types Database
 %}}} end of Theory
 %{{{ Methods
@@ -370,12 +405,11 @@ a model for the transmembrane currents.
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
 %{{{ Pettersen and Einvoll
 \section{Pettersen \& Einevoll (2008) Reproduction}
-To verify that the simulation environment can be trusted it was attempted to reproduce
+To verify that the simulation environment could be trusted 
 some results from 
-\textcite{pettersen_amplitude_2008}.
-Spesifically the spike width and amplitude dependency in relation to distance from soma 
-should be the same. 
-\\
+\textcite{pettersen_amplitude_2008} was replicated.
+Spesifically the spike width and amplitude dependency in relation to 
+the distance from soma was compared to current results. 
 
 % Write more about the connor stevens model?
 
@@ -555,10 +589,10 @@ summed to $0$.
 The following items are python objects in LFPyUtil.
 \newline
 
-\gls{glos:sphererand}
+SphereRand
 \newline
 \noindent
-\gls{glos:sphererand} places
+SphereRand places
 electrodes placed in uniformly distributied locations 
 around the soma within a default radius of \SI{50}{\micro\metre}. 
 Spike timing is detected by thresholding the soma membrane potential.
@@ -570,7 +604,7 @@ the spike index must be supplied, the default setting uses the first spike.
 
 % }}}
 %{{{ Allen Brain Institute
-\section{Allen Brain Institute}
+% \section{Allen Brain Institute}
 
 % My spesific implementation of LFPy and Neuron. 
 
@@ -702,7 +736,7 @@ Copied from
 \end{appendix}
 %}}} end of Appendix
 %{{{ Glossary
-\printglossary[style=mcoltreegroup]
+% \printglossary[style=mcoltreegroup]
 %}}} end of Glossary
 %{{{ Bibliography
 %\nocite{*}

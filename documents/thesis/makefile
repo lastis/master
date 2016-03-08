@@ -2,8 +2,8 @@
 .PHONY: clean
 
 default: 
-	touch thesis.glo
-	rubber -m glossaries -f --pdf -s thesis
+	# rubber -m glossaries -f --pdf -s thesis
+	rubber -f --pdf -s thesis
 	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
 	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind tags
 
