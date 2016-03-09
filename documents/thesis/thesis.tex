@@ -58,27 +58,24 @@
     \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
     \addspace\&\space%
 }
-
 % Paper properties. 
 \pagestyle{fancy}
 % Removes the header bar and text.
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead{}
-
 % Custom colors.
 \definecolor{viridis_01}{rgb}{0.267004, 0.048740, 0.329415}
 \definecolor{viridis_02}{rgb}{0.190631, 0.407061, 0.556089}
 \definecolor{viridis_03}{rgb}{0.208030, 0.718701, 0.472873}
 \definecolor{viridis_04}{rgb}{0.993248, 0.906157, 0.143936}
-
+% Change section formatting.
 \titleformat{\section}
     {\color{viridis_02}\Large\bfseries}
     {\color{viridis_02}\thesection}{1em}{} 		
-
+% Change section formatting.
 \titleformat{\subsection}
     {\color{viridis_02}\large\bfseries}	
     {\color{viridis_02}\thesubsection}{1em}{}
-
 % Change section formatting.
 \titleformat{\chapter}[hang] 				
     {\bfseries\Huge} 	
@@ -91,10 +88,8 @@
         %\startcontents
         %\printcontents{}{1}{\setcounter{tocdepth}{1}}
     ]		
-
 % Change the color of every citation.
 \AtEveryCite{\color{viridis_03}}
-
 % Hyperlink colors. 
 % Empty color disables coloring.
 \hypersetup{
@@ -104,6 +99,7 @@
 	linkcolor={},
 	urlcolor=black
 }
+
 % Glossary settings commented out:
 % % Change the color of the glossary commands \gls and \Gls.
 % \LetLtxMacro{\mygls}{\gls}
@@ -113,6 +109,8 @@
 % % Include the glossary file. 
 % \input{glossary}
 
+% Change the emph command.
+\DeclareTextFontCommand{\emph}{\color{viridis_03}}
 % Change color of clever ref.
 \AtBeginDocument{
     \LetLtxMacro{\mycref}{\cref}
@@ -152,11 +150,13 @@ and psychology to name some.
 %}}} end of Introduction
 %{{{ Theory
 \chapter{Theory}
-% Each section introduces topics that are referenced frequently in the article. 
-% At the end of each section there is a background subsection. 
-% These subsections contain information
-% about the current state of research on the topic and previous work. 
 % NOTE: Introduce topics so a bachelor student can understand. 
+% The physical processes in and around neurons are well understood in comparison
+% to the function they serve. 
+% The basic function of a neuron is to receive and send 
+% action potentials, 
+% but what exact information is being transmitted or how 
+% it is processed into thoughts does still not have a conclusive answer.
 
 \vspace{1em} 
 \startcontents
@@ -172,10 +172,39 @@ and psychology to name some.
     \label{fig:2_1_neuron}
 \end{figure}
 \noindent
-Neurons are excitiable brain cells capable of transmitting voltage changes across its 
-structure which again can excite other neurons. These sharp voltage changes are called 
-action potentials and when an action potential is created the neuron is said to 
-{\color{viridis_03} fire}.
+\emph{Neurons} 
+are a fundamental part of all brain functions and 
+are electrically excitiable brain cells capable of transmitting 
+electrical signals across their structures.
+Other names include \emph{nerve cells}, \emph{neurone} or more 
+colloquially \emph{brain cells}.
+
+The body of the neuron, the \emph{soma}, has \emph{dendrites} and 
+the \emph{axon} attached to it. 
+The dendrites and the axon are very thin branching structures 
+with a width usually in the order of \SI{1}{\micro\metre}. 
+While neurons often has many dendrites directly attached to the soma
+there is only one axon attached through the \emph{axon hillock}.
+The axon can branch several times before it ends and 
+usually connects to the dendrites of other neurons via synapes.
+The synapes are electrically sensitive which allows information
+to pass between neurons. 
+Though the majority of all synapes are axo-dendritic 
+(axon to dendrite),
+other junctions are also possible.
+Other junction include but are not limited to,
+dendrite to dendrite, 
+axon to axon and 
+axon to blood vessel. 
+
+Because of properties with the cell membrane the neuron can
+fire action potentials when it is electrically excited. 
+These action potentials are sharp voltage changes that propagates through
+the full structure of the neuron. 
+The same properties that makes the neuon able to fire makes 
+the action potential \emph{regenrative}, meaning it will propagate
+without decaying as a passive signal. 
+
 
 % NOTE: Topic to mention:
 % Neuron cell types, pyramidal neurons, basket neurons interneurons, what 
@@ -183,14 +212,6 @@ action potentials and when an action potential is created the neuron is said to
 % Subcortical. Se hemalainen p.421. for a good summary. What is transmembrane current. 
 % Impulse. Apical dendrites. Grey matter. Spines. Synapses. Quiescent neuron.
 
-% NOTE: Include this?
-% \subsection*{Background}
-% The physical processes in and around neurons are well understood in comparison
-% to the function they serve. 
-% The basic function of a neuron is to receive and send 
-% action potentials, 
-% but what exact information is being transmitted or how 
-% it is processed into thoughts does still not have a conclusive answer.
 
 
 %}}} end of The Neuron
