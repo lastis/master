@@ -164,7 +164,6 @@ and psychology to name some.
   
 %{{{ The Neuron
 \section{The Neuron}
-% (TODO: Add picture of neuron and explain all the parts.)
 \begin{figure}[h]
     \centering
     \includegraphics[angle=-90,width=1.0\textwidth]{images/2_1/neuron_structure.pdf}
@@ -173,10 +172,21 @@ and psychology to name some.
 \end{figure}
 \noindent
 \emph{Neurons} 
-are a fundamental part of all brain functions and 
-are electrically excitiable brain cells.
+are electrically excitiable cells
+that are a fundamental part of all brain functions.
 Other names include \emph{nerve cells}, \emph{neurone} or more 
 colloquially \emph{brain cells}.
+Neurons form in big networks 
+which process information,
+and in the human brain there is an estimated $10^{11}$ neurons.
+
+Because of proteins in the cell membrane the neuron can
+fire action potentials when it is electrically excited. 
+These action potentials are sharp voltage changes that propagates through
+the full structure of the neuron. 
+The same properties that makes the neuron able to fire makes 
+the action potential \emph{regenerative}, meaning it will propagate
+without decay.
 
 The body of the neuron, the \emph{soma}, has \emph{dendrites} and 
 the \emph{axon} attached to it. 
@@ -186,6 +196,7 @@ While neurons often have many dendrites directly attached to the soma
 there is only one axon attached through the \emph{axon hillock}.
 The axon can branch several times before it ends and 
 usually connects to the dendrites of other neurons via synapes.
+
 The synapes are electrically sensitive which allows information
 to pass between neurons. 
 Though the majority of all synapes are axo-dendritic 
@@ -195,15 +206,10 @@ Other junctions include but are not limited to,
 dendrite to dendrite, 
 axon to axon and 
 axon to blood vessel. 
-
-Because of properties with the cell membrane the neuron can
-fire action potentials when it is electrically excited. 
-These action potentials are sharp voltage changes that propagates through
-the full structure of the neuron. 
-The same properties that makes the neuon able to fire makes 
-the action potential \emph{regenerative}, meaning it will propagate
-without decaying.
-
+When an action potential reaches a synapse it will activate
+the synapse and pass information to the connect neuron. 
+The information that is passed along depends on the type of synapse,
+and if it is of a chemical or electrical type.
 
 % NOTE: Topic to mention:
 % Neuron cell types, pyramidal neurons, basket neurons interneurons, what 
@@ -224,6 +230,7 @@ without decaying.
 \end{figure}
 To understand the electrical activity of neurons it is useful
 to view the neuron as an electronic circuit.
+
 The potential difference between the inside and outside the neurons 
 are caused by different concentrations of 
 ions
@@ -238,7 +245,7 @@ a potential gradient across the membrane.
 The most significant ions in this process are Sodium (Na$^+$), Potassium (K$^+$), 
 Calcium (Ca$^{2+}$), Magnecium (Mg$^{2+}$) and Chloride (Cl$^{-}$). 
 Ion channels are divided between passive channels and 
-active channels where the active can change 
+active channels where the active channels can change 
 permeability under certain conditions while passive channels have a constant
 permeability. 
 
@@ -587,7 +594,7 @@ from the baseline at the start of the signal.
 % Simulations with LFPyUtil{{{ 
 \section{Simulations with LFPyUtil}
 LFPyUtil is a python package that was created for this project with the purpose
-of simplifying the simulation pipeline for multiple neurons and creating
+to simplify the simulation pipeline for multiple neurons and creating
 and easy to use interface when developing new simulations.
 
 % TODO: Include sources to the number 0.3 conductivity.
