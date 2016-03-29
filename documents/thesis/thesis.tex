@@ -29,9 +29,8 @@
 \usepackage[
 	backend=biber,
 	style=numeric,
-	url=false,
 	doi=false,
-	isbn=false, 
+	% isbn=false, 
 	maxcitenames=2,
 ]{biblatex}
 % Have to import this at the end for this to work somehow.
@@ -49,9 +48,20 @@
 
 \addbibresource{master.bib}
 
+% Remove certain fields from appearing in the bibliography.
 \AtEveryBibitem{\clearfield{month}}
 \AtEveryBibitem{\clearfield{day}}
+\AtEveryBibitem{\clearfield{note}}
 \AtEveryCitekey{\clearfield{month}}
+\AtEveryBibitem{%
+    \ifentrytype{misc}
+    {%
+    }%
+    {%
+        \clearfield{url}
+        \clearfield{urldate}
+    }%
+}
 
 % Use ampersand "&" instead of "and". 
 \renewcommand*{\finalnamedelim}{%
@@ -118,16 +128,115 @@
 }
 %}}} end of preamble
 \begin{document}
+% Overview {{{ %
+\chapter*{Overview}
+
+Abstract (1/10):
+\newline
+Summary of the summary. A short introduction with results stated clearly.
+\newline
+
+Introduction (1/10):
+\newline
+Introduce the topic, the problem and how the problem is being solved. 
+The target audience are other master students. 
+% Keywords: Action potential shape, cell classification, electrodes.
+\newline 
+
+Theory:
+\begin{itemize}
+    \setlength\itemsep{0pt}
+    \item Basic information about neurons and the cell membrane. (7/10)
+    \item Basic information about different types of neurons, how they serve
+        different purposes and have different functions. (0/10)
+    \item Turning the neuron into a electronic circuit, explaining ion pumps and 
+        channels. (5/10)
+    \item Detailed explanation of action potentials and the generation of
+        action potentials with a the hudgekin and huxley model. (1/10)
+    \item Explanation of the principle of compartmental models with diagrams.
+        There are many kinds. Not too long. (0/10)
+    \item Detailed explanation of electrodes, how they are used,
+        what they measure, how tetrodes work. (1/10)
+    \item Mentioning that neurons measured from the same electrode must
+        be seperated. Cocktail party problem, source seperation. (0/10)
+    \item Detailed explanation of extracellular potential, the physics behind the
+        problem, dipole effect, how it can be calculated, etc.(4/10)
+    \item Discussion of the difference between intracellular and extracellular 
+        spike shape. Some say the extracellular spike is the derivative. (0/10)
+    \item Explanation of Neuron and LFPy. How they work, the principle 
+        behind them, what they are intended to calculate. (2/10)
+    \item (Detailed?) Explanation of the current state of cell classification.
+        Why is it important, how is it done. Mentioning most influential 
+        work from early to current work. (0/10)
+    \item Detailed explanation of the Blue Brain cell database, how it was made, 
+        why is it useful, what were the focus of the models, models are public. (0/10)
+\end{itemize}
+\noindent 
+Note to self, mention the most influential work that has been done on all
+topics mentioned in the theory. I should show I know all the basic 
+important work that has been done in these fields. 
+\newline
+
+Methods
+\newline
+Everything here is work which I have done myself. Show what I have done, make sure
+it understood as a lot.
+\begin{itemize}
+    \item Explanation of the basis of differentiating spikes, how does
+        one measure how spikes are different. Meantion spike width and 
+        ampltiude. (0/10)
+    \item Explain different definitions of spike width and amplitude measurements. (1/10)
+    \item Detailed explanation about the simulation environment. 
+        What does LFPyUtil solve and how does it solve it. (3/10)
+    \item Showing a minimum working example of LFPyUtil, show what it makes easier. (0/10)
+    \item Detailed explanation of each simulation, what are the parameters. (3/10)
+    \item How did I use the BlueBrain models, which models are used, why are they used. (0/10)
+\end{itemize}
+
+Results:
+\newline
+State the results in such a way they clearly show what I want to show, but
+does not "jump to conclusions". State the results without bias.
+Include figures with text, at a glance the figures will be read seen and read
+first. 
+\begin{itemize}
+    \item Detailed explanation of the replication of Pettersen and Einevoll, show 
+        that the simulation environment can be trusted. (6/10)
+    \item Show which definition is best for differentiating spikes from different
+        kinds of neurons. (0/10)
+    \item Show that interneurons and pyramidal neurons can be classified. (0/10)
+    \item Explain why spikes look differnt, what are the physical processes that 
+        does this? (0/10)
+\end{itemize}
+
+Discussion:
+\newline
+The discussion is important, make it of high quality and maybe long. 
+\begin{itemize}
+    \item Explain any deviations from Pettersen and Einevoll in the replication. (5/10)
+    \item Create a conclusion of the results from Pettersen and Einevoll. (0/10)
+    \item Using spike width have already been used for differentiate neurons, 
+        show how current results backs up this statement. (0/10)
+    \item Research has shown that thin spikes can also come from measuring near
+        axons of pyramidal cells. (0/10)
+    \item Spike widths from blue brain does not match real spikes, the
+        model ones are too long. Argue that even though the models does not match
+        real spikes there is still a large difference between interneurons and 
+        pyramidal neurons. (0/10)
+\end{itemize}
+
+Note to self, when trying to explain a method first show the problem clearly
+then propose the solution to the problem. Engage the reader by showing the 
+problem in such a way they can become curious for a solution. 
+
+
+% }}} Overview %
 %{{{ Abstract
 \chapter*{Abstract}
-Abstracts do not include sources, but are here for the purpose of notes.) \\
-
 \noindent
 The physical processes that creates electrical signals in neurons are well understood, 
 but how the signals are processed into actions and thoughts has yet to 
 receive a scientifically robust answer
-(add more sources) 
-\cite{sterratt_principles_2011}. 
 Cell type classification is of high importance because the function of different 
 neurons is still largely a mystery. 
 %}}} end of Abstract
@@ -138,19 +247,50 @@ neurons is still largely a mystery.
 %}}} end of Table of Contents
 %{{{ Introduction
 \chapter{Introduction}
-Introduce the topic, the problem and how the problem is being solved. 
 
 Since 
 the conception of neuroscience the neurons function have been studied on many levels
-and with many perspectives, 
-from a single neuron level to networks of neurons with chemistry, physics, medicine
-and psychology to name some. 
+from the properties of the cell membrane to clustered networks of neurons.
+
+
+There are several types of neurons 
+and it was early noticed that different kind of neurons gave different
+types of signals. 
+
+This was of much interest because 
+
+
+% The problem
+% While doing single cell recordings the only information
+% about the neuron that is avaiable is the electric signal from the neuron.
+Modern types of 
+classification uses genotype?, the structure of the neuron and the 
+electric signal.
+
+It is useful to seperate interneurons from pyramidal neurons as
+pyramidal neurons are excitatory and interneurons are inhibitory. 
+
+Is it possible to seperate interneurons from pyramidal neurons soly
+based on the shape of the action potental. 
+
+Knowing the neuron type is important for research. 
+While doing single cell recordings on alive subjects the researchers are
+recording in the dark. 
+The electrodes only pick up on electrical signals from the brain, 
+so the researcher does not know exactly what they cell they are recording. 
+
+Surely the different types of neurons are specialized at certain functions
+
+In this article we show that interneurons can be seperated from pyramidal
+neurons based on data and models from the Blue Brain project. 
+The program makes an easy way to do the same analysis
+on future models as long as the models can be loaded with LFPy.
 
 
 %}}} end of Introduction
 %{{{ Theory
 \chapter{Theory}
-% NOTE: Introduce topics so a bachelor student can understand. 
+% NOTE: 
 % The physical processes in and around neurons are well understood in comparison
 % to the function they serve. 
 % The basic function of a neuron is to receive and send 
@@ -171,11 +311,11 @@ and psychology to name some.
     \label{fig:2_1_neuron}
 \end{figure}
 \noindent
-\emph{Neurons} 
+{Neurons} 
 are electrically excitiable cells
 that are a fundamental part of all brain functions.
-Other names include \emph{nerve cells}, \emph{neurone} or more 
-colloquially \emph{brain cells}.
+Other names include {nerve cells}, {neurone} or more 
+colloquially {brain cells}.
 Neurons form in big networks 
 which process information,
 and in the human brain there is an estimated $10^{11}$ neurons.
@@ -185,11 +325,11 @@ fire action potentials when it is electrically excited.
 These action potentials are sharp voltage changes that propagates through
 the full structure of the neuron. 
 The same properties that makes the neuron able to fire makes 
-the action potential \emph{regenerative}, meaning it will propagate
+the action potential {regenerative}, meaning it will propagate
 without decay.
 
-The body of the neuron, the \emph{soma}, has \emph{dendrites} and 
-the \emph{axon} attached to it. 
+The body of the neuron, the {soma}, has {dendrites} and 
+the {axon} attached to it. 
 The dendrites and the axon are very thin branching structures 
 with a width usually in the order of \SI{1}{\micro\metre}. 
 While neurons often have many dendrites directly attached to the soma
@@ -423,9 +563,169 @@ electric field outside the neuron.
 %}}} end of Theory
 %{{{ Methods
 \chapter{Methods}
+Methods mentioned here have been developed spesifically for this research. 
 \vspace{1em} 
 \startcontents
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
+%{{{ Blue Brain
+\section{Blue Brain}
+The Blue Brain project released XXX models based upon neurons from 
+the hind-limb somatosensory cortex
+from 2-week-old Wistar Han rats.
+The models were used
+The extracellular potential was calculated using 
+"TODO: Insert parameters here". 
+
+Use the models. Write code to capture one action potential. Bursting neurons
+often hav adapting action potential, what to do there. 
+
+%}}} end of Blue Brain
+% Spike Width Measurement {{{ %
+\section{Spike Width Measurement}
+% TODO: Include sources to different ways of defining spike width.
+Many different definitions of spike width has been used to differentiate neurons, but
+to date it is not clear which definition is best suited for neuron classification. 
+\\
+
+\noindent 
+Width Type I - Peak-to-peak: 
+
+Width is measured as the time from the minimum potential to the maximum. 
+This is the time from the polarization phase to the afterhyperpolarization phase. 
+\newline
+
+\noindent
+Width Type II - Width at Half Amplitude:
+
+Width is measured as the duration the spike is below half amplitude of the signal measured
+from the baseline at the start of the signal. 
+\newline
+
+\noindent
+Width Type II - Width at Half Amplitude:
+
+Width is measured as the duration the spike is below half amplitude of the signal measured
+from the baseline at the start of the signal. 
+\newline
+
+%}}} end of 
+% Simulations with LFPyUtil{{{ 
+\section{Simulations with LFPyUtil}
+LFPyUtil is a python package that was created for this project with the purpose
+to simplify the simulation pipeline for multiple neurons and creating
+and easy to use interface when developing new simulations. 
+LFPyUtil extends and uses the package LFPy to accomplish this. 
+
+The main feature of the python package LFPy is enable the calculation
+of extracellular potentials, but another major feature is the simplification
+of simulations with the simulation engine Neuron. 
+Using Neuron requires a good understanding of the programming language hoc
+which creates many challanges as hoc is outdated and is no longer
+maintained by the developers. 
+To use Neuron with python one has to use the python interface to Neuron
+which has been implemented in such a way that runs hoc code directly 
+"under the hood". 
+A common situation is that one must write hoc code inside strings and
+pass them to the python-hoc interpreter. 
+This has the unfortunate consequence that the two programming langues are
+very intertwined 
+and also does not follow
+common python coding conventions. 
+This also makes it harder for users to troubleshoot errors as problems can
+occur either in python, hoc or between the two.
+To solve this the package LFPy has attempted to wrap the cell model and
+electrodes from the Neuron engine into python objects, such as the 
+{\verb LFPy.Cell } and 
+{\verb LFPy.StimIntElectrode } classes.
+
+When running a simulation with Neuron there is no inherent support for 
+running simulations simultaniously. 
+Because LFPy is an extension to Neuron this is also lacking in LFPy. 
+LFPyUtil attempts to solve this by starting each simulation
+in independent processes. This does not speed up a single simulation
+but rather speeds up the simulation of multiple neurons and simulations
+that must be run multiple times with different parameters.
+The major difficulties of running independent processes with
+Neuron is 
+that there is no reset function which can make 
+the state of the previous simulation effect the state of the next
+simulation. 
+
+
+% TODO: Include sources to the number 0.3 conductivity.
+In all simulations the extracellular conductivity was set to 
+$\sigma = \SI{0.3}{\ohm\metre}$
+based upon data from experimental measurements. 
+
+All stimulus electrodes uses the {\verb LFPy.StimIntElectrode } with 
+a custom made electrode named ISyn. With the default stimulus all transmembrane 
+currents will be summed
+equal the input current, using ISyn prevents this and the currents are correctly
+summed to $0$.
+\newline
+
+\noindent
+The following items are python objects in LFPyUtil.
+\newline
+
+SphereRand
+\newline
+\noindent
+SphereRand places
+electrodes placed in uniformly distributied locations 
+around the soma within a default radius of \SI{50}{\micro\metre}. 
+Spike timing is detected by thresholding the soma membrane potential.
+That timing is applied to all electrodes such that all electrodes measure
+the same part of the simulation. 
+If the signal has several spikes
+the spike index must be supplied, the default setting uses the first spike.
+
+
+% }}}
+%{{{ Allen Brain Institute
+% \section{Allen Brain Institute}
+
+% My spesific implementation of LFPy and Neuron. 
+
+% The recording site for the electrophysiological data is soma for all neuron in the data from 
+% Allen Brain Institute.
+% The currents in the dendrites are not avaiable and is modelled using a passive neuron model.
+% Write how the simulation is set up. 
+
+
+% Create convincing results that shows that the simulations are correct and can be trusted. 
+
+% \begin{itemize}
+% 	\item Action potential width and amplitude is correct. 
+% 	\item Fourier specter is correct. 
+% 	\item Extracellular width and amplitude matches the article. 
+% 	\item Create same plots. 
+% 	\item Calculate the same parameters, power law?
+% \end{itemize}
+
+% How different are action potentials generated from the same cell. How does the "mean" spike look
+% from the experimental data. 
+
+% Data from Blue Brain and Allen Brain Institute. 
+
+% Allen Brain Institute Questions:
+% \begin{itemize}
+% 	\item How much does the experimental spikes differ. 
+% \end{itemize}
+
+%}}} end of Allen Brain Institute
+%}}} end of Methods
+%{{{ Results
+\chapter{Results}
+In figure ?? the spike width from interneurons and pyramidal neurons have been
+plottet seperatly. Neurons in the pyramidal group are the type TTPC1 and TTPC2 
+The groups suggests that interneuron can be seperated from 
+pyramidal neurons depending on their spike shape. 
+
+\vspace{1em} 
+\startcontents
+\printcontents{}{1}{\setcounter{tocdepth}{3}}
+
 %{{{ Pettersen and Einvoll
 \section{Pettersen \& Einevoll (2008) Reproduction}
 To verify that the simulation environment could be trusted 
@@ -548,123 +848,6 @@ data points.}
 \subsection{Discussion}
 
 %}}} end of Pettersen and Einvoll
-%{{{ Blue Brain
-\section{Blue Brain}
-The Blue Brain project released XXX models based upon neurons from 
-the hind-limb somatosensory cortex
-from 2-week-old Wistar Han rats.
-The models were used
-The extracellular potential was calculated using 
-"TODO: Insert parameters here". 
-
-Use the models. Write code to capture one action potential. Bursting neurons
-often hav adapting action potential, what to do there. 
-
-%}}} end of Blue Brain
-% Spike Width Measurement {{{ %
-\section{Spike Width Measurement}
-% TODO: Include sources to different ways of defining spike width.
-Many different definitions of spike width has been used to differentiate neurons, but
-to date it is not clear which definition is best suited for neuron classification. 
-\\
-
-\noindent 
-Width Type I - Peak-to-peak: 
-
-Width is measured as the time from the minimum potential to the maximum. 
-This is the time from the polarization phase to the afterhyperpolarization phase. 
-\newline
-
-\noindent
-Width Type II - Width at Half Amplitude:
-
-Width is measured as the duration the spike is below half amplitude of the signal measured
-from the baseline at the start of the signal. 
-\newline
-
-\noindent
-Width Type II - Width at Half Amplitude:
-
-Width is measured as the duration the spike is below half amplitude of the signal measured
-from the baseline at the start of the signal. 
-\newline
-
-%}}} end of 
-% Simulations with LFPyUtil{{{ 
-\section{Simulations with LFPyUtil}
-LFPyUtil is a python package that was created for this project with the purpose
-to simplify the simulation pipeline for multiple neurons and creating
-and easy to use interface when developing new simulations.
-
-% TODO: Include sources to the number 0.3 conductivity.
-In all simulations the extracellular conductivity was set to 
-$\sigma = \SI{0.3}{\ohm\metre}$
-based upon data from experimental measurements. 
-
-All stimulus electrodes uses the {\verb LFPy.StimIntElectrode } with 
-a custom made electrode named ISyn. With the default stimulus all transmembrane 
-currents will be summed
-equal the input current, using ISyn prevents this and the currents are correctly
-summed to $0$.
-\newline
-
-\noindent
-The following items are python objects in LFPyUtil.
-\newline
-
-SphereRand
-\newline
-\noindent
-SphereRand places
-electrodes placed in uniformly distributied locations 
-around the soma within a default radius of \SI{50}{\micro\metre}. 
-Spike timing is detected by thresholding the soma membrane potential.
-That timing is applied to all electrodes such that all electrodes measure
-the same part of the simulation. 
-If the signal has several spikes
-the spike index must be supplied, the default setting uses the first spike.
-
-
-% }}}
-%{{{ Allen Brain Institute
-% \section{Allen Brain Institute}
-
-% My spesific implementation of LFPy and Neuron. 
-
-% The recording site for the electrophysiological data is soma for all neuron in the data from 
-% Allen Brain Institute.
-% The currents in the dendrites are not avaiable and is modelled using a passive neuron model.
-% Write how the simulation is set up. 
-
-
-% Create convincing results that shows that the simulations are correct and can be trusted. 
-
-% \begin{itemize}
-% 	\item Action potential width and amplitude is correct. 
-% 	\item Fourier specter is correct. 
-% 	\item Extracellular width and amplitude matches the article. 
-% 	\item Create same plots. 
-% 	\item Calculate the same parameters, power law?
-% \end{itemize}
-
-% How different are action potentials generated from the same cell. How does the "mean" spike look
-% from the experimental data. 
-
-% Data from Blue Brain and Allen Brain Institute. 
-
-% Allen Brain Institute Questions:
-% \begin{itemize}
-% 	\item How much does the experimental spikes differ. 
-% \end{itemize}
-
-%}}} end of Allen Brain Institute
-%}}} end of Methods
-%{{{ Results
-\chapter{Results}
-In figure ?? the spike width from interneurons and pyramidal neurons have been
-plottet seperatly. Neurons in the pyramidal group are the type TTPC1 and TTPC2 
-The groups suggests that interneuron can be seperated from 
-pyramidal neurons depending on their spike shape. 
 
 %}}} end of Results
 %{{{ Discussion
@@ -674,89 +857,89 @@ Nothing here yet.
 
 %}}} end of Discussion
 %{{{ Appendix
-\begin{appendix}
-\chapter{Appendix}
-\section{Quasistatic Approximation in Neural Tissue}
-\label{sec:quasi}
-A quasistatic approximation implies that the equations have a form that does
-not include time derivatives (static). Some quantaties can be allowed to vary over 
-time, but slowly. 
-	Here we show that the quasistatic approximation is a valid assumption in
-neural tissue. First start with Maxwell's equations.
-\begin{align}
-	\nabla \cdot {\bf E} &= p / e \nonumber\\
-	\nabla \times {\bf E} &= -\partial \bf{B} / \partial t \label{eq:max_1}\\
-	\nabla \cdot {\bf B} &= 0\nonumber\\
-	\nabla \times {\bf B} &= \mu_0({\bf J} + \epsilon_0\partial{\bf E}/\partial t)
-	\label{eq:max_3}
-\end{align}
+% \begin{appendix}
+% \chapter{Appendix}
+% \section{Quasistatic Approximation in Neural Tissue}
+% \label{sec:quasi}
+% A quasistatic approximation implies that the equations have a form that does
+% not include time derivatives (static). Some quantaties can be allowed to vary over 
+% time, but slowly. 
+% 	Here we show that the quasistatic approximation is a valid assumption in
+% neural tissue. First start with Maxwell's equations.
+% \begin{align}
+% 	\nabla \cdot {\bf E} &= p / e \nonumber\\
+% 	\nabla \times {\bf E} &= -\partial \bf{B} / \partial t \label{eq:max_1}\\
+% 	\nabla \cdot {\bf B} &= 0\nonumber\\
+% 	\nabla \times {\bf B} &= \mu_0({\bf J} + \epsilon_0\partial{\bf E}/\partial t)
+% 	\label{eq:max_3}
+% \end{align}
 
-In a passive nonmagnetic medium, {\bf J} is the sum of ohmic volume current 
-and the polarization current
-\begin{align}
-	\bf J &= \sigma{\bf E} + \partial {\bf P}/\partial t \label{eq:cur_den_0}
-\end{align}
-where ${\bf P} = (\epsilon - \epsilon_0){\bf E}$ is the polarization and $\epsilon$
-is the permitivity of the material.In neuromagnetism, we generally deal with
-frequencies that are below 100 \si{\hertz}. Cellular electrical
-phenomena contain mostly frequencies below \si{1\kilo\hertz}. 
-Let $\sigma$ and $\epsilon$ be uniform and let us consider elctromagnetic 
-wave at frequencty $f$.
-\begin{align}
-	{\bf E} = {\bf E}_0({\bf r})\exp(i2\pi ft)
-\end{align}
-With \cref{eq:max_3,eq:cur_den_0} we get,
-\begin{align}
-	\nabla \times {\bf B} &= \mu_0(
-		\sigma{\bf E} + 
-		(\epsilon - \epsilon_0)\partial{\bf E}/\partial t + 
-		\epsilon_0\partial{\bf E}/\partial t
-		)
-\end{align}
-For the quasistatic approximation to be valid, it is necessary
-that the time-derivative terms be small compared to the 
-ohmic current. 
-\begin{align}
-	\abs{\epsilon{\bf E}/\partial t} \ll \abs{\bf \sigma E} 
-		\rightarrow 2\pi f \epsilon/\sigma \ll 1
-\end{align}
-With $\sigma = 0.3\,\si{\per\ohm\per\meter}$, the value of brain tissue, 
-$\epsilon = 10^5\cdot\epsilon_0$, and $f = 100\,\si{\hertz}$, we find
-\begin{align}
-	2\pi f\epsilon/\sigma = 2\cdot10^{-3} \ll 1
-\end{align}
-In addition, $\partial {\bf B} /\partial t$ must be small. from
-\cref{eq:max_1,eq:max_3}, 
-\begin{align}
-	\nabla\times\nabla\times{\bf E} &= 
-		-\frac{\partial}{\partial t}(\nabla\times{\bf B})\nonumber\\
-	&= -\mu_0\frac{\partial}{\partial t}
-		(
-		\sigma{\bf E} + \epsilon\partial{\bf E}/\partial t
-		) \nonumber \\
-	&= -i2\pi f\mu_0(\sigma + i2\pi f\epsilon){\bf E}
-\end{align}
+% In a passive nonmagnetic medium, {\bf J} is the sum of ohmic volume current 
+% and the polarization current
+% \begin{align}
+% 	\bf J &= \sigma{\bf E} + \partial {\bf P}/\partial t \label{eq:cur_den_0}
+% \end{align}
+% where ${\bf P} = (\epsilon - \epsilon_0){\bf E}$ is the polarization and $\epsilon$
+% is the permitivity of the material.In neuromagnetism, we generally deal with
+% frequencies that are below 100 \si{\hertz}. Cellular electrical
+% phenomena contain mostly frequencies below \si{1\kilo\hertz}. 
+% Let $\sigma$ and $\epsilon$ be uniform and let us consider elctromagnetic 
+% wave at frequencty $f$.
+% \begin{align}
+% 	{\bf E} = {\bf E}_0({\bf r})\exp(i2\pi ft)
+% \end{align}
+% With \cref{eq:max_3,eq:cur_den_0} we get,
+% \begin{align}
+% 	\nabla \times {\bf B} &= \mu_0(
+% 		\sigma{\bf E} + 
+% 		(\epsilon - \epsilon_0)\partial{\bf E}/\partial t + 
+% 		\epsilon_0\partial{\bf E}/\partial t
+% 		)
+% \end{align}
+% For the quasistatic approximation to be valid, it is necessary
+% that the time-derivative terms be small compared to the 
+% ohmic current. 
+% \begin{align}
+% 	\abs{\epsilon{\bf E}/\partial t} \ll \abs{\bf \sigma E} 
+% 		\rightarrow 2\pi f \epsilon/\sigma \ll 1
+% \end{align}
+% With $\sigma = 0.3\,\si{\per\ohm\per\meter}$, the value of brain tissue, 
+% $\epsilon = 10^5\cdot\epsilon_0$, and $f = 100\,\si{\hertz}$, we find
+% \begin{align}
+% 	2\pi f\epsilon/\sigma = 2\cdot10^{-3} \ll 1
+% \end{align}
+% In addition, $\partial {\bf B} /\partial t$ must be small. from
+% \cref{eq:max_1,eq:max_3}, 
+% \begin{align}
+% 	\nabla\times\nabla\times{\bf E} &= 
+% 		-\frac{\partial}{\partial t}(\nabla\times{\bf B})\nonumber\\
+% 	&= -\mu_0\frac{\partial}{\partial t}
+% 		(
+% 		\sigma{\bf E} + \epsilon\partial{\bf E}/\partial t
+% 		) \nonumber \\
+% 	&= -i2\pi f\mu_0(\sigma + i2\pi f\epsilon){\bf E}
+% \end{align}
 
-Solutions of this equation have spatial changes on the characteristic
-length scale
-\begin{align}
-	\lambda_c = \abs{2\pi f \mu_0 \sigma(1+i2\pi f \epsilon/\sigma)}^{-1/2}
-		\approx65\,\si{\meter}
-\end{align}
-This length is much longer than the diameter of the head. This implies that the
-contribution of $\partial {\bf B}/\partial t$ to $\bf E$ is small. Theautorefor,
-the quaasistatic approximation appears justified. This does not
-mean that we should forget time-dependent phenomena altogether. 
-For example, the capacitative current through the cell membrane is significant in
-determining the properties of the action potential. 
-Nevertheless, this so-called displacement current, 
-$\epsilon_0\partial{\bf E}/\partial t$, need not be taken into account in the 
-calculation of $\bf B$.
+% Solutions of this equation have spatial changes on the characteristic
+% length scale
+% \begin{align}
+% 	\lambda_c = \abs{2\pi f \mu_0 \sigma(1+i2\pi f \epsilon/\sigma)}^{-1/2}
+% 		\approx65\,\si{\meter}
+% \end{align}
+% This length is much longer than the diameter of the head. This implies that the
+% contribution of $\partial {\bf B}/\partial t$ to $\bf E$ is small. Theautorefor,
+% the quaasistatic approximation appears justified. This does not
+% mean that we should forget time-dependent phenomena altogether. 
+% For example, the capacitative current through the cell membrane is significant in
+% determining the properties of the action potential. 
+% Nevertheless, this so-called displacement current, 
+% $\epsilon_0\partial{\bf E}/\partial t$, need not be taken into account in the 
+% calculation of $\bf B$.
 
-Copied from
-\textcite{hamalainen_magnetoencephalography-_1993}
+% Copied from
+% \textcite{hamalainen_magnetoencephalography-_1993}
 
-\end{appendix}
+% \end{appendix}
 %}}} end of Appendix
 %{{{ Glossary
 % \printglossary[style=mcoltreegroup]
