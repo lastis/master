@@ -128,6 +128,8 @@
     \LetLtxMacro{\mycref}{\cref}
 	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}} }
 }
+% Change the spacing of some math symbols in math mode.
+\setlength{\thickmuskip}{6mu}
 %}}} end of preamble
 \begin{document}
 % Overview {{{ %
@@ -728,14 +730,7 @@ the spike index must be supplied, the default setting uses the first spike.
 
 %{{{ Pettersen and Einvoll
 \section{Pettersen \& Einevoll (2008) Reproduction}
-To verify that the simulation environment could be trusted 
-some results from 
-\textcite{pettersen_amplitude_2008} was replicated.
-Spesifically the spike width and amplitude dependency in relation to 
-the distance from soma was compared to current results. 
-
-\subsection{Simulation}
-\begin{wrapfigure}{R}{.5\textwidth}
+\begin{wrapfigure}[24]{R}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
         \includegraphics[width=\linewidth]{images/4_1/morph_xy_up.pdf}
@@ -749,6 +744,13 @@ the distance from soma was compared to current results.
     \end{center}
 \end{wrapfigure}
 %
+To verify that the simulation environment could be trusted 
+some results from 
+\textcite{pettersen_amplitude_2008} was replicated.
+Spesifically the spike width and amplitude dependency in relation to 
+the distance from soma was compared to current results. 
+
+\subsection{Simulation}
 \textbf{Cell:}
 The \textcite{mainen_influence_1996} morphology was used with a passive model, which is 
 the same model used in \textcite{pettersen_amplitude_2008}. 
@@ -774,7 +776,7 @@ puts the apical dendrites along this axis
             fig. 6.1 (B) in their book.}
         \label{fig:4_1_cs_ap_signal}
     \end{center}
-    \end{figure}
+\end{figure}
 \noindent
 \textbf{Spike Generation:}
 An action potental was generated using the Connor-Stevens model 
@@ -792,40 +794,71 @@ the spike used in \textcite{pettersen_amplitude_2008} which had an amplitude of
 the creation of the action potential other than stating that the action 
 potential used were similar to \textcite{dayan_theoretical_2001}.
 The difference can be explained by the fact that action potentials
-from pyramidal neurons often has a peak at \SI{20}{\milli\volt},
+from pyramidal neurons often peaks at \SI{20}{\milli\volt},
 and that this was achived by scaling the original signal from the
 Connor-Stevens model.
-To compensate for the difference the action potental used in this 
-simulation was 
-normalized to \SI{83}{\milli\volt} (\cref{fig:3_1_soma_mem}).
+To compensate for the difference the action potental used in further 
+simulations were 
+scaled to \SI{83}{\milli\volt} (\cref{fig:4_1_cs_ap_norm}).
 \\
 
 \begin{figure}[h]
-\centering
-\includegraphics[width=1\textwidth]{images/4_1/soma_mem.pdf}
-\caption{Soma membrane voltage. }
-\label{fig:3_1_soma_mem}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/4_1/cs_ap_norm.pdf}
+        \caption{
+            The second spike in \cref{fig:4_1_cs_ap_signal} scaled to 
+            \SI{83}{\milli\volt} to match the action potential used in 
+            \textcite{pettersen_amplitude_2008} 
+            }
+        \label{fig:4_1_cs_ap_norm}
+    \end{center}
 \end{figure}
 
 
 \noindent
 \textbf{Parameters:}
-Parameters are the same as \textcite{pettersen_amplitude_2008} and 
-\textcite{dayan_theoretical_2001} . Membrane resistance 
-$R_m = 3\cdot10^4\Omega /cm^2$, membrane capacitance $C_m=1\mu F / cm^2$, 
-axial resistance $R_a = 150\Omega/cm^2$, time resolution $dt=2^{-6}ms$. 
+Parameters for the Neuron simulation were the same as used in 
+\textcite{pettersen_amplitude_2008} and the action potential used as a boundary
+condition in the soma is the one specified above. 
+Membrane resistance 
+$R_m = \SI{30}{\kilo\ohm\per\centi\metre\squared}$, 
+membrane capacitance 
+$C_m=\SI{1}{\micro\farad\per\centi\metre\squared}$, 
+axial resistance 
+$R_a = \SI{150}{\ohm\per\centi\metre\squared}$, 
+time resolution 
+$dt = \SI[exponent-base=2]{e-6}{\milli\second}$. 
 The reversal potential was set to zero. The action potental was imposed in all
 soma sections using the "play" vector function in Neuron.
 \\
 
-\noindent\emph{Electrode Positions:}
+\begin{wrapfigure}[17]{R}{.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/4_1/disc_morph_elec_xz.pdf}
+        \vspace{-20pt}
+        \caption{%
+            Electrode positions placed in a plane around soma perpendicular to
+            the axis along the apical dendrites.
+            }
+        \label{fig:4_1_electrode_pos}
+        \vspace{-10pt}
+    \end{center}
+\end{wrapfigure}
+\noindent
+\textbf{Electrode Positions:}
 Recording sites were placed in the xz plane at 11 linearly spaced 
 positions along 36 lines with equal 
-angular spacing. (TODO: Show the electrode positions.) 
+angular spacing (\cref{fig:4_1_electrode_pos}).
+\textcite{pettersen_amplitude_2008} states the recording positions
+were in the plane perpendicular to the apical dendrites, this is 
+ensured by the rotation done with PCA and putting the electrodes in
+the xz-plane.
 \\
 
 
-\noindent\emph{Spike Width \& Amplitude:}
+\noindent
+\textbf{Spike Width \& Amplitude:}
 A baseline was set as the value at the start of the signal. 
 Amplitude was calculated as the difference between maximum absolute value and the
 baseline.
