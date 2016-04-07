@@ -715,10 +715,10 @@ the spike index must be supplied, the default setting uses the first spike.
 %}}} end of Methods
 %{{{ Results
 \chapter{Results}
-In figure ?? the spike width from interneurons and pyramidal neurons have been
-plottet seperatly. Neurons in the pyramidal group are the type TTPC1 and TTPC2 
-The groups suggests that interneuron can be seperated from 
-pyramidal neurons depending on their spike shape. 
+% In figure ?? the spike width from interneurons and pyramidal neurons have been
+% plottet seperatly. Neurons in the pyramidal group are the type TTPC1 and TTPC2 
+% The groups suggests that interneuron can be seperated from 
+% pyramidal neurons depending on their spike shape. 
 
 \vspace{1em} 
 \startcontents
@@ -735,14 +735,20 @@ the distance from soma was compared to current results.
 % Write more about the connor stevens model?
 
 \subsection{Simulation}
-\emph{Cell:}
-The \textcite{mainen_influence_1996} cell was used with a passive model, which is 
+\textbf{Cell:}
+The \textcite{mainen_influence_1996} morphology was used with a passive model, which is 
 the same model used in \textcite{pettersen_amplitude_2008}. 
-It is not clear in which plane the measurements was taken from so 
-the cell was rotated using PCA (principal component analysis) on the compartment
+The cell was rotated using PCA (principal component analysis) on the compartment
 positions.
-This rotates the cell so most of the dendrites are along
-the y and x-axis. 
+This calculates three orthogonal vectors such that 
+the positions of the compartments 
+has the greatest variance along the first principal component, 
+second highest along the second and third most along the third.
+The first principal component was made paralell to the y-axis which
+puts the apical dendrites along this axis.
+
+
+
 \\
 % TODO: show the morphology of the neuron
 
@@ -847,7 +853,7 @@ data points.}
 
 %}}} end of Pettersen and Einvoll
 
-The amplitude in fourier analysis is proportional to the number of samples.
+% The amplitude in fourier analysis is proportional to the number of samples.
 
 %}}} end of Results
 %{{{ Discussion
