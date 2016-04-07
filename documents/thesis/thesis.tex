@@ -765,18 +765,39 @@ puts the apical dendrites along this axis
 
 % CS model from Dayan Abott can be found in chapter 6, see fig 6.1 
 % in the book.
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/4_1/cs_ap_original_signal.pdf}
+        \caption{
+            Simulation of the Connor-Stevens model using parameters from 
+            \textcite{dayan_theoretical_2001}. This graph closely resembles 
+            fig. 6.1 (B) in their book.}
+        \label{fig:4_1_cs_ap_signal}
+    \end{center}
+    \end{figure}
 \noindent
 \textbf{Spike Generation:}
 An action potental was generated using the Connor-Stevens model 
 (\textcite{connor_prediction_1971,connor_neural_1977})
 using the same parameters as \textcite{dayan_theoretical_2001}. 
-This gave an amplitude of \SI{107.5}{\milli\volt} from baseline. 
-The baseline was located at \SI{-60}{\milli\volt} and the
-peak at \SI{-60}{\milli\volt} (the action potental is not shown). 
-These values are similar (TODO: how similar?) to \textcite{dayan_theoretical_2001}, but not
-with \textcite{pettersen_amplitude_2008} which had an amplitude of 
-$83mV$ from baseline. To compensate for the difference the action potental was 
-normalized to $83mV$ manually (\cref{fig:3_1_soma_mem}).
+In \cref{fig:4_1_cs_ap_signal} the Connor-Stevens simulation is shown
+where the second spike was used for further analysis. 
+This spike had an amplitude of \SI{119.93}{\milli\volt} from baseline. 
+The baseline was estimated to \SI{-54.63}{\milli\volt} and the
+peak at \SI{53.30}{\milli\volt}. 
+These values matches \textcite{dayan_theoretical_2001}, but not
+the spike used in \textcite{pettersen_amplitude_2008} which had an amplitude of 
+\SI{83}{\milli\volt} from baseline. 
+\textcite{pettersen_amplitude_2008} does not go into further detail about
+the creation of the action potential other than stating that the action 
+potential used were similar to \textcite{dayan_theoretical_2001}.
+The difference can be explained by the fact that action potentials
+from pyramidal neurons often has a peak at \SI{20}{\milli\volt},
+and that this was achived by scaling the original signal from the
+Connor-Stevens model.
+To compensate for the difference the action potental used in this 
+simulation was 
+normalized to \SI{83}{\milli\volt} (\cref{fig:3_1_soma_mem}).
 \\
 
 \begin{figure}[h]

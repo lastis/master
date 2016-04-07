@@ -287,7 +287,8 @@ if __name__ == "__main__":
         threshold=3)
 
     # Choose to look at the second spike.
-    v_vec = spikes[1]
+    spike_index = 1
+    v_vec = spikes[spike_index]
     i_vec = np.ones(spikes.shape[1]) * p['I_amp']
 
     original_baseline = v_vec[0]
@@ -361,4 +362,5 @@ if __name__ == "__main__":
     info_file.write('original baseline = {}mV\n'.format(original_baseline))
     info_file.write('original peak = {}mV\n'.format(original_peak))
     info_file.write('original amp. = {}mV\n'.format(original_amplitude))
+    info_file.write('spike index = {}\n'.format(spike_index))
     info_file.close()
