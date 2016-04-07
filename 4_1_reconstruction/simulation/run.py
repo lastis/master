@@ -54,14 +54,14 @@ sim_intra.process_param['padding_factor'] = 1
 # sh.push(sim_intra)
 
 sim_morph = LFPy_util.sims.Morphology()
-# sh.push(sim_morph)
+sh.push(sim_morph)
 
 sim_disc = LFPy_util.sims.DiscXY()
 sim_disc.run_param['n'] = 6
 sim_disc.run_param['n_phi'] = 36
 sim_disc.run_param['R'] = 120
 sim_disc.run_param['R_0'] = 20
-sh.push(sim_disc)
+# sh.push(sim_disc)
 
 # Find the principal component axes and rotate cell.
 axes = LFPy_util.data_extraction.find_major_axes()

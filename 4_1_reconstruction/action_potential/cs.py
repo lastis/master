@@ -1,10 +1,11 @@
 import numpy as np
 import pylab as plt
-import LFPy_util.plot
-import LFPy_util.data_extraction
+import LFPy_util
+import LFPy_util.plot as lplot
+import LFPy_util.data_extraction as de
+import LFPy_util.colormaps as lcmaps
+import matplotlib.pyplot as plt
 from scipy.signal import argrelextrema
-import pdb
-
 
 ##############################################################################################
 def set_parameters():
@@ -22,13 +23,13 @@ def set_parameters():
     p = {}
 
     ## simulation parameters
-    p['T'] = 300  ## simulation time (ms)
+    p['T'] = 100  ## simulation time (ms)
     p['dt'] = 2** -5  ## simulation time resolution (ms)
-    p['t_start'] = -100
+    p['t_start'] = 0
 
     ## stimulus parameters
-    # p['I_amp'] = 13.7           ## input current amplitude (uA/cm2)
-    p['I_amp'] = 12.45  ## input current amplitude (uA/cm2)
+    # p['I_amp'] = 12.45  ## input current amplitude (uA/cm2)
+    p['I_amp'] = 10  ## input current amplitude (uA/cm2)
     p['t_stim_on'] = p['t_start']  ## stimulus-on time (ms)
     p['t_stim_off'] = p['T']  ## stimulus-off time (ms)
 
@@ -246,48 +247,13 @@ def simulate(p):
 
     return Vm, I
 
-
-def find_threshold_and_plot():
-    n = 10
-    amp = np.linspace(6, 10, n)
-    firing_rate = np.zeros([n])
-    spike_cnt = 0
-    threshold = 0
-    for i, a in enumerate(amp):
-        print 'Simulating...'
-        p = set_parameters_sweep(a)
-
-        Vm, I = simulate(p)
-
-        # Remove the preparation part of the signal.
-        I = I[int(-p['t_start'] / p['dt']):-1]
-        Vm = Vm[int(-p['t_start'] / p['dt']):-1]
-        p['time'] = p['time'][int(-p['t_start'] / p['dt']):-1]
-
-        # Find local maxima.
-        max_idx = argrelextrema(Vm, np.greater)[0]
-        # Remove strange empty elements.
-        max_idx = filter(None, max_idx)
-        # Count local maxima over threshold as spikes.
-        Vm_max = Vm[max_idx]
-        spike_cnt = np.sum(Vm_max >= threshold)
-        firing_rate[i] = float(spike_cnt) / p['T'] * 1000
-    plt.plot(amp, firing_rate)
-    plt.show()
-    threshold = 0
-    for i in xrange(len(amp)):
-        if firing_rate[i] != 0:
-            threshold = amp[i]
-            break
-    print threshold
-    return threshold
-
-##############################################################################################
 ##############################################################################################
 ## main program
+##############################################################################################
 
 if __name__ == "__main__":
-    # find_threshold_and_plot()
+    # Set global matplotlib parameters.
+    lplot.set_rc_param()
 
     ## set parameters
     p = set_parameters()
@@ -295,13 +261,21 @@ if __name__ == "__main__":
     ## simulate
     Vm, I = simulate(p)
 
+    print "plotting original signal"
+    plt.figure(figsize=lplot.size_common)
+    ax = plt.gca()
+    lplot.nice_axes(ax)
+    ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
+    ax.set_xlabel(r"Time \textbf{[\si{\milli\second}]}")
+    plt.plot(p['time'], Vm, color=lcmaps.get_color(0))
+    lplot.save_plt(plt, "cs_ap_original_signal", ".")
+    plt.close()
+
     # Remove the preparation part of the signal.
     I = I[int(-p['t_start'] / p['dt']):-1]
     Vm = Vm[int(-p['t_start'] / p['dt']):-1]
     p['time'] = p['time'][int(-p['t_start'] / p['dt']):-1]
 
-    # Move signal up so it starts at 0.
-    Vm = Vm - Vm[0]
 
     pre_dur = 16.7 / 2
     post_dur = pre_dur
@@ -312,40 +286,79 @@ if __name__ == "__main__":
         post_dur=post_dur,
         threshold=3)
 
-    # t_vec = np.arange(spikes.shape[1])*p['dt']
-    v_vec = spikes[2]
+    # Choose to look at the second spike.
+    v_vec = spikes[1]
     i_vec = np.ones(spikes.shape[1]) * p['I_amp']
+
+    original_baseline = v_vec[0]
+    original_peak = v_vec.max()
+    original_amplitude = v_vec.max() - v_vec.min()
+
+    print "plotting original ap"
+    plt.figure(figsize=lplot.size_common)
+    ax = plt.gca()
+    lplot.nice_axes(ax)
+    ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
+    ax.set_xlabel(r"Time \textbf{[\si{\milli\second}]}")
+    plt.plot(t_vec, v_vec, color=lcmaps.get_color(0))
+    lplot.save_plt(plt, "cs_ap_original", ".")
+    plt.close()
 
     # Normalize signal to 83 mV.
     v_vec = v_vec - v_vec[0]
     v_vec = v_vec / v_vec.max() * 83
 
     # Calculate width and amp.
-    width, trace = LFPy_util.data_extraction.findWaveWidthsSimple(v_vec,
-                                                                  0.5,
-                                                                  dt=p['dt'])
-    print 'Width = ', width
-    print 'Amp = ', v_vec.max()
+    width, trace = de.find_wave_width_type_II(v_vec, dt=p['dt'])
 
-    # plot results.
-    LFPy_util.plot.i_mem_v_mem(v_vec, i_vec, t_vec, fname='cs_ap', show=False)
+    print "plotting normalized ap with current"
+    plt.figure(figsize=lplot.size_common)
+    ax = plt.subplot(2,1,1)
+    ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
+    lplot.nice_axes(ax)
+    plt.plot(t_vec, v_vec, color=lcmaps.get_color(0))
+    ax = plt.subplot(2,1,2)
+    ax.set_ylabel(r"Mem. Cur. \textbf{[\si{\micro\ampere\per\centi\metre}]}")
+    ax.set_xlabel(r"Time \textbf{[\si{\milli\second}]}")
+    lplot.nice_axes(ax)
+    plt.plot(t_vec, i_vec, color=lcmaps.get_color(0))
+    lplot.save_plt(plt, "cs_ap_norm_with_current", ".")
+    plt.close()
+
+    print "plotting normalized ap"
+    plt.figure(figsize=lplot.size_common)
+    ax = plt.gca()
+    lplot.nice_axes(ax)
+    ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
+    ax.set_xlabel(r"Time \textbf{[\si{\milli\second}]}")
+    plt.plot(t_vec, v_vec, color=lcmaps.get_color(0))
+    lplot.save_plt(plt, "cs_ap_norm", ".")
+    plt.close()
 
     freqs, amps, phase = \
-            LFPy_util.data_extraction.findFreqAndFft(t_vec,v_vec)
+            de.find_freq_and_fft(p['dt'],v_vec, f_cut=3)
     # Remove the first coefficient as we don't care about the baseline.
     freqs = np.delete(freqs, 0)
     amps = np.delete(amps, 0)
-    LFPy_util.plot.fourierSpecter(freqs,
-                                  amps,
-                                  fname='fourier',
-                                  f_end=3,
-                                  show=False)
+
+    print "plotting fourier"
+    plt.figure(figsize=lplot.size_common)
+    ax = plt.gca()
+    lplot.nice_axes(ax)
+    ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
+    ax.set_xlabel(r"Frequency \textbf{[\si{\kilo\hertz}]}")
+    plt.plot(freqs, amps, color=lcmaps.get_color(0))
+    lplot.save_plt(plt, "cs_ap_fourier", ".")
+    plt.close()
 
     # Save the actionpotential to file.
-    LFPy_util.save_kwargs_json('cs_ap', v_vec=v_vec, t_vec=t_vec)
+    LFPy_util.other.save_kwargs_json('cs_ap', v_vec=v_vec, t_vec=t_vec)
 
     info_file = open('cs_ap_info.md', 'w')
     info_file.write('dt = {}\n'.format(p['dt']))
     info_file.write('amp = {}\n'.format(p['I_amp']))
     info_file.write('T = {}\n'.format(16.7))
+    info_file.write('original baseline = {}mV\n'.format(original_baseline))
+    info_file.write('original peak = {}mV\n'.format(original_peak))
+    info_file.write('original amp. = {}mV\n'.format(original_amplitude))
     info_file.close()

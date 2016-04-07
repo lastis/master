@@ -33,6 +33,8 @@
 	% isbn=false, 
 	maxcitenames=2,
 ]{biblatex}
+% Place figures inline with text.
+\usepackage{wrapfig}
 % Have to import this at the end for this to work somehow.
 \usepackage{cleveref}		
 \usepackage{multicol}
@@ -119,8 +121,8 @@
 % % Include the glossary file. 
 % \input{glossary}
 
-% Change the emph command.
-\DeclareTextFontCommand{\emph}{\color{viridis_03}}
+% % Change the emph command.
+% \DeclareTextFontCommand{\emph}{\color{viridis_03}}
 % Change color of clever ref.
 \AtBeginDocument{
     \LetLtxMacro{\mycref}{\cref}
@@ -732,9 +734,21 @@ some results from
 Spesifically the spike width and amplitude dependency in relation to 
 the distance from soma was compared to current results. 
 
-% Write more about the connor stevens model?
-
 \subsection{Simulation}
+\begin{wrapfigure}{R}{.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/4_1/morph_xy_up.pdf}
+        \vspace{-20pt}
+        \caption{%
+            Morphology of \textcite{mainen_influence_1996} cell. 
+            The apical dendrites are located along the y-axis after rotation
+            with PCA.}
+        \label{fig:4_1_morph}
+        \vspace{-10pt}
+    \end{center}
+\end{wrapfigure}
+%
 \textbf{Cell:}
 The \textcite{mainen_influence_1996} morphology was used with a passive model, which is 
 the same model used in \textcite{pettersen_amplitude_2008}. 
@@ -745,18 +759,20 @@ the positions of the compartments
 has the greatest variance along the first principal component, 
 second highest along the second and third most along the third.
 The first principal component was made paralell to the y-axis which
-puts the apical dendrites along this axis.
-
-
-
+puts the apical dendrites along this axis
+(\cref{fig:4_1_morph}).
 \\
-% TODO: show the morphology of the neuron
 
-\noindent\emph{Spike Generation:}
+% CS model from Dayan Abott can be found in chapter 6, see fig 6.1 
+% in the book.
+\noindent
+\textbf{Spike Generation:}
 An action potental was generated using the Connor-Stevens model 
-\cites{connor_prediction_1971, connor_neural_1977}
+(\textcite{connor_prediction_1971,connor_neural_1977})
 using the same parameters as \textcite{dayan_theoretical_2001}. 
-This had an amplitude of $107.6mV$ from baseline with the peak at $48.21mV$. 
+This gave an amplitude of \SI{107.5}{\milli\volt} from baseline. 
+The baseline was located at \SI{-60}{\milli\volt} and the
+peak at \SI{-60}{\milli\volt} (the action potental is not shown). 
 These values are similar (TODO: how similar?) to \textcite{dayan_theoretical_2001}, but not
 with \textcite{pettersen_amplitude_2008} which had an amplitude of 
 $83mV$ from baseline. To compensate for the difference the action potental was 
@@ -765,13 +781,14 @@ normalized to $83mV$ manually (\cref{fig:3_1_soma_mem}).
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth]{images/3_methods/3_1_reproduction/soma_mem.pdf}
+\includegraphics[width=1\textwidth]{images/4_1/soma_mem.pdf}
 \caption{Soma membrane voltage. }
 \label{fig:3_1_soma_mem}
 \end{figure}
 
 
-\noindent\emph{Parameters:}
+\noindent
+\textbf{Parameters:}
 Parameters are the same as \textcite{pettersen_amplitude_2008} and 
 \textcite{dayan_theoretical_2001} . Membrane resistance 
 $R_m = 3\cdot10^4\Omega /cm^2$, membrane capacitance $C_m=1\mu F / cm^2$, 
@@ -806,7 +823,7 @@ in Fig. $3$ in the paper.
 
 \begin{figure}[thp]
 \centering
-\includegraphics[width=\textwidth]{images/3_methods/3_1_reproduction/soma_mem_fourier.pdf}
+\includegraphics[width=\textwidth]{images/4_1/soma_mem_fourier.pdf}
 \caption{Frequency specter of simulated somatic membrane potential.}
 \label{fig:3_1_fourier}
 \end{figure}
@@ -824,7 +841,7 @@ This was also reported in \textcite{pettersen_amplitude_2008}.\\
 
 \begin{figure}[thp]
 \centering
-\includegraphics[width=\textwidth]{images/3_methods/3_1_reproduction/circular_spike_width_std.pdf}
+\includegraphics[width=\textwidth]{images/4_1/circular_spike_width_std.pdf}
 \caption{Spike width over distance. Mean +/- 1 std.}
 \label{fig:3_1_spike_width}
 \end{figure}
@@ -842,7 +859,7 @@ back to theory chapter.)
 
 \begin{figure}[thp]
 \centering
-\includegraphics[width=\textwidth]{images/3_methods/3_1_reproduction/circular_spike_amp_std_log.pdf}
+\includegraphics[width=\textwidth]{images/4_1/circular_spike_amp_std_log.pdf}
 \caption{Spike amplitude over distance. Mean +/- 1 std. The power law
 decays $1/r$, $1/r^2$ and $1/r^3$ are shown at the leftmost and rightmost
 data points.}
