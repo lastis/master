@@ -28,8 +28,7 @@ def set_parameters():
     p['t_start'] = 0
 
     ## stimulus parameters
-    # p['I_amp'] = 12.45  ## input current amplitude (uA/cm2)
-    p['I_amp'] = 10  ## input current amplitude (uA/cm2)
+    p['I_amp'] = 12.36  ## input current amplitude (uA/cm2)
     p['t_stim_on'] = p['t_start']  ## stimulus-on time (ms)
     p['t_stim_off'] = p['T']  ## stimulus-off time (ms)
 
@@ -277,8 +276,8 @@ if __name__ == "__main__":
     p['time'] = p['time'][int(-p['t_start'] / p['dt']):-1]
 
 
-    pre_dur = 16.7 / 2
-    post_dur = pre_dur
+    pre_dur = 8.35
+    post_dur = 8.35
     spikes, t_vec, _ = LFPy_util.data_extraction.extract_spikes(
         p['time'],
         Vm,
@@ -294,6 +293,7 @@ if __name__ == "__main__":
     original_baseline = v_vec[0]
     original_peak = v_vec.max()
     original_amplitude = v_vec.max() - v_vec.min()
+    original_width, trace = de.find_wave_width_type_II(v_vec, dt=p['dt'])
 
     print "plotting original ap"
     plt.figure(figsize=lplot.size_common)
@@ -309,10 +309,9 @@ if __name__ == "__main__":
     v_vec = v_vec - v_vec[0]
     v_vec = v_vec / v_vec.max() * 83
 
-    # Calculate width and amp.
-    width, trace = de.find_wave_width_type_II(v_vec, dt=p['dt'])
+    scaled_width, trace = de.find_wave_width_type_II(v_vec, dt=p['dt'])
 
-    print "plotting normalized ap with current"
+    print "plotting scaled ap with current"
     plt.figure(figsize=lplot.size_common)
     ax = plt.subplot(2,1,1)
     ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
@@ -323,21 +322,21 @@ if __name__ == "__main__":
     ax.set_xlabel(r"Time \textbf{[\si{\milli\second}]}")
     lplot.nice_axes(ax)
     plt.plot(t_vec, i_vec, color=lcmaps.get_color(0))
-    lplot.save_plt(plt, "cs_ap_norm_with_current", ".")
+    lplot.save_plt(plt, "cs_ap_scaled_with_current", ".")
     plt.close()
 
-    print "plotting normalized ap"
+    print "plotting scaled ap"
     plt.figure(figsize=lplot.size_common)
     ax = plt.gca()
     lplot.nice_axes(ax)
     ax.set_ylabel(r"Mem. Pot. \textbf{[\si{\milli\volt}]}")
     ax.set_xlabel(r"Time \textbf{[\si{\milli\second}]}")
     plt.plot(t_vec, v_vec, color=lcmaps.get_color(0))
-    lplot.save_plt(plt, "cs_ap_norm", ".")
+    lplot.save_plt(plt, "cs_ap_scaled", ".")
     plt.close()
 
     freqs, amps, phase = \
-            de.find_freq_and_fft(p['dt'],v_vec, f_cut=3)
+            de.find_freq_and_fft(p['dt'],v_vec, length=v_vec.shape[-1]*1, f_cut=3)
     # Remove the first coefficient as we don't care about the baseline.
     freqs = np.delete(freqs, 0)
     amps = np.delete(amps, 0)
@@ -362,5 +361,7 @@ if __name__ == "__main__":
     info_file.write('original baseline = {}mV\n'.format(original_baseline))
     info_file.write('original peak = {}mV\n'.format(original_peak))
     info_file.write('original amp. = {}mV\n'.format(original_amplitude))
+    info_file.write('original width = {}ms\n'.format(original_width))
+    info_file.write('scaled width = {}ms\n'.format(scaled_width))
     info_file.write('spike index = {}\n'.format(spike_index))
     info_file.close()

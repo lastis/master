@@ -1,3 +1,9 @@
 dt = 0.03125
-amp = 12.45
+amp = 12.36
 T = 16.7
+original baseline = -57.1152348027mV
+original peak = 53.2607042841mV
+original amp. = 119.491643684mV
+original width = [ 0.5625]ms
+scaled width = [ 0.5625]ms
+spike index = 1

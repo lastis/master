@@ -772,7 +772,7 @@ puts the apical dendrites along this axis
         \includegraphics[width=1\textwidth]{images/4_1/cs_ap_original_signal.pdf}
         \caption{
             Simulation of the Connor-Stevens model using parameters from 
-            \textcite{dayan_theoretical_2001}. This graph closely resembles 
+            \textcite{dayan_theoretical_2001}. A similar graph is shown in 
             fig. 6.1 (B) in their book.}
         \label{fig:4_1_cs_ap_signal}
     \end{center}
@@ -784,9 +784,17 @@ An action potental was generated using the Connor-Stevens model
 using the same parameters as \textcite{dayan_theoretical_2001}. 
 In \cref{fig:4_1_cs_ap_signal} the Connor-Stevens simulation is shown
 where the second spike was used for further analysis. 
-This spike had an amplitude of \SI{119.93}{\milli\volt} from baseline. 
-The baseline was estimated to \SI{-54.63}{\milli\volt} and the
-peak at \SI{53.30}{\milli\volt}. 
+The input current was very carefully adjusted to make the magnitude spectrum 
+similar to 
+\textcite{pettersen_amplitude_2008},
+and was set to 
+\SI{12.6}{\micro\ampere\per\centi\metre\squared}. 
+Without adjustment the magnitude spectrum tended to have
+a different inital value, from $6$ to \SI{8}{\milli\volt}, and
+was not as smooth.
+This spike had an amplitude of \SI{119.49}{\milli\volt} from baseline. 
+The baseline was estimated to \SI{-53.26}{\milli\volt} and the
+peak at \SI{53.26}{\milli\volt}. 
 These values matches \textcite{dayan_theoretical_2001}, but not
 the spike used in \textcite{pettersen_amplitude_2008} which had an amplitude of 
 \SI{83}{\milli\volt} from baseline. 
@@ -799,18 +807,18 @@ and that this was achived by scaling the original signal from the
 Connor-Stevens model.
 To compensate for the difference the action potental used in further 
 simulations were 
-scaled to \SI{83}{\milli\volt} (\cref{fig:4_1_cs_ap_norm}).
+scaled to \SI{83}{\milli\volt} (\cref{fig:4_1_cs_ap_scaled}).
 \\
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_1/cs_ap_norm.pdf}
+        \includegraphics[width=1\textwidth]{images/4_1/cs_ap_scaled.pdf}
         \caption{
             The second spike in \cref{fig:4_1_cs_ap_signal} scaled to 
             \SI{83}{\milli\volt} to match the action potential used in 
-            \textcite{pettersen_amplitude_2008} 
+            \textcite{pettersen_amplitude_2008}.
             }
-        \label{fig:4_1_cs_ap_norm}
+        \label{fig:4_1_cs_ap_scaled}
     \end{center}
 \end{figure}
 
@@ -827,7 +835,7 @@ $C_m=\SI{1}{\micro\farad\per\centi\metre\squared}$,
 axial resistance 
 $R_a = \SI{150}{\ohm\per\centi\metre\squared}$, 
 time resolution 
-$dt = \SI[exponent-base=2]{e-6}{\milli\second}$. 
+$dt = \SI[exponent-base=2]{e-5}{\milli\second}$. 
 The reversal potential was set to zero. The action potental was imposed in all
 soma sections using the "play" vector function in Neuron.
 \\
@@ -860,30 +868,34 @@ the xz-plane.
 \noindent
 \textbf{Spike Width \& Amplitude:}
 A baseline was set as the value at the start of the signal. 
-Amplitude was calculated as the difference between maximum absolute value and the
+Amplitude was calculated as the difference between the maximum value and the
 baseline.
-The spike width was calculated at half width at maximum amplitude. 
+The spike width was calculated at as the width at half maximum value. 
 
-Spike width was recorded at $0.5625 ms$ for $dt=2\cdot10^{-5}$, similar to 
-$0.55ms$ from \textcite{pettersen_amplitude_2008}. When increasing the
-resolution to $dt=2\cdot10^{-6}ms$ the spike width rose to $0.625ms$. 
-
+At 
+$dt = \SI[exponent-base=2]{e-5}{\milli\second} = \SI{0.03125}{\milli\second}$,
+the spike width from the Connor-Steven model was 
+\SI{0.5625}{\milli\volt}.
+This is similar to the reported spike width from 
+\textcite{pettersen_amplitude_2008}
+which was \SI{0.55}{\milli\second} and must have been rounded to
+the nearest \SI{0.05}{\milli\second}.
 
 \subsection{Results}
 The action potental that was used in \textcite{pettersen_amplitude_2008} 
 is similar to the one used here.  The amplitude of the fourier transform is displayed in
-\cref{fig:3_1_fourier}, which is in close resemblance to the standard action potential
+\cref{fig:4_1_fourier}, which is in close resemblance to the standard action potential
 in Fig. $3$ in the paper. 
 
 \begin{figure}[thp]
 \centering
-\includegraphics[width=\textwidth]{images/4_1/soma_mem_fourier.pdf}
+\includegraphics[width=\textwidth]{images/4_1/cs_ap_fourier.pdf}
 \caption{Frequency specter of simulated somatic membrane potential.}
-\label{fig:3_1_fourier}
+\label{fig:4_1_fourier}
 \end{figure}
 
 The spike width increases with the distance from soma as seen in 
-\cref{fig:3_1_spike_width}. These results are 
+\cref{fig:4_1_spike_width}. These results are 
 lower than the widths reported in \textcite{pettersen_amplitude_2008}.
 (Use more time on editing the Connor-Stevens model to come closer to 
 an max.amplitude on 20mV?).   
@@ -895,14 +907,14 @@ This was also reported in \textcite{pettersen_amplitude_2008}.\\
 
 \begin{figure}[thp]
 \centering
-\includegraphics[width=\textwidth]{images/4_1/circular_spike_width_std.pdf}
+\includegraphics[width=\textwidth]{images/4_1/disc_spike_width_II.pdf}
 \caption{Spike width over distance. Mean +/- 1 std.}
-\label{fig:3_1_spike_width}
+\label{fig:4_1_spike_width}
 \end{figure}
 
 \textcite{pettersen_amplitude_2008} reports a spike amplitude above $150\mu V$ at 
 $20\mu m$, this does not match current findings.  
-\cref{fig:3_1_spike_amp} shows spike amplitude with logarithmic axes.  
+\cref{fig:4_1_spike_amp} shows spike amplitude with logarithmic axes.  
 (TODO: Is numbers on the power law decays necessaryy?) Although 
 the data does not match \textcite{pettersen_amplitude_2008}, 
 it is comparable with what is
@@ -913,19 +925,19 @@ back to theory chapter.)
 
 \begin{figure}[thp]
 \centering
-\includegraphics[width=\textwidth]{images/4_1/circular_spike_amp_std_log.pdf}
+\includegraphics[width=\textwidth]{images/4_1/disc_spike_amps_I_log.pdf}
 \caption{Spike amplitude over distance. Mean +/- 1 std. The power law
 decays $1/r$, $1/r^2$ and $1/r^3$ are shown at the leftmost and rightmost
 data points.}
-\label{fig:3_1_spike_amp}
+\label{fig:4_1_spike_amp}
 \end{figure}
 
 \subsection{Discussion}
 
 %}}} end of Pettersen and Einvoll
-
-% The amplitude in fourier analysis is proportional to the number of samples.
-
+%{{{ Cell Classification%
+\section{Cell Classification}
+%}}}  %
 %}}} end of Results
 %{{{ Discussion
 \chapter{Discussion}
