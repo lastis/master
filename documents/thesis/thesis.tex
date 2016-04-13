@@ -587,6 +587,11 @@ often hav adapting action potential, what to do there.
 % TODO: Include sources to different ways of defining spike width.
 Many different definitions of spike width has been used to differentiate neurons, but
 to date it is not clear which definition is best suited for neuron classification. 
+
+Most extracellular spikeshapes has a minimum value greater than the maximum 
+value,
+but this is not always the case when measuring
+far away from soma. 
 \\
 
 \noindent 
@@ -609,6 +614,20 @@ Width Type II - Width at Half Amplitude:
 Width is measured as the duration the spike is below half amplitude of the signal measured
 from the baseline at the start of the signal. 
 \newline
+
+There are three prevailant ways of defining spike width which 
+has been named Type I, Type II and Type III.
+
+\textbf{Type I}: 
+Width is measured from "peak-to-peak". 
+This method can easily be implemented by measuring the width from
+minimum to maximum value.
+In the cases where the spike is flipped or is not well defined, this
+definition is not correct.
+
+As such the implementation of this definition was done by measuring
+the time from the the maximum absolute value to the preceding maximal absolute
+value on the opposing side. 
 
 %}}} end of 
 % Simulations with LFPyUtil{{{ 
@@ -801,12 +820,12 @@ To compensate for the difference the action potental used in further
 simulations were 
 scaled to \SI{83}{\milli\volt} (\cref{fig:4_1_cs_ap_scaled}).
 
-The input current was very carefully adjusted to make the magnitude spectrum 
+The input current was set to 
+\SI{12.6}{\micro\ampere\per\centi\metre\squared}. 
+and was very carefully adjusted to make the magnitude spectrum 
 (\cref{fig:4_1_fourier})
 similar to 
-\textcite{pettersen_amplitude_2008}\@ figure 3,
-and was set to 
-\SI{12.6}{\micro\ampere\per\centi\metre\squared}. 
+\textcite{pettersen_amplitude_2008}\@ figure 3.
 Without adjustment the magnitude spectrum tended to have
 a different inital value, from $6$ to \SI{8}{\milli\volt}, and
 was not as smooth.
@@ -938,7 +957,16 @@ data points.}
 
 %}}} end of Pettersen and Einvoll
 %{{{ Cell Classification%
-\section{Cell Classification}
+\section{Optimal Spike Width Definition}
+Spike width has been used to classify inhibitory neurons from excitatory neurons. 
+But in the literature there has been many different definitions of spike widths
+which makes comparing results across reseach difficult.
+
+Measurements was done using the three different spike width definitions
+and in relation to distance from soma. 
+A good definition is recoqnized by having a good seperation between inhibitory
+neurons and excitatory neurons. 
+
 %}}}  %
 %}}} end of Results
 %{{{ Discussion

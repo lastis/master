@@ -12,22 +12,14 @@ import copy
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_neurons = os.path.join(dir_current, "test")
+dir_neurons = os.path.join(dir_current, "4_2_spike_width")
 
 # Download models if they do not exist.
 blue_brain.download_all_models(dir_model)
 
 # Names of the neurons that also match the model folders.
-TTPC1 = []
-TTPC1.append('L5_TTPC1_cADpyr232_1')
-# TTPC1.append('L5_TTPC1_cADpyr232_2')
-
-# Gather neurons to be simulated.
-# neurons = TTPC1 + TTPC2 + MC + LBC
-# neurons = TTPC1 + TTPC2
-neurons = TTPC1
-# neurons = MC
-# neurons =  LBC
+neurons = []
+neurons.append('L5_TTPC1_cADpyr232_1')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -41,7 +33,7 @@ def load_func(neuron):
     cell_list = blue_brain.load_model(nrn_full, suppress=True)
     cell = cell_list[0]
     cell.tstartms = 0
-    cell.tstopms = 3000
+    cell.tstopms = 1000
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
     # Aligns y to axis[0] and x to axis[1]
@@ -57,27 +49,18 @@ sim.set_neuron_name(neurons)
 sim_multi = LFPy_util.sims.MultiSpike()
 sim_multi.run_param['pptype'] = 'ISyn'
 sim_multi.run_param['threshold'] = 4
-sim_multi.run_param['delay'] = 700
-sim_multi.run_param['duration'] = 2000
-sim_multi.run_param['spikes'] = 11
-sim_multi.run_param['init_amp'] = 0.55425
+sim_multi.run_param['delay'] = 100
+sim_multi.run_param['duration'] = 800
+sim_multi.run_param['spikes'] = 5
+sim_multi.run_param['init_amp'] = 0.30
 sim_multi.verbose = True
+# sim_multi.only_apply_electrode = True
 sim.push(sim_multi, False)
 
-sim_intra = LFPy_util.sims.Intracellular()
-sim.push(sim_intra)
-
-sim_morph = LFPy_util.sims.Morphology()
-sim.push(sim_morph)
-
-sim_sphere = LFPy_util.sims.SphereRand()
-sim_sphere.process_param['spike_to_measure'] = 3
-sim.push(sim_sphere)
-
-sim_sym = LFPy_util.sims.Symmetry()
-sim_sym.process_param['spike_to_measure'] = 4
-# sim_sym.plot_param['plot_detailed'] = True
-sim.push(sim_sym)
+sim_width = LFPy_util.sims.SpikeWidthDef()
+sim_width.run_param['seed'] = 1
+sim_width.process_param['spike_to_measure'] = 3
+sim.push(sim_width)
 
 # Simulation
 print sim
