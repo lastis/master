@@ -109,7 +109,7 @@
 	citecolor=viridis_03,
 	filecolor=black,
 	linkcolor={},
-	urlcolor=black
+	urlcolor=black,
 }
 
 % Glossary settings commented out:
@@ -126,7 +126,7 @@
 % Change color of clever ref.
 \AtBeginDocument{
     \LetLtxMacro{\mycref}{\cref}
-	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}} }
+	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}}}
 }
 % Change the spacing of some math symbols in math mode.
 \setlength{\thickmuskip}{6mu}
@@ -781,26 +781,18 @@ puts the apical dendrites along this axis
 \textbf{Spike Generation:}
 An action potental was generated using the Connor-Stevens model 
 (\textcite{connor_prediction_1971,connor_neural_1977})
-using the same parameters as \textcite{dayan_theoretical_2001}. 
+using the same parameters as \textcite{dayan_theoretical_2001}\@. 
 In \cref{fig:4_1_cs_ap_signal} the Connor-Stevens simulation is shown
 where the second spike was used for further analysis. 
-The input current was very carefully adjusted to make the magnitude spectrum 
-similar to 
-\textcite{pettersen_amplitude_2008},
-and was set to 
-\SI{12.6}{\micro\ampere\per\centi\metre\squared}. 
-Without adjustment the magnitude spectrum tended to have
-a different inital value, from $6$ to \SI{8}{\milli\volt}, and
-was not as smooth.
 This spike had an amplitude of \SI{119.49}{\milli\volt} from baseline. 
 The baseline was estimated to \SI{-53.26}{\milli\volt} and the
 peak at \SI{53.26}{\milli\volt}. 
-These values matches \textcite{dayan_theoretical_2001}, but not
+These values matches \textcite{dayan_theoretical_2001}\@, but not
 the spike used in \textcite{pettersen_amplitude_2008} which had an amplitude of 
 \SI{83}{\milli\volt} from baseline. 
 \textcite{pettersen_amplitude_2008} does not go into further detail about
 the creation of the action potential other than stating that the action 
-potential used were similar to \textcite{dayan_theoretical_2001}.
+potential used were similar to \textcite{dayan_theoretical_2001}\@.
 The difference can be explained by the fact that action potentials
 from pyramidal neurons often peaks at \SI{20}{\milli\volt},
 and that this was achived by scaling the original signal from the
@@ -808,6 +800,16 @@ Connor-Stevens model.
 To compensate for the difference the action potental used in further 
 simulations were 
 scaled to \SI{83}{\milli\volt} (\cref{fig:4_1_cs_ap_scaled}).
+
+The input current was very carefully adjusted to make the magnitude spectrum 
+(\cref{fig:4_1_fourier})
+similar to 
+\textcite{pettersen_amplitude_2008}\@ figure 3,
+and was set to 
+\SI{12.6}{\micro\ampere\per\centi\metre\squared}. 
+Without adjustment the magnitude spectrum tended to have
+a different inital value, from $6$ to \SI{8}{\milli\volt}, and
+was not as smooth.
 \\
 
 \begin{figure}[h]
@@ -840,7 +842,7 @@ The reversal potential was set to zero. The action potental was imposed in all
 soma sections using the "play" vector function in Neuron.
 \\
 
-\begin{wrapfigure}[17]{R}{.5\textwidth}
+\begin{wrapfigure}[18]{R}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
         \includegraphics[width=\linewidth]{images/4_1/disc_morph_elec_xz.pdf}
@@ -884,13 +886,13 @@ the nearest \SI{0.05}{\milli\second}.
 \subsection{Results}
 The action potental that was used in \textcite{pettersen_amplitude_2008} 
 is similar to the one used here.  The amplitude of the fourier transform is displayed in
-\cref{fig:4_1_fourier}, which is in close resemblance to the standard action potential
-in Fig. $3$ in the paper. 
+\cref{fig:4_1_fourier}, which is in close resemblance to the action potential
+in fig. $3$ in the paper. 
 
 \begin{figure}[thp]
 \centering
 \includegraphics[width=\textwidth]{images/4_1/cs_ap_fourier.pdf}
-\caption{Frequency specter of simulated somatic membrane potential.}
+\caption{Magnitude specter of simulated somatic membrane potential.}
 \label{fig:4_1_fourier}
 \end{figure}
 

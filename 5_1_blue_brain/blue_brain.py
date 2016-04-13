@@ -91,7 +91,9 @@ def load_model(nrn, add_synapses=False, comp=True, suppress=False):
             tstopms=300.,
             pt3d=True,
             timeres_NEURON=2 ** -5,
-            timeres_python=2 ** -5, )
+            timeres_python=2 ** -5, 
+            passive=False,
+            )
         cells.append(cell)
 
     if suppress:

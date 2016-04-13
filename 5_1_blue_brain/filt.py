@@ -29,8 +29,8 @@ LBC = glob('L5_*LBC*')[:nrn_cnt]
 
 # Gather neurons to be simulated.
 # neurons = TTPC1 + TTPC2 + MC + LBC
-neurons = TTPC1 + TTPC2
-# neurons = TTPC1
+# neurons = TTPC1 + TTPC2
+neurons = TTPC1
 # neurons = MC
 # neurons =  LBC
 
