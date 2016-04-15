@@ -53,7 +53,7 @@ sim = LFPy_util.Simulator()
 sim.set_cell_load_func(load_func)
 sim.set_dir_neurons(dir_neurons)
 sim.set_neuron_name(neurons)
-sim.concurrent_neurons = 10
+sim.concurrent_neurons = 4
 
 # Simulation objects.
 sim_multi = LFPy_util.sims.MultiSpike()
