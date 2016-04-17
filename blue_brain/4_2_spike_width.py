@@ -19,7 +19,7 @@ blue_brain.download_all_models(dir_model)
 
 # Names of the neurons that also match the model folders.
 neurons = []
-neurons.append('L5_TTPC1_cADpyr232_1')
+neurons.append('L5_NBC_cNAC187_1')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -51,19 +51,20 @@ sim_multi.run_param['pptype'] = 'ISyn'
 sim_multi.run_param['threshold'] = 4
 sim_multi.run_param['delay'] = 100
 sim_multi.run_param['duration'] = 800
-sim_multi.run_param['spikes'] = 5
-sim_multi.run_param['init_amp'] = 0.30
+sim_multi.run_param['spikes'] = 33
+sim_multi.run_param['init_amp'] = 0.10
 sim_multi.verbose = True
 # sim_multi.only_apply_electrode = True
 sim.push(sim_multi, False)
 
 sim_width = LFPy_util.sims.SpikeWidthDef()
 sim_width.run_param['seed'] = 1
+sim_width.run_param['N'] = 5
 sim_width.process_param['spike_to_measure'] = 3
 sim.push(sim_width)
 
 # Simulation
 print sim
-sim.simulate()
+# sim.simulate()
 sim.plot()
 
