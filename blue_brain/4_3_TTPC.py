@@ -22,11 +22,11 @@ blue_brain.download_all_models(dir_model)
 neurons = []
 neurons.append('L5_TTPC1_cADpyr232_1')
 neurons.append('L5_TTPC1_cADpyr232_5')
-# neurons.append('L5_TTPC2_cADpyr232_1')
-# neurons.append('L5_TTPC2_cADpyr232_2')
-# neurons.append('L5_TTPC2_cADpyr232_3')
-# neurons.append('L5_TTPC2_cADpyr232_4')
-# neurons.append('L5_TTPC2_cADpyr232_5')
+neurons.append('L5_TTPC2_cADpyr232_1')
+neurons.append('L5_TTPC2_cADpyr232_2')
+neurons.append('L5_TTPC2_cADpyr232_3')
+neurons.append('L5_TTPC2_cADpyr232_4')
+neurons.append('L5_TTPC2_cADpyr232_5')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -66,7 +66,7 @@ sim_multi.verbose = True
 sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
-sim_sphere.run_param['N'] = 1000
+sim_sphere.run_param['N'] = 500
 sim_sphere.run_param['R'] = 100
 sim_sphere.process_param['spike_to_measure'] = 3
 sim.push(sim_sphere)

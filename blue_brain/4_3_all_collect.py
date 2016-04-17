@@ -10,8 +10,8 @@ import LFPy_util.colormaps as lcmaps
 import LFPy_util.data_extraction as de
 import matplotlib.pyplot as plt
 
-dir_input = "4_3_TTPC2"
-dir_output = "4_3_TTPC2_collected"
+dir_input = "4_3_all"
+dir_output = "4_3_all_collected"
 
 # Gather directory paths.
 dir_current = os.path.dirname(os.path.realpath(__file__))
@@ -49,7 +49,7 @@ for i in xrange(len(neuron_names) - 1):
 
 print "plotting"
 lplot.set_rc_param()
-fname = 'TTPC2_neurons'
+fname = 'NBC_neurons'
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
 lplot.nice_axes(ax)

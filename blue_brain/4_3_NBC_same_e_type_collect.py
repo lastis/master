@@ -10,8 +10,8 @@ import LFPy_util.colormaps as lcmaps
 import LFPy_util.data_extraction as de
 import matplotlib.pyplot as plt
 
-dir_input = "4_3_NBC"
-dir_output = "4_3_NBC_collected"
+dir_input = "4_3_NBC_same_e_type"
+dir_output = "4_3_NBC_same_e_type_collected"
 
 # Gather directory paths.
 dir_current = os.path.dirname(os.path.realpath(__file__))

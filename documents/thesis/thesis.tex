@@ -569,19 +569,6 @@ Methods mentioned here have been developed spesifically for this research.
 \vspace{1em} 
 \startcontents
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
-%{{{ Blue Brain
-\section{Blue Brain}
-The Blue Brain project released XXX models based upon neurons from 
-the hind-limb somatosensory cortex
-from 2-week-old Wistar Han rats.
-The models were used
-The extracellular potential was calculated using 
-"TODO: Insert parameters here". 
-
-Use the models. Write code to capture one action potential. Bursting neurons
-often hav adapting action potential, what to do there. 
-
-%}}} end of Blue Brain
 % Spike Width Measurement {{{ %
 \section{Spike Width Measurement}
 % TODO: Include sources to different ways of defining spike width.
@@ -703,6 +690,35 @@ the spike index must be supplied, the default setting uses the first spike.
 
 
 % }}}
+%{{{ Blue Brain
+\section{Blue Brain}
+The Blue Brain project released XXX models based upon neurons from 
+the hind-limb somatosensory cortex
+from 2-week-old Wistar Han rats.
+The models were used
+The extracellular potential was calculated using 
+"TODO: Insert parameters here". 
+
+Use the models. Write code to capture one action potential. Bursting neurons
+often hav adapting action potential, what to do there. 
+
+Of X models ran only 10 are pyramidal neurons.
+The number of available models were based on the diversity of the 
+morphology and the electrophysiological repsonse of the neurons. 
+Because only 2 m-types and 1 e-type were identified for pyramidal
+neurons this resulted in 10 avaiable neuron models.
+Neurons were classified into m-types and e-types depending on the morphology
+and the spike pattern.
+In total there was identified 11 e-types of which 10 was 
+inhibitory e-types and 1 was excitatory. 
+For each me-type the blue brain team created 5 models which are 
+publically available.
+For pyramidal neurons in L5 there was found 2 m-types and 1 e-type,
+this gave a result of 2 me-types and thusly only 10 pyramidal 
+models are available.
+In the case of interneurons the diversity was much bigger. 
+
+%}}} end of Blue Brain
 %{{{ Allen Brain Institute
 % \section{Allen Brain Institute}
 
@@ -972,19 +988,23 @@ neurons and excitatory neurons.
 \section{Classifying Inter and Pyramidal Neurons}
 Blue brain reconstruced neurons and indentified 55 types of 
 morphological structures. 
-Inhibitory neurons were distinguished by axonal features
-and excitatory types by dendritic features. 
 
-Excitatory neurons represented above $87\%$ of all neurons.
+Excitatory neurons represented above $87\%$ of all neurons in L5.
 
 50 \% of all inhibitory interneurons are baskets cells (LBC and NBC),
 these types have been simulated.
+
+
+All models from blue brain from L5 was ran using the SphereRand simulation and were
+divided between interneurons and pyramidal neurons. 
+
+
 
 % }}} 
 %}}} end of Results
 %{{{ Discussion
 \chapter{Discussion}
-Nothing here yet.
+Discuss spike widths from other sources and compare to results.
 
 
 %}}} end of Discussion

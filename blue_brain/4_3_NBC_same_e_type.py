@@ -1,7 +1,7 @@
 """
 NBC neurons.
 Calculate the width and amp dependency in relation to distance from
-soma for NBC neurons with different e-type but same m-type.
+soma for NBC neurons with same e-type but different m-type.
 """
 # pylint: disable=invalid-name
 
@@ -14,7 +14,7 @@ import copy
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_neurons = os.path.join(dir_current, "4_3_NBC")
+dir_neurons = os.path.join(dir_current, "4_3_NBC_same_e_type")
 
 # Download models if they do not exist.
 blue_brain.download_all_models(dir_model)
@@ -22,13 +22,10 @@ blue_brain.download_all_models(dir_model)
 # Names of the neurons that also match the model folders.
 neurons = []
 neurons.append('L5_NBC_bAC217_1')
-neurons.append('L5_NBC_cSTUT189_1')
-neurons.append('L5_NBC_bIR215_1')
-neurons.append('L5_NBC_bSTUT213_1')
-neurons.append('L5_NBC_cACint209_1')
-neurons.append('L5_NBC_cIR216_1')
-neurons.append('L5_NBC_cNAC187_1')
-neurons.append('L5_NBC_dSTUT214_1')
+neurons.append('L5_NBC_bAC217_2')
+neurons.append('L5_NBC_bAC217_3')
+neurons.append('L5_NBC_bAC217_4')
+neurons.append('L5_NBC_bAC217_5')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -64,7 +61,7 @@ sim_multi.run_param['duration'] = 800
 sim_multi.run_param['spikes'] = 5
 sim_multi.run_param['init_amp'] = 0.10
 sim_multi.verbose = True
-sim_multi.only_apply_electrode = True
+# sim_multi.only_apply_electrode = True
 sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
@@ -72,7 +69,7 @@ sim_sphere.run_param['N'] = 500
 sim_sphere.run_param['R'] = 100
 sim_sphere.process_param['spike_to_measure'] = 3
 sim_sphere.process_param['assert_width'] = True
-# sim.push(sim_sphere)
+sim.push(sim_sphere)
 
 sim_morph = LFPy_util.sims.Morphology()
 sim.push(sim_morph)
