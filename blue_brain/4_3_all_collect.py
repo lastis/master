@@ -24,8 +24,8 @@ sim_sphere.process_param['spike_to_measure'] = 3
 
 neuron_names = []
 r_vectors = []
-widths_mean = []
-widths_std = []
+widths_I_mean = []
+widths_I_std = []
 
 # Specify data gather function.
 def gather_data(neuron_name, run_param, data):
@@ -34,8 +34,8 @@ def gather_data(neuron_name, run_param, data):
     """
     print neuron_name
     neuron_names.append(neuron_name)
-    widths_mean.append(data['widths_I_mean'])
-    widths_std.append(data['widths_I_std'])
+    widths_I_mean.append(data['widths_I_mean'])
+    widths_I_std.append(data['widths_I_std'])
     r_vectors.append(data['bins'])
 
 # Start collecting data and fill the lists.
@@ -47,28 +47,72 @@ for i in xrange(len(neuron_names) - 1):
         print "Simulations not equal, finishing."
         close()
 
+widths_I_mean = np.array(widths_I_mean)
+widths_I_std = np.array(widths_I_std)
+
+indices_pyramidal = [i for i in xrange(len(neuron_names)) if 'TTPC' in neuron_names[i]]
+indices_inter = np.delete(range(len(neuron_names)), indices_pyramidal)
+
+widths_I_mean_pyramidal = widths_I_mean[indices_pyramidal]
+widths_I_mean_inter = widths_I_mean[indices_inter]
+
+widths_I_std_pyramidal = widths_I_std[indices_pyramidal]
+widths_I_std_inter = widths_I_std[indices_inter]
+
+widths_I_mean_pyramidal, widths_I_std_pyramidal = \
+    de.combined_mean_std(widths_I_mean_pyramidal, widths_I_std_pyramidal)
+
+widths_I_mean_inter, widths_I_std_inter = \
+    de.combined_mean_std(widths_I_mean_inter, widths_I_std_inter)
+
 print "plotting"
 lplot.set_rc_param()
-fname = 'NBC_neurons'
+fname = 'pyramidal_inter_neurons'
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
 lplot.nice_axes(ax)
-colors = lcmaps.get_short_color_array(len(neuron_names)+1)
-for i in xrange(len(neuron_names)) :
-    plt.plot(
-            r_vectors[i],
-            widths_mean[i],
-            color=colors[i],
-            marker='o',
-            markersize=5,
-            )
-    ax.fill_between(
-            r_vectors[i],
-            widths_mean[i] - widths_std[i],
-            widths_mean[i] + widths_std[i],
-            color=colors[i],
-            alpha=0.2
-            )
+
+colors = lcmaps.get_short_color_array(3)
+
+plt.plot(
+        r_vectors[0],
+        widths_I_mean_pyramidal,
+        color=colors[0],
+        marker='o',
+        markersize=5,
+        label='Pyramidal'
+        )
+
+ax.fill_between(
+        r_vectors[0],
+        widths_I_mean_pyramidal - widths_I_std_pyramidal,
+        widths_I_mean_pyramidal + widths_I_std_pyramidal,
+        color=colors[0],
+        alpha=0.2
+        )
+
+plt.plot(
+        r_vectors[0],
+        widths_I_mean_inter,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='Inter'
+        )
+
+ax.fill_between(
+        r_vectors[0],
+        widths_I_mean_inter - widths_I_std_inter,
+        widths_I_mean_inter + widths_I_std_inter,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(handles,
+          labels,
+          loc='center left',
+          bbox_to_anchor=(1, 0.5), )
 
 lplot.save_plt(plt, fname, dir_output)
 plt.close()
