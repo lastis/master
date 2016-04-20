@@ -1,5 +1,5 @@
 """
-Compare width analysis for TTPC and NBC
+Compare width analysis for TTPC and NBC, LBC and "all".
 """
 # pylint: disable=invalid-name
 import os
@@ -13,12 +13,14 @@ import matplotlib.pyplot as plt
 dir_input_NBC = "4_3_NBC"
 dir_input_PC = "4_3_TTPC"
 dir_input_LBC = "4_3_LBC"
-dir_output = "4_3_NBC_TTPC_LBC_collected"
+dir_input_IN = "4_3_IN"
+dir_output = "4_3_TTPC_all_collected"
 
 # Gather directory paths.
 dir_current = os.path.dirname(os.path.realpath(__file__))
 dir_input_NBC = os.path.join(dir_current, dir_input_NBC)
 dir_input_PC = os.path.join(dir_current, dir_input_PC)
+dir_input_IN = os.path.join(dir_current, dir_input_IN)
 dir_output = os.path.join(dir_current, dir_output)
 
 # Specify which simulation to gather data from.
@@ -152,6 +154,42 @@ for i in xrange(len(neuron_names) - 1):
         print "Simulations not equal, finishing."
         close()
 # }}} 
+# {{{ Data all inter
+# Collecting data from LBC neurons.
+neuron_names = []
+r_vectors = []
+widths_I_mean = []
+widths_I_std = []
+widths_II_mean = []
+widths_II_std = []
+LFPy_util.other.collect_data(dir_input_IN, sim_sphere, gather_data)
+
+# Convert to numpy arrays.
+widths_I_mean = np.array(widths_I_mean)
+widths_I_std = np.array(widths_I_std)
+widths_II_mean = np.array(widths_II_mean)
+widths_II_std = np.array(widths_II_std)
+
+# Combine data.
+widths_I_mean, widths_I_std = \
+    de.combined_mean_std(widths_I_mean, widths_I_std)
+widths_II_mean, widths_II_std = \
+    de.combined_mean_std(widths_II_mean, widths_II_std)
+
+# Rename data.
+neuron_names_IN = neuron_names
+r_vectors_IN = r_vectors
+widths_IN_I_mean = widths_I_mean
+widths_IN_I_std = widths_I_std
+widths_IN_II_mean = widths_II_mean
+widths_IN_II_std = widths_II_std
+
+# Make sure the r_vectors are the same for all simulations.
+for i in xrange(len(neuron_names) - 1):
+    if not np.array_equal(r_vectors[i], r_vectors[i+1]) :
+        print "Simulations not equal, finishing."
+        close()
+# }}} 
 
 SNR_PC_I = widths_PC_I_std/widths_PC_I_mean
 SNR_PC_II = widths_PC_II_std/widths_PC_II_mean
@@ -162,18 +200,20 @@ SNR_NBC_II = widths_NBC_II_std/widths_NBC_II_mean
 SNR_LBC_I = widths_LBC_I_std/widths_LBC_I_mean
 SNR_LBC_II = widths_LBC_II_std/widths_LBC_II_mean
 
+SNR_IN_I = widths_IN_I_std/widths_IN_I_mean
+SNR_IN_II = widths_IN_II_std/widths_IN_II_mean
+
 lplot.set_rc_param()
 
 # {{{ Plot 1
-fname = 'TTPC2_NBC_LBC_width_I'
+fname = 'TTPC2_NBC_LBC_IN_widths'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
-lplot.nice_axes(ax)
-colors = lcmaps.get_short_color_array(4)
-ax.set_ylabel(r"Width Type I \textbf{[\si{\milli\second}]}")
-ax.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+colors = lcmaps.get_short_color_array(3)
 
+ax0 = plt.subplot(2,2,1)
+lplot.nice_axes(ax0)
 # Plot PC.
 plt.plot(
         r_vectors[0],
@@ -183,7 +223,7 @@ plt.plot(
         markersize=5,
         label='TTPC2',
         )
-ax.fill_between(
+ax0.fill_between(
         r_vectors[0],
         widths_PC_I_mean - widths_PC_I_std,
         widths_PC_I_mean + widths_PC_I_std,
@@ -191,20 +231,47 @@ ax.fill_between(
         alpha=0.2
         )
 
+# Plot IN.
+plt.plot(
+        r_vectors[0],
+        widths_IN_I_mean,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='All Inter.',
+        )
+ax0.fill_between(
+        r_vectors[0],
+        widths_IN_I_mean - widths_IN_I_std,
+        widths_IN_I_mean + widths_IN_I_std,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax0.get_legend_handles_labels()
+ax0.legend(handles,
+          labels,
+          loc='upper left',
+          borderpad=0.1,
+          labelspacing=0.2,
+          )
+
+ax1 = plt.subplot(2,2,2, sharey=ax0)
+lplot.nice_axes(ax1)
 # Plot NBC.
 plt.plot(
         r_vectors[0],
         widths_NBC_I_mean,
-        color=colors[1],
+        color=colors[0],
         marker='o',
         markersize=5,
         label='NBC',
         )
-ax.fill_between(
+ax1.fill_between(
         r_vectors[0],
         widths_NBC_I_mean - widths_NBC_I_std,
         widths_NBC_I_mean + widths_NBC_I_std,
-        color=colors[1],
+        color=colors[0],
         alpha=0.2
         )
 
@@ -212,40 +279,28 @@ ax.fill_between(
 plt.plot(
         r_vectors[0],
         widths_LBC_I_mean,
-        color=colors[2],
+        color=colors[1],
         marker='o',
         markersize=5,
         label='LBC',
         )
-ax.fill_between(
+ax1.fill_between(
         r_vectors[0],
         widths_LBC_I_mean - widths_LBC_I_std,
         widths_LBC_I_mean + widths_LBC_I_std,
-        color=colors[2],
+        color=colors[1],
         alpha=0.2
         )
 
-handles, labels = ax.get_legend_handles_labels()
-ax.legend(handles,
+handles, labels = ax1.get_legend_handles_labels()
+ax1.legend(handles,
           labels,
           loc='upper left',
           # bbox_to_anchor=(1, 0.5), 
           )
 
-lplot.save_plt(plt, fname, dir_output)
-plt.close()
-# }}} 
-# {{{ Plot 2
-fname = 'TTPC2_NBC_LBC_width_II'
-print "plotting " + fname
-plt.figure(figsize=lplot.size_common)
-ax = plt.gca()
-lplot.nice_axes(ax)
-colors = lcmaps.get_short_color_array(4)
-
-ax.set_ylabel(r"Width Type II \textbf{[\si{\milli\second}]}")
-ax.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
-
+ax2 = plt.subplot(2,2,3)
+lplot.nice_axes(ax2)
 # Plot PC.
 plt.plot(
         r_vectors[0],
@@ -255,7 +310,7 @@ plt.plot(
         markersize=5,
         label='TTPC2',
         )
-ax.fill_between(
+ax2.fill_between(
         r_vectors[0],
         widths_PC_II_mean - widths_PC_II_std,
         widths_PC_II_mean + widths_PC_II_std,
@@ -263,20 +318,45 @@ ax.fill_between(
         alpha=0.2
         )
 
+# Plot IN.
+plt.plot(
+        r_vectors[0],
+        widths_IN_II_mean,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='All IInter.',
+        )
+ax2.fill_between(
+        r_vectors[0],
+        widths_IN_II_mean - widths_IN_II_std,
+        widths_IN_II_mean + widths_IN_II_std,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax2.get_legend_handles_labels()
+ax2.legend(handles,
+          labels,
+          loc='upper left',
+          )
+
+ax3 = plt.subplot(2,2,4, sharey=ax2)
+lplot.nice_axes(ax3)
 # Plot NBC.
 plt.plot(
         r_vectors[0],
         widths_NBC_II_mean,
-        color=colors[1],
+        color=colors[0],
         marker='o',
         markersize=5,
         label='NBC',
         )
-ax.fill_between(
+ax3.fill_between(
         r_vectors[0],
         widths_NBC_II_mean - widths_NBC_II_std,
         widths_NBC_II_mean + widths_NBC_II_std,
-        color=colors[1],
+        color=colors[0],
         alpha=0.2
         )
 
@@ -284,39 +364,41 @@ ax.fill_between(
 plt.plot(
         r_vectors[0],
         widths_LBC_II_mean,
-        color=colors[2],
+        color=colors[1],
         marker='o',
         markersize=5,
         label='LBC',
         )
-ax.fill_between(
+ax3.fill_between(
         r_vectors[0],
         widths_LBC_II_mean - widths_LBC_II_std,
         widths_LBC_II_mean + widths_LBC_II_std,
-        color=colors[2],
+        color=colors[1],
         alpha=0.2
         )
 
-handles, labels = ax.get_legend_handles_labels()
-ax.legend(handles,
+handles, labels = ax3.get_legend_handles_labels()
+ax3.legend(handles,
           labels,
           loc='upper left',
-          # bbox_to_anchor=(1, 0.5), 
           )
 
+ax0.set_ylabel(r"Width Type I \textbf{[\si{\milli\second}]}")
+ax2.set_ylabel(r"Width Type II \textbf{[\si{\milli\second}]}")
+ax2.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax3.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
 lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # {{{ Plot Signal to noise
-fname = 'TTPC2_NBC_LBC_snr'
+fname = 'TTPC2_NBC_LBC_IN_snr'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 colors = lcmaps.get_short_color_array(3)
 
-ax0 = plt.subplot(1,3,1)
+ax0 = plt.subplot(2,2,1)
 plt.title('TTPC2')
 lplot.nice_axes(ax0)
-ax0.set_ylabel(r"$c_v$")
 # Plot PC.
 plt.plot(
         r_vectors[0],
@@ -334,17 +416,16 @@ plt.plot(
         markersize=5,
         label='Type II'
         )
-handles, labels = ax.get_legend_handles_labels()
-ax.legend(handles,
+handles, labels = ax0.get_legend_handles_labels()
+ax0.legend(handles,
           labels,
           loc='upper left',
           # bbox_to_anchor=(1, 0.5), 
           )
 
-ax1 = plt.subplot(1,3,2, sharey=ax0)
+ax1 = plt.subplot(2,2,2, sharey=ax0)
 lplot.nice_axes(ax1)
 plt.title('NBC')
-ax1.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
 plt.plot(
         r_vectors[0],
         SNR_NBC_I,
@@ -360,7 +441,7 @@ plt.plot(
         markersize=5,
         )
 
-ax2 = plt.subplot(1,3,3, sharey=ax0)
+ax2 = plt.subplot(2,2,3)
 lplot.nice_axes(ax2)
 plt.title('LBC')
 plt.plot(
@@ -377,6 +458,30 @@ plt.plot(
         marker='o',
         markersize=5,
         )
+
+ax3 = plt.subplot(2,2,4, sharey=ax2)
+lplot.nice_axes(ax3)
+plt.title('All Inter.')
+plt.plot(
+        r_vectors[0],
+        SNR_IN_I,
+        color=colors[0],
+        marker='o',
+        markersize=5,
+        )
+plt.plot(
+        r_vectors[0],
+        SNR_IN_II,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        )
+
+ax0.set_ylabel(r"$c_v$")
+ax2.set_ylabel(r"$c_v$")
+ax2.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax3.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+plt.tight_layout()
 
 lplot.save_plt(plt, fname, dir_output)
 plt.close()

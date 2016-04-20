@@ -973,13 +973,24 @@ back to theory chapter.)
 To investigate which of the two 
 width definitions is more optimal for differentiating
 interneurons from pyramidal neurons,
-three classes of neurons were selected from from the blue brain models.
+three classes of the most abundant neurons were selected 
+from the blue brain models.
 Two classes of interneurons and one class of pyramidal neurons. 
 There were two classes of pyramidal models available but as the
 as the one class had identical dendrites it was not analyzed.
 The number of inhibitory neuron classes were much greater,
 the two classes were selected by being the most abundant 
 inhibitory neurons in the L5 area.
+In addition to these classes, one addition group
+was analyzed which included all available interneuron
+models in L5.
+In this group many of the classes of neurons represent only
+a very small portion of the number of neurons in L5. 
+Excitatory neurons represented above $87\%$ of all neurons, 
+and 50 \% of all interneurons were classified as 
+baskets cells (LBC and NBC).
+As such the number of models for some small classes of 
+interneurons are overrepresented in the group called "All Inter.".
 
 The classes of neurons were Thick Thufted Pyramidal Cell with
 an early bifurcating apical thuft (TTPC2), Large Basket Cell (LBC) and
@@ -1022,28 +1033,26 @@ increases the chance of correctly classifying the neuron class.
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_width_I.pdf}
+        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_widths.pdf}
         \caption{
             Nothing.
         }
-        \label{fig:4_2_width_I}
-    \end{center}
-    \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_width_II.pdf}
-        \caption{
-            Nothing.
-        }
-        \label{fig:4_2_width_II}
+        \label{fig:4_2_width}
     \end{center}
 \end{figure}
 
-A further distinguishment can be seen using the coefficient of variation of
-the two width definitions (the relative value of standard deviation and mean)
-\cref{fig:4_2_width_snr}.
+A further distinguishment can be seen using the coefficient of variation $c_v$
+(also known as signal to noise ratio, SNR) of
+the two width definitions (\cref{fig:4_2_width_snr}).
+
+\begin{align}
+    c_v = \frac{\sigma}{\mu}
+\end{align}
+
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_snr.pdf}
+        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_snr.pdf}
         \caption{
             Nothing.
         }
