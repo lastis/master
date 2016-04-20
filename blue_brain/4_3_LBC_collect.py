@@ -10,8 +10,8 @@ import LFPy_util.colormaps as lcmaps
 import LFPy_util.data_extraction as de
 import matplotlib.pyplot as plt
 
-dir_input = "4_3_NBC"
-dir_output = "4_3_NBC_collected"
+dir_input = "4_3_LBC"
+dir_output = "4_3_LBC_collected"
 
 # Gather directory paths.
 dir_current = os.path.dirname(os.path.realpath(__file__))
@@ -66,7 +66,7 @@ widths_II_mean_combined, widths_II_std_combined = \
 lplot.set_rc_param()
 
 # {{{ Plot 1
-fname = 'NBC_width_I_seperate'
+fname = 'LBC_width_I_seperate'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
@@ -99,7 +99,7 @@ lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # {{{ Plot 2
-fname = 'NBC_width_II_seperate'
+fname = 'LBC_width_II_seperate'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
@@ -132,7 +132,7 @@ lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # {{{ Plot 3
-fname = 'NBC_width_I_combined'
+fname = 'LBC_width_I_combined'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
@@ -157,7 +157,7 @@ lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # {{{ Plot 4
-fname = 'NBC_width_II_combined'
+fname = 'LBC_width_II_combined'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()

@@ -676,8 +676,8 @@ summed to $0$.
 The following items are python objects in LFPyUtil.
 \newline
 
-SphereRand
-\newline
+\subsection{SphereRand}
+\label{sec:sphere_rand}
 \noindent
 SphereRand places
 electrodes placed in uniformly distributied locations 
@@ -695,28 +695,20 @@ the spike index must be supplied, the default setting uses the first spike.
 The Blue Brain project released XXX models based upon neurons from 
 the hind-limb somatosensory cortex
 from 2-week-old Wistar Han rats.
-The models were used
-The extracellular potential was calculated using 
-"TODO: Insert parameters here". 
 
-Use the models. Write code to capture one action potential. Bursting neurons
-often hav adapting action potential, what to do there. 
+The neuron models are based on the classication criteria set by the Blue Brain 
+team there is only 2 classes of pyramidal neurons avaiable in L5, while
+the diversity in interneuron models are much greater.
+The number of available models were based on the variability of 
+neurons depending on their morphological type and 
+electrophysiological response to stimuli.
+As most of the encountered pyramidal neurons had a similar morphological
+structure and response to stimuli the team choose to only recoqnize
+two morphological types and one electrophysiological type, 
+referred to as m-type and e-type.
 
-Of X models ran only 10 are pyramidal neurons.
-The number of available models were based on the diversity of the 
-morphology and the electrophysiological repsonse of the neurons. 
-Because only 2 m-types and 1 e-type were identified for pyramidal
-neurons this resulted in 10 avaiable neuron models.
-Neurons were classified into m-types and e-types depending on the morphology
-and the spike pattern.
-In total there was identified 11 e-types of which 10 was 
-inhibitory e-types and 1 was excitatory. 
-For each me-type the blue brain team created 5 models which are 
-publically available.
-For pyramidal neurons in L5 there was found 2 m-types and 1 e-type,
-this gave a result of 2 me-types and thusly only 10 pyramidal 
-models are available.
-In the case of interneurons the diversity was much bigger. 
+% Use the models. Write code to capture one action potential. Bursting neurons
+% often hav adapting action potential, what to do there. 
 
 %}}} end of Blue Brain
 %{{{ Allen Brain Institute
@@ -765,7 +757,7 @@ In the case of interneurons the diversity was much bigger.
 
 %{{{ Pettersen and Einvoll
 \section{Pettersen \& Einevoll (2008) Reproduction}
-\begin{wrapfigure}[24]{R}{.5\textwidth}
+\begin{wrapfigure}[24]{r}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
         \includegraphics[width=\linewidth]{images/4_1/morph_xy_up.pdf}
@@ -877,7 +869,7 @@ The reversal potential was set to zero. The action potental was imposed in all
 soma sections using the "play" vector function in Neuron.
 \\
 
-\begin{wrapfigure}[18]{R}{.5\textwidth}
+\begin{wrapfigure}[18]{r}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
         \includegraphics[width=\linewidth]{images/4_1/disc_morph_elec_xz.pdf}
@@ -915,7 +907,7 @@ the spike width from the Connor-Steven model was
 \SI{0.5625}{\milli\volt}.
 This is similar to the reported spike width from 
 \textcite{pettersen_amplitude_2008}
-which was \SI{0.55}{\milli\second} and must have been rounded to
+at \SI{0.55}{\milli\second} which must have been rounded to
 the nearest \SI{0.05}{\milli\second}.
 
 \subsection{Results}
@@ -925,10 +917,10 @@ is similar to the one used here.  The amplitude of the fourier transform is disp
 in fig. $3$ in the paper. 
 
 \begin{figure}[thp]
-\centering
-\includegraphics[width=\textwidth]{images/4_1/cs_ap_fourier.pdf}
-\caption{Magnitude specter of simulated somatic membrane potential.}
-\label{fig:4_1_fourier}
+    \centering
+    \includegraphics[width=\textwidth]{images/4_1/cs_ap_fourier.pdf}
+    \caption{Magnitude specter of simulated somatic membrane potential.}
+    \label{fig:4_1_fourier}
 \end{figure}
 
 The spike width increases with the distance from soma as seen in 
@@ -961,12 +953,12 @@ it is  $1/r^2$ or $1/r^3$ depending on distance. (TODO: Clearify this, put refer
 back to theory chapter.)
 
 \begin{figure}[thp]
-\centering
-\includegraphics[width=\textwidth]{images/4_1/disc_spike_amps_I_log.pdf}
-\caption{Spike amplitude over distance. Mean +/- 1 std. The power law
-decays $1/r$, $1/r^2$ and $1/r^3$ are shown at the leftmost and rightmost
-data points.}
-\label{fig:4_1_spike_amp}
+    \centering
+    \includegraphics[width=\textwidth]{images/4_1/disc_spike_amps_I_log.pdf}
+    \caption{Spike amplitude over distance. Mean +/- 1 std. The power law
+    decays $1/r$, $1/r^2$ and $1/r^3$ are shown at the leftmost and rightmost
+    data points.}
+    \label{fig:4_1_spike_amp}
 \end{figure}
 
 \subsection{Discussion}
@@ -974,14 +966,91 @@ data points.}
 %}}} end of Pettersen and Einvoll
 % {{{ Optimal Spike Width%
 \section{Optimal Spike Width Definition}
-Spike width has been used to classify inhibitory neurons from excitatory neurons. 
-But in the literature there has been many different definitions of spike widths
-which makes comparing results across reseach difficult.
+% Spike width has been used to classify inhibitory neurons from excitatory neurons. 
+% But in the literature there has been many different definitions of spike widths
+% which makes comparing results across reseach difficult.
 
-Measurements was done using the three different spike width definitions
-and in relation to distance from soma. 
-A good definition is recoqnized by having a good seperation between inhibitory
-neurons and excitatory neurons. 
+To investigate which of the two 
+width definitions is more optimal for differentiating
+interneurons from pyramidal neurons,
+three classes of neurons were selected from from the blue brain models.
+Two classes of interneurons and one class of pyramidal neurons. 
+There were two classes of pyramidal models available but as the
+as the one class had identical dendrites it was not analyzed.
+The number of inhibitory neuron classes were much greater,
+the two classes were selected by being the most abundant 
+inhibitory neurons in the L5 area.
+
+The classes of neurons were Thick Thufted Pyramidal Cell with
+an early bifurcating apical thuft (TTPC2), Large Basket Cell (LBC) and
+Nest Basket Cell (NBC).
+Each of the three class had 5 seperate models where each model
+had different m-type but identical e-type.
+The e-type of TTPC2 class was continuous adapting (cAD), 
+LBC was delayed stuttering (dSTUT) 
+and NBC was continuous non-accommodating (cNAC) 
+(\textcite[463]{markram_reconstruction_2015}).
+
+Simulations were ran using using the
+SphereRand (\cref{sec:sphere_rand}) simulation 
+with two different width definitions, 
+the peak-to-peak spike definition (Type I) and 
+width at half amplitude from baseline (Type II).
+A good definition is recoqnized by having a better
+seperation between inhibitory
+and excitatory neurons.
+
+The results of the simulations can be seen in 
+\cref{fig:4_2_width_I,fig:4_2_width_II}.
+For both deifinitions the spike width of interneurons are smaller
+than the width of pyramidal neurons. 
+These findings are in line with previously established findings.
+With the Type I definition the seperation between the two classes 
+are greater in both absolute and relative value for all distances from soma.
+The seperation between the mean of pyramidal and interneurons 
+for Type I were 
+\SI{0.40}{\milli\second} at \SI{30}{\micro\metre}
+and 
+\SI{0.60}{\milli\second} at \SI{100}{\micro\metre}.
+For Type II the seperation was 
+\SI{0.15}{\milli\second} at \SI{30}{\micro\metre}
+and 
+\SI{0.35}{\milli\second} at \SI{100}{\micro\metre}.
+These results suggets that using a type I deifinition of the spike width
+increases the chance of correctly classifying the neuron class.
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_width_I.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_2_width_I}
+    \end{center}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_width_II.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_2_width_II}
+    \end{center}
+\end{figure}
+
+A further distinguishment can be seen using the coefficient of variation of
+the two width definitions (the relative value of standard deviation and mean)
+\cref{fig:4_2_width_snr}.
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_snr.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_2_width_snr}
+    \end{center}
+\end{figure}
+
 
 % }}}  %
 % {{{ Classifing Neurons%
@@ -1004,7 +1073,7 @@ divided between interneurons and pyramidal neurons.
 %}}} end of Results
 %{{{ Discussion
 \chapter{Discussion}
-Discuss spike widths from other sources and compare to results.
+% Discuss spike widths from other sources and compare to results.
 
 
 %}}} end of Discussion

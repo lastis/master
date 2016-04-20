@@ -21,14 +21,11 @@ blue_brain.download_all_models(dir_model)
 
 # Names of the neurons that also match the model folders.
 neurons = []
-neurons.append('L5_NBC_bAC217_1')
-neurons.append('L5_NBC_cSTUT189_1')
-neurons.append('L5_NBC_bIR215_1')
-neurons.append('L5_NBC_bSTUT213_1')
-neurons.append('L5_NBC_cACint209_1')
-neurons.append('L5_NBC_cIR216_1')
 neurons.append('L5_NBC_cNAC187_1')
-neurons.append('L5_NBC_dSTUT214_1')
+neurons.append('L5_NBC_cNAC187_2')
+neurons.append('L5_NBC_cNAC187_3')
+neurons.append('L5_NBC_cNAC187_4')
+neurons.append('L5_NBC_cNAC187_5')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -42,7 +39,7 @@ def load_func(neuron):
     cell_list = blue_brain.load_model(nrn_full, suppress=True)
     cell = cell_list[0]
     cell.tstartms = 0
-    cell.tstopms = 1000
+    cell.tstopms = 500
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
     # Aligns y to axis[0] and x to axis[1]
@@ -54,36 +51,36 @@ sim.set_cell_load_func(load_func)
 sim.set_dir_neurons(dir_neurons)
 sim.set_neuron_name(neurons)
 sim.concurrent_neurons = 8
+sim.assign_seed = 3241
 
 # Simulation objects.
 sim_multi = LFPy_util.sims.MultiSpike()
 sim_multi.run_param['pptype'] = 'ISyn'
 sim_multi.run_param['threshold'] = 4
 sim_multi.run_param['delay'] = 100
-sim_multi.run_param['duration'] = 800
-sim_multi.run_param['spikes'] = 5
+sim_multi.run_param['duration'] = 400
+sim_multi.run_param['spikes'] = 3
 sim_multi.run_param['init_amp'] = 0.10
 sim_multi.verbose = True
-sim_multi.only_apply_electrode = True
-sim.push(sim_multi, False)
+# sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
 sim_sphere.run_param['N'] = 500
 sim_sphere.run_param['R'] = 100
-sim_sphere.process_param['spike_to_measure'] = 3
+sim_sphere.process_param['spike_to_measure'] = 2
 sim_sphere.process_param['assert_width'] = True
-# sim.push(sim_sphere)
+sim.push(sim_sphere)
 
 sim_morph = LFPy_util.sims.Morphology()
-sim.push(sim_morph)
+# sim.push(sim_morph)
 
 sim_width = LFPy_util.sims.SpikeWidthDef()
 sim_width.run_param['N'] = 10
-sim_width.process_param['spike_to_measure'] = 3
+sim_width.process_param['spike_to_measure'] = 2
 # sim.push(sim_width)
 
 # Simulation
 print sim
-sim.simulate()
+# sim.simulate()
 sim.plot()
 
