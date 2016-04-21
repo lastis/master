@@ -35,6 +35,10 @@ widths_I_mean = []
 widths_I_std = []
 widths_II_mean = []
 widths_II_std = []
+amps_I_mean = []
+amps_I_std = []
+amps_II_mean = []
+amps_II_std = []
 def gather_data(neuron_name, run_param, data):
     """
     Gathers data from the simulations into lists.
@@ -45,6 +49,10 @@ def gather_data(neuron_name, run_param, data):
     widths_I_std.append(data['widths_I_std'])
     widths_II_mean.append(data['widths_II_mean'])
     widths_II_std.append(data['widths_II_std'])
+    amps_I_mean.append(data['amps_I_mean'])
+    amps_I_std.append(data['amps_I_std'])
+    amps_II_mean.append(data['amps_II_mean'])
+    amps_II_std.append(data['amps_II_std'])
     r_vectors.append(data['bins'])
 # {{{ Data PC
 # Collecting data from PC neurons.
@@ -54,6 +62,10 @@ widths_I_mean = []
 widths_I_std = []
 widths_II_mean = []
 widths_II_std = []
+amps_I_mean = []
+amps_I_std = []
+amps_II_mean = []
+amps_II_std = []
 LFPy_util.other.collect_data(dir_input_PC, sim_sphere, gather_data)
 
 # Convert to numpy arrays.
@@ -61,12 +73,20 @@ widths_I_mean = np.array(widths_I_mean)
 widths_I_std = np.array(widths_I_std)
 widths_II_mean = np.array(widths_II_mean)
 widths_II_std = np.array(widths_II_std)
+amps_I_mean = np.array(amps_I_mean)
+amps_I_std = np.array(amps_I_std)
+amps_II_mean = np.array(amps_II_mean)
+amps_II_std = np.array(amps_II_std)
 
 # Combine data.
 widths_I_mean, widths_I_std = \
     de.combined_mean_std(widths_I_mean, widths_I_std)
 widths_II_mean, widths_II_std = \
     de.combined_mean_std(widths_II_mean, widths_II_std)
+amps_I_mean, amps_I_std = \
+    de.combined_mean_std(amps_I_mean, amps_I_std)
+amps_II_mean, amps_II_std = \
+    de.combined_mean_std(amps_II_mean, amps_II_std)
 
 # Rename data.
 neuron_names_PC = neuron_names
@@ -75,6 +95,10 @@ widths_PC_I_mean = widths_I_mean
 widths_PC_I_std = widths_I_std
 widths_PC_II_mean = widths_II_mean
 widths_PC_II_std = widths_II_std
+amps_PC_I_mean = amps_I_mean
+amps_PC_I_std = amps_I_std
+amps_PC_II_mean = amps_II_mean
+amps_PC_II_std = amps_II_std
 
 # Make sure the r_vectors are the same for all simulations.
 for i in xrange(len(neuron_names) - 1):
@@ -90,6 +114,10 @@ widths_I_mean = []
 widths_I_std = []
 widths_II_mean = []
 widths_II_std = []
+amps_I_mean = []
+amps_I_std = []
+amps_II_mean = []
+amps_II_std = []
 LFPy_util.other.collect_data(dir_input_NBC, sim_sphere, gather_data)
 
 # Convert to numpy arrays.
@@ -97,12 +125,20 @@ widths_I_mean = np.array(widths_I_mean)
 widths_I_std = np.array(widths_I_std)
 widths_II_mean = np.array(widths_II_mean)
 widths_II_std = np.array(widths_II_std)
+amps_I_mean = np.array(amps_I_mean)
+amps_I_std = np.array(amps_I_std)
+amps_II_mean = np.array(amps_II_mean)
+amps_II_std = np.array(amps_II_std)
 
 # Combine data.
 widths_I_mean, widths_I_std = \
     de.combined_mean_std(widths_I_mean, widths_I_std)
 widths_II_mean, widths_II_std = \
     de.combined_mean_std(widths_II_mean, widths_II_std)
+amps_I_mean, amps_I_std = \
+    de.combined_mean_std(amps_I_mean, amps_I_std)
+amps_II_mean, amps_II_std = \
+    de.combined_mean_std(amps_II_mean, amps_II_std)
 
 # Rename data.
 neuron_names_NBC = neuron_names
@@ -111,6 +147,10 @@ widths_NBC_I_mean = widths_I_mean
 widths_NBC_I_std = widths_I_std
 widths_NBC_II_mean = widths_II_mean
 widths_NBC_II_std = widths_II_std
+amps_NBC_I_mean = amps_I_mean
+amps_NBC_I_std = amps_I_std
+amps_NBC_II_mean = amps_II_mean
+amps_NBC_II_std = amps_II_std
 
 # Make sure the r_vectors are the same for all simulations.
 for i in xrange(len(neuron_names) - 1):
@@ -126,6 +166,10 @@ widths_I_mean = []
 widths_I_std = []
 widths_II_mean = []
 widths_II_std = []
+amps_I_mean = []
+amps_I_std = []
+amps_II_mean = []
+amps_II_std = []
 LFPy_util.other.collect_data(dir_input_LBC, sim_sphere, gather_data)
 
 # Convert to numpy arrays.
@@ -133,12 +177,20 @@ widths_I_mean = np.array(widths_I_mean)
 widths_I_std = np.array(widths_I_std)
 widths_II_mean = np.array(widths_II_mean)
 widths_II_std = np.array(widths_II_std)
+amps_I_mean = np.array(amps_I_mean)
+amps_I_std = np.array(amps_I_std)
+amps_II_mean = np.array(amps_II_mean)
+amps_II_std = np.array(amps_II_std)
 
 # Combine data.
 widths_I_mean, widths_I_std = \
     de.combined_mean_std(widths_I_mean, widths_I_std)
 widths_II_mean, widths_II_std = \
     de.combined_mean_std(widths_II_mean, widths_II_std)
+amps_I_mean, amps_I_std = \
+    de.combined_mean_std(amps_I_mean, amps_I_std)
+amps_II_mean, amps_II_std = \
+    de.combined_mean_std(amps_II_mean, amps_II_std)
 
 # Rename data.
 neuron_names_LBC = neuron_names
@@ -147,6 +199,10 @@ widths_LBC_I_mean = widths_I_mean
 widths_LBC_I_std = widths_I_std
 widths_LBC_II_mean = widths_II_mean
 widths_LBC_II_std = widths_II_std
+amps_LBC_I_mean = amps_I_mean
+amps_LBC_I_std = amps_I_std
+amps_LBC_II_mean = amps_II_mean
+amps_LBC_II_std = amps_II_std
 
 # Make sure the r_vectors are the same for all simulations.
 for i in xrange(len(neuron_names) - 1):
@@ -162,6 +218,10 @@ widths_I_mean = []
 widths_I_std = []
 widths_II_mean = []
 widths_II_std = []
+amps_I_mean = []
+amps_I_std = []
+amps_II_mean = []
+amps_II_std = []
 LFPy_util.other.collect_data(dir_input_IN, sim_sphere, gather_data)
 
 # Convert to numpy arrays.
@@ -169,12 +229,20 @@ widths_I_mean = np.array(widths_I_mean)
 widths_I_std = np.array(widths_I_std)
 widths_II_mean = np.array(widths_II_mean)
 widths_II_std = np.array(widths_II_std)
+amps_I_mean = np.array(amps_I_mean)
+amps_I_std = np.array(amps_I_std)
+amps_II_mean = np.array(amps_II_mean)
+amps_II_std = np.array(amps_II_std)
 
 # Combine data.
 widths_I_mean, widths_I_std = \
     de.combined_mean_std(widths_I_mean, widths_I_std)
 widths_II_mean, widths_II_std = \
     de.combined_mean_std(widths_II_mean, widths_II_std)
+amps_I_mean, amps_I_std = \
+    de.combined_mean_std(amps_I_mean, amps_I_std)
+amps_II_mean, amps_II_std = \
+    de.combined_mean_std(amps_II_mean, amps_II_std)
 
 # Rename data.
 neuron_names_IN = neuron_names
@@ -183,6 +251,10 @@ widths_IN_I_mean = widths_I_mean
 widths_IN_I_std = widths_I_std
 widths_IN_II_mean = widths_II_mean
 widths_IN_II_std = widths_II_std
+amps_IN_I_mean = amps_I_mean
+amps_IN_I_std = amps_I_std
+amps_IN_II_mean = amps_II_mean
+amps_IN_II_std = amps_II_std
 
 # Make sure the r_vectors are the same for all simulations.
 for i in xrange(len(neuron_names) - 1):
@@ -385,6 +457,191 @@ ax3.legend(handles,
 
 ax0.set_ylabel(r"Width Type I \textbf{[\si{\milli\second}]}")
 ax2.set_ylabel(r"Width Type II \textbf{[\si{\milli\second}]}")
+ax2.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax3.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+lplot.save_plt(plt, fname, dir_output)
+plt.close()
+# }}} 
+# {{{ Plot 2
+fname = 'TTPC2_NBC_LBC_IN_amps'
+print "plotting " + fname
+plt.figure(figsize=lplot.size_common)
+ax = plt.gca()
+colors = lcmaps.get_short_color_array(3)
+
+ax0 = plt.subplot(2,2,1)
+lplot.nice_axes(ax0)
+# Plot PC.
+plt.plot(
+        r_vectors[0],
+        amps_PC_I_mean,
+        color=colors[0],
+        marker='o',
+        markersize=5,
+        label='TTPC2',
+        )
+ax0.fill_between(
+        r_vectors[0],
+        amps_PC_I_mean - amps_PC_I_std,
+        amps_PC_I_mean + amps_PC_I_std,
+        color=colors[0],
+        alpha=0.2
+        )
+
+# Plot IN.
+plt.plot(
+        r_vectors[0],
+        amps_IN_I_mean,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='All Inter.',
+        )
+ax0.fill_between(
+        r_vectors[0],
+        amps_IN_I_mean - amps_IN_I_std,
+        amps_IN_I_mean + amps_IN_I_std,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax0.get_legend_handles_labels()
+ax0.legend(handles,
+          labels,
+          loc='upper left',
+          borderpad=0.1,
+          labelspacing=0.2,
+          )
+
+ax1 = plt.subplot(2,2,2, sharey=ax0)
+lplot.nice_axes(ax1)
+# Plot NBC.
+plt.plot(
+        r_vectors[0],
+        amps_NBC_I_mean,
+        color=colors[0],
+        marker='o',
+        markersize=5,
+        label='NBC',
+        )
+ax1.fill_between(
+        r_vectors[0],
+        amps_NBC_I_mean - amps_NBC_I_std,
+        amps_NBC_I_mean + amps_NBC_I_std,
+        color=colors[0],
+        alpha=0.2
+        )
+
+# Plot LBC.
+plt.plot(
+        r_vectors[0],
+        amps_LBC_I_mean,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='LBC',
+        )
+ax1.fill_between(
+        r_vectors[0],
+        amps_LBC_I_mean - amps_LBC_I_std,
+        amps_LBC_I_mean + amps_LBC_I_std,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax1.get_legend_handles_labels()
+ax1.legend(handles,
+          labels,
+          loc='upper left',
+          # bbox_to_anchor=(1, 0.5), 
+          )
+
+ax2 = plt.subplot(2,2,3)
+lplot.nice_axes(ax2)
+# Plot PC.
+plt.plot(
+        r_vectors[0],
+        amps_PC_II_mean,
+        color=colors[0],
+        marker='o',
+        markersize=5,
+        label='TTPC2',
+        )
+ax2.fill_between(
+        r_vectors[0],
+        amps_PC_II_mean - amps_PC_II_std,
+        amps_PC_II_mean + amps_PC_II_std,
+        color=colors[0],
+        alpha=0.2
+        )
+
+# Plot IN.
+plt.plot(
+        r_vectors[0],
+        amps_IN_II_mean,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='All IInter.',
+        )
+ax2.fill_between(
+        r_vectors[0],
+        amps_IN_II_mean - amps_IN_II_std,
+        amps_IN_II_mean + amps_IN_II_std,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax2.get_legend_handles_labels()
+ax2.legend(handles,
+          labels,
+          loc='upper left',
+          )
+
+ax3 = plt.subplot(2,2,4, sharey=ax2)
+lplot.nice_axes(ax3)
+# Plot NBC.
+plt.plot(
+        r_vectors[0],
+        amps_NBC_II_mean,
+        color=colors[0],
+        marker='o',
+        markersize=5,
+        label='NBC',
+        )
+ax3.fill_between(
+        r_vectors[0],
+        amps_NBC_II_mean - amps_NBC_II_std,
+        amps_NBC_II_mean + amps_NBC_II_std,
+        color=colors[0],
+        alpha=0.2
+        )
+
+# Plot LBC.
+plt.plot(
+        r_vectors[0],
+        amps_LBC_II_mean,
+        color=colors[1],
+        marker='o',
+        markersize=5,
+        label='LBC',
+        )
+ax3.fill_between(
+        r_vectors[0],
+        amps_LBC_II_mean - amps_LBC_II_std,
+        amps_LBC_II_mean + amps_LBC_II_std,
+        color=colors[1],
+        alpha=0.2
+        )
+
+handles, labels = ax3.get_legend_handles_labels()
+ax3.legend(handles,
+          labels,
+          loc='upper left',
+          )
+
+ax0.set_ylabel(r"Amp Type I \textbf{[\si{\micro\volt}]}")
+ax2.set_ylabel(r"Amp Type II \textbf{[\si{\micro\volt}]}")
 ax2.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
 ax3.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
 lplot.save_plt(plt, fname, dir_output)

@@ -127,6 +127,8 @@
 \AtBeginDocument{
     \LetLtxMacro{\mycref}{\cref}
 	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}}}
+    \LetLtxMacro{\myCref}{\Cref}
+	\renewcommand{\Cref}[1]{{\color{viridis_03}\myCref{#1}}}
 }
 % Change the spacing of some math symbols in math mode.
 \setlength{\thickmuskip}{6mu}
@@ -572,8 +574,6 @@ Methods mentioned here have been developed spesifically for this research.
 % Spike Width Measurement {{{ %
 \section{Spike Width Measurement}
 % TODO: Include sources to different ways of defining spike width.
-Many different definitions of spike width has been used to differentiate neurons, but
-to date it is not clear which definition is best suited for neuron classification. 
 
 Most extracellular spikeshapes has a minimum value greater than the maximum 
 value,
@@ -617,6 +617,17 @@ the time from the the maximum absolute value to the preceding maximal absolute
 value on the opposing side. 
 
 %}}} end of 
+\section{Spike Amplitude Measurement}
+Amplitude is easier to calculate than the width of a spike, 
+but there are still different ways to define the amplitude. 
+In most cases the amplitude is defined as the distance from a baseline,
+in a similar manner as a sinusoid.
+The baseline is not always well define with spikeshapes.
+For the intracellular potential the baseline can for instance be set
+at the firing threshold, but for extracellular spikes this is not possible.
+Maybe more common is to set
+the baseline as the value during quiescence. 
+For modelling purposes this is can provide difficulties.
 % Simulations with LFPyUtil{{{ 
 \section{Simulations with LFPyUtil}
 LFPyUtil is a python package that was created for this project with the purpose
@@ -965,11 +976,16 @@ back to theory chapter.)
 
 %}}} end of Pettersen and Einvoll
 % {{{ Optimal Spike Width%
-\section{Optimal Spike Width Definition}
-% Spike width has been used to classify inhibitory neurons from excitatory neurons. 
-% But in the literature there has been many different definitions of spike widths
-% which makes comparing results across reseach difficult.
+\section{Optimal Width Definition}
+Many different definitions of spike width has been used to differentiate neurons, but
+to date it is not clear if some definitions are more 
+suited for neuron classification than others.
+This section covers an analysis of two different commonly used spike definitions
+that have been used to classify interneurons and pyramidal neurons.
 
+The two definitions are
+the peak-to-peak spike definition (Type I) and 
+width at half amplitude from baseline (Type II).
 To investigate which of the two 
 width definitions is more optimal for differentiating
 interneurons from pyramidal neurons,
@@ -977,20 +993,28 @@ three classes of the most abundant neurons were selected
 from the blue brain models.
 Two classes of interneurons and one class of pyramidal neurons. 
 There were two classes of pyramidal models available but as the
-as the one class had identical dendrites it was not analyzed.
+one class had identical dendrites it was not analyzed.
 The number of inhibitory neuron classes were much greater,
 the two classes were selected by being the most abundant 
 inhibitory neurons in the L5 area.
 In addition to these classes, one addition group
-was analyzed which included all available interneuron
+was analyzed named "All Inter." 
+which included all available interneuron
 models in L5.
-In this group many of the classes of neurons represent only
+In this group many of the classes represent only
 a very small portion of the number of neurons in L5. 
-Excitatory neurons represented above $87\%$ of all neurons, 
-and 50 \% of all interneurons were classified as 
+The findings from 
+\textcite{markram_reconstruction_2015} 
+suggest
+that overall the ratio between excitatory
+and inhibitory neurons is around $87\% \pm 1\%$. 
+Of these, $50\%$ were classified as 
 baskets cells (LBC and NBC).
-As such the number of models for some small classes of 
-interneurons are overrepresented in the group called "All Inter.".
+The interneurons from L5 were seperated into 
+9 m-types and 10 e-types which gave a total number
+of 48 uniquie models.
+As such some small classes of 
+interneurons are overrepresented in the grouped called "All Inter.".
 
 The classes of neurons were Thick Thufted Pyramidal Cell with
 an early bifurcating apical thuft (TTPC2), Large Basket Cell (LBC) and
@@ -1003,16 +1027,12 @@ and NBC was continuous non-accommodating (cNAC)
 (\textcite[463]{markram_reconstruction_2015}).
 
 Simulations were ran using using the
-SphereRand (\cref{sec:sphere_rand}) simulation 
-with two different width definitions, 
-the peak-to-peak spike definition (Type I) and 
-width at half amplitude from baseline (Type II).
+SphereRand (\cref{sec:sphere_rand}) simulation .
 A good definition is recoqnized by having a better
 seperation between inhibitory
 and excitatory neurons.
-
 The results of the simulations can be seen in 
-\cref{fig:4_2_width_I,fig:4_2_width_II}.
+\cref{fig:4_2_width}.
 For both deifinitions the spike width of interneurons are smaller
 than the width of pyramidal neurons. 
 These findings are in line with previously established findings.
@@ -1044,11 +1064,10 @@ increases the chance of correctly classifying the neuron class.
 A further distinguishment can be seen using the coefficient of variation $c_v$
 (also known as signal to noise ratio, SNR) of
 the two width definitions (\cref{fig:4_2_width_snr}).
-
 \begin{align}
     c_v = \frac{\sigma}{\mu}
 \end{align}
-
+In many cases the lower $c_v$ value will be more robust to noise.
 
 \begin{figure}[h]
     \begin{center}
@@ -1059,7 +1078,25 @@ the two width definitions (\cref{fig:4_2_width_snr}).
         \label{fig:4_2_width_snr}
     \end{center}
 \end{figure}
+% }}}  %
+% {{{  Optimal Amplitude Definition%
+\section{Optimal Amplitude Definition}
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_amps.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_2_amp}
+    \end{center}
+\end{figure}
+The two amplitude definitions investigated here are
+the amplitude from baseline (Type I) and 
+the peak-to-peak amplitude definition (Type II).
+The simulations were ran using the same neurons and simulations
+as the previous section.
 
+\Cref{fig:4_2_amp} shows the 
 
 % }}}  %
 % {{{ Classifing Neurons%
@@ -1075,7 +1112,6 @@ these types have been simulated.
 
 All models from blue brain from L5 was ran using the SphereRand simulation and were
 divided between interneurons and pyramidal neurons. 
-
 
 
 % }}} 
