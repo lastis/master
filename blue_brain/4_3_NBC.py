@@ -62,7 +62,7 @@ sim_multi.run_param['duration'] = 400
 sim_multi.run_param['spikes'] = 3
 sim_multi.run_param['init_amp'] = 0.10
 sim_multi.verbose = True
-# sim.push(sim_multi, False)
+sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
 sim_sphere.run_param['N'] = 500
@@ -72,12 +72,12 @@ sim_sphere.process_param['assert_width'] = True
 sim.push(sim_sphere)
 
 sim_morph = LFPy_util.sims.Morphology()
-# sim.push(sim_morph)
+sim.push(sim_morph)
 
 sim_width = LFPy_util.sims.SpikeWidthDef()
 sim_width.run_param['N'] = 10
 sim_width.process_param['spike_to_measure'] = 2
-# sim.push(sim_width)
+sim.push(sim_width)
 
 # Simulation
 print sim

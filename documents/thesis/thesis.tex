@@ -788,6 +788,7 @@ some results from
 Spesifically the spike width and amplitude dependency in relation to 
 the distance from soma was compared to current results. 
 
+% {{{ Simulation%
 \subsection{Simulation}
 \textbf{Cell:}
 The \textcite{mainen_influence_1996} morphology was used with a passive model, which is 
@@ -817,9 +818,12 @@ puts the apical dendrites along this axis
 \end{figure}
 \noindent
 \textbf{Spike Generation:}
-An action potental was generated using the Connor-Stevens model 
+To recreate the action potential used in
+\textcite{pettersen_amplitude_2008}
+a spike was generated using the Connor-Stevens model 
 (\textcite{connor_prediction_1971,connor_neural_1977})
-using the same parameters as \textcite{dayan_theoretical_2001}\@. 
+using the same parameters as \textcite{dayan_theoretical_2001} and
+\textcite{pettersen_amplitude_2008}\@. 
 In \cref{fig:4_1_cs_ap_signal} the Connor-Stevens simulation is shown
 where the second spike was used for further analysis. 
 This spike had an amplitude of \SI{119.49}{\milli\volt} from baseline. 
@@ -829,9 +833,9 @@ These values matches \textcite{dayan_theoretical_2001}\@, but not
 the spike used in \textcite{pettersen_amplitude_2008} which had an amplitude of 
 \SI{83}{\milli\volt} from baseline. 
 \textcite{pettersen_amplitude_2008} does not go into further detail about
-the creation of the action potential other than stating that the action 
-potential used were similar to \textcite{dayan_theoretical_2001}\@.
-The difference can be explained by the fact that action potentials
+the creation of the action potential other than stating the action 
+potential were similar to \textcite{dayan_theoretical_2001}\@.
+The difference might be explained by the fact that action potentials
 from pyramidal neurons often peaks at \SI{20}{\milli\volt},
 and that this was achived by scaling the original signal from the
 Connor-Stevens model.
@@ -862,12 +866,22 @@ was not as smooth.
     \end{center}
 \end{figure}
 
-
 \noindent
 \textbf{Parameters:}
-Parameters for the Neuron simulation were the same as used in 
-\textcite{pettersen_amplitude_2008} and the action potential used as a boundary
-condition in the soma is the one specified above. 
+Parameters for the Neuron simulation were the same as 
+\textcite{pettersen_amplitude_2008} and the aforementioned 
+action potential was 
+used as a boundary
+condition in soma.
+This was accomplished by 
+setting the membrane potential equal to the 
+action potential in all
+soma sections using the 
+{\verb .play }
+vector function in Neuron.
+This "excites" the neuron even though there are no
+ion channels in the model.
+
 Membrane resistance 
 $R_m = \SI{30}{\kilo\ohm\per\centi\metre\squared}$, 
 membrane capacitance 
@@ -876,11 +890,10 @@ axial resistance
 $R_a = \SI{150}{\ohm\per\centi\metre\squared}$, 
 time resolution 
 $dt = \SI[exponent-base=2]{e-5}{\milli\second}$. 
-The reversal potential was set to zero. The action potental was imposed in all
-soma sections using the "play" vector function in Neuron.
+The reversal potential was set to zero. 
 \\
 
-\begin{wrapfigure}[18]{r}{.5\textwidth}
+\begin{wrapfigure}[19]{r}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
         \includegraphics[width=\linewidth]{images/4_1/disc_morph_elec_xz.pdf}
@@ -895,7 +908,7 @@ soma sections using the "play" vector function in Neuron.
 \end{wrapfigure}
 \noindent
 \textbf{Electrode Positions:}
-Recording sites were placed in the xz plane at 11 linearly spaced 
+Recording sites were placed in the xz-plane at 11 linearly spaced 
 positions along 36 lines with equal 
 angular spacing (\cref{fig:4_1_electrode_pos}).
 \textcite{pettersen_amplitude_2008} states the recording positions
@@ -913,14 +926,20 @@ baseline.
 The spike width was calculated at as the width at half maximum value. 
 
 At 
-$dt = \SI[exponent-base=2]{e-5}{\milli\second} = \SI{0.03125}{\milli\second}$,
+$dt = \SI[exponent-base=2]{e-5}{\milli\second}$,
 the spike width from the Connor-Steven model was 
 \SI{0.5625}{\milli\volt}.
-This is similar to the reported spike width from 
-\textcite{pettersen_amplitude_2008}
-at \SI{0.55}{\milli\second} which must have been rounded to
+This is similar to the reported spike width from
+\textcite{pettersen_amplitude_2008} which was
+was \SI{0.55}{\milli\second}.
+Because the $dt$ used in their simulations was
+$dt = \SI[exponent-base=2]{e-5}{\milli\second} = \SI{0.03125}{\milli\second}$,
+their resulting spike width 
+must have been rounded to
 the nearest \SI{0.05}{\milli\second}.
 
+% }}}  %
+% {{{ Results %
 \subsection{Results}
 The action potental that was used in \textcite{pettersen_amplitude_2008} 
 is similar to the one used here.  The amplitude of the fourier transform is displayed in
@@ -935,15 +954,37 @@ in fig. $3$ in the paper.
 \end{figure}
 
 The spike width increases with the distance from soma as seen in 
-\cref{fig:4_1_spike_width}. These results are 
+\cref{fig:4_1_spike_width}. 
+These results are 
 lower than the widths reported in \textcite{pettersen_amplitude_2008}.
-(Use more time on editing the Connor-Stevens model to come closer to 
-an max.amplitude on 20mV?).   
 
 Sudden changes in spike width was experienced with increased distance from
 soma. Above $200\mu V$ the
-spikes shapes are not well defined. 
-This was also reported in \textcite{pettersen_amplitude_2008}.\\
+most of the spikes shapes are not well defined. 
+This was also reported in \textcite{pettersen_amplitude_2008}\@.
+
+\Cref{fig:4_1_spike_amp} shows the spike amplitude with logarithmic axes.  
+The exact results from 
+\textcite{pettersen_amplitude_2008}
+are not available but 
+the approximate value can be seen from their plots and
+the exponential decay
+$1 / r^n$
+was reported
+as  $n \sim 2$ at \SI{20}{\micro\metre} and 
+$n \sim 2.5$ at \SI{120}{\micro\metre}.
+Current results are not identical to those findings
+and have an exponent 
+of $n = 2$ at \SI{20}{\micro\metre}
+and $n = 2.8$ at \SI{120}{\micro\metre}.
+The value of the amplitude was about
+\SI{350}{\micro\volt} in 
+\textcite{pettersen_amplitude_2008}, 
+but the current model only gives an amplitude of 
+\SI{120}{\micro\volt} 
+at 
+\SI{20}{\micro\metre}.
+How can I explain this descrepancy?
 
 \begin{figure}[thp]
 \centering
@@ -951,17 +992,6 @@ This was also reported in \textcite{pettersen_amplitude_2008}.\\
 \caption{Spike width over distance. Mean +/- 1 std.}
 \label{fig:4_1_spike_width}
 \end{figure}
-
-\textcite{pettersen_amplitude_2008} reports a spike amplitude above $150\mu V$ at 
-$20\mu m$, this does not match current findings.  
-\cref{fig:4_1_spike_amp} shows spike amplitude with logarithmic axes.  
-(TODO: Is numbers on the power law decays necessaryy?) Although 
-the data does not match \textcite{pettersen_amplitude_2008}, 
-it is comparable with what is
-expected in the near and far limit field of a ball and stick neuron.
-In the near field the the expectation is a $1/r$ decay and in the far field
-it is  $1/r^2$ or $1/r^3$ depending on distance. (TODO: Clearify this, put reference
-back to theory chapter.)
 
 \begin{figure}[thp]
     \centering
@@ -971,21 +1001,41 @@ back to theory chapter.)
     data points.}
     \label{fig:4_1_spike_amp}
 \end{figure}
+% }}}  %
+% {{{ Discussion%
+% \subsection{Discussion}
 
-\subsection{Discussion}
-
+% }}}  %
 %}}} end of Pettersen and Einvoll
 % {{{ Optimal Spike Width%
+\newpage
 \section{Optimal Width Definition}
+\begin{wrapfigure}[17]{r}{.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/4_2/widthdef_soma_mem_small.pdf}
+        \vspace{-20pt}
+        \caption{%
+            Width types.
+            }
+        \label{fig:4_2_width_def}
+        \vspace{-10pt}
+    \end{center}
+\end{wrapfigure}
 Many different definitions of spike width has been used to differentiate neurons, but
 to date it is not clear if some definitions are more 
 suited for neuron classification than others.
-This section covers an analysis of two different commonly used spike definitions
-that have been used to classify interneurons and pyramidal neurons.
+% This section covers an analysis of two different commonly used spike definitions
+% that have been used to classify interneurons and pyramidal neurons.
+The two width definitions analyzed are
+the peak-to-peak spike definition and 
+width at half amplitude from baseline,
+respectively referred to as Type I and Type II
+(\Cref{fig:4_2_width_def}).
+\newline
 
-The two definitions are
-the peak-to-peak spike definition (Type I) and 
-width at half amplitude from baseline (Type II).
+\noindent
+\textbf{Models:}
 To investigate which of the two 
 width definitions is more optimal for differentiating
 interneurons from pyramidal neurons,
@@ -1011,7 +1061,8 @@ and inhibitory neurons is around $87\% \pm 1\%$.
 Of these, $50\%$ were classified as 
 baskets cells (LBC and NBC).
 The interneurons from L5 were seperated into 
-9 m-types and 10 e-types which gave a total number
+9 m-types (morphological) and 10 e-types (electrophysiological)
+which gave a total number
 of 48 uniquie models.
 As such some small classes of 
 interneurons are overrepresented in the grouped called "All Inter.".
@@ -1025,9 +1076,12 @@ The e-type of TTPC2 class was continuous adapting (cAD),
 LBC was delayed stuttering (dSTUT) 
 and NBC was continuous non-accommodating (cNAC) 
 (\textcite[463]{markram_reconstruction_2015}).
-
 Simulations were ran using using the
 SphereRand (\cref{sec:sphere_rand}) simulation .
+\newline
+
+\noindent
+\textbf{Seperation:}
 A good definition is recoqnized by having a better
 seperation between inhibitory
 and excitatory neurons.
@@ -1047,8 +1101,9 @@ For Type II the seperation was
 \SI{0.15}{\milli\second} at \SI{30}{\micro\metre}
 and 
 \SI{0.35}{\milli\second} at \SI{100}{\micro\metre}.
-These results suggets that using a type I deifinition of the spike width
+These results suggests that using a type I deifinition of the spike width
 increases the chance of correctly classifying the neuron class.
+\newline
 
 
 \begin{figure}[h]
@@ -1061,13 +1116,41 @@ increases the chance of correctly classifying the neuron class.
     \end{center}
 \end{figure}
 
-A further distinguishment can be seen using the coefficient of variation $c_v$
-(also known as signal to noise ratio, SNR) of
-the two width definitions (\cref{fig:4_2_width_snr}).
+\noindent
+\textbf{Variance:}
+To evaluate the precision of the two width definitions
+it is not very useful to compare the raw variance because 
+the mean values are different.
+An example is the $\sigma$ at 
+\SI{50}{\micro\metre}
+for the group "All Inter" from \cref{fig:4_2_width}.
+For Type I 
+$\sigma = \SI{0.25}{\milli\second}$ 
+and 
+$\mu = \SI{1.1}{\milli\second}$, 
+while for Type II 
+$\sigma = \SI{0.15}{\milli\second}$ 
+and 
+$\mu = \SI{0.3}{\milli\second}$. 
+The variance is lower for Type II but is also
+almost $50\%$ of the mean value. 
+The variance from Type I is higher, but is only about 
+$25\%$ of the mean value, 
+which makes Type I more accurate than Type II.
+
+The coefficient of variation, $c_v$,
+is the relative variance compared to the mean.
 \begin{align}
     c_v = \frac{\sigma}{\mu}
 \end{align}
-In many cases the lower $c_v$ value will be more robust to noise.
+Because the variance is of similar magnitude for both width definitions, 
+the overall greater mean of the Type I definition results in a
+lesser $c_v$ at all distances, for all groups except LBC
+(\cref{fig:4_2_width_snr}).
+To minimalize errors when classifing neurons based on width 
+it is best to minize the overlap between the two definitions.
+Because the seperation is higher and $c_v$ is lower with Type I,
+this definition is better suited for classification.
 
 \begin{figure}[h]
     \begin{center}
@@ -1078,40 +1161,42 @@ In many cases the lower $c_v$ value will be more robust to noise.
         \label{fig:4_2_width_snr}
     \end{center}
 \end{figure}
+
+\noindent
 % }}}  %
 % {{{  Optimal Amplitude Definition%
-\section{Optimal Amplitude Definition}
-\begin{figure}[h]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_amps.pdf}
-        \caption{
-            Nothing.
-        }
-        \label{fig:4_2_amp}
-    \end{center}
-\end{figure}
-The two amplitude definitions investigated here are
-the amplitude from baseline (Type I) and 
-the peak-to-peak amplitude definition (Type II).
-The simulations were ran using the same neurons and simulations
-as the previous section.
+% \section{Optimal Amplitude Definition}
+% \begin{figure}[h]
+%     \begin{center}
+%         \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_amps.pdf}
+%         \caption{
+%             Nothing.
+%         }
+%         \label{fig:4_2_amp}
+%     \end{center}
+% \end{figure}
+% The two amplitude definitions investigated are
+% the amplitude from baseline (Type I) and 
+% the peak-to-peak amplitude definition (Type II).
+% The simulations were ran using the same neurons and simulations
+% as the previous section.
 
-\Cref{fig:4_2_amp} shows the 
+% \Cref{fig:4_2_amp} shows the 
 
 % }}}  %
 % {{{ Classifing Neurons%
-\section{Classifying Inter and Pyramidal Neurons}
-Blue brain reconstruced neurons and indentified 55 types of 
-morphological structures. 
+% \section{Classifying Inter and Pyramidal Neurons}
+% Blue brain reconstruced neurons and indentified 55 types of 
+% morphological structures. 
 
-Excitatory neurons represented above $87\%$ of all neurons in L5.
+% Excitatory neurons represented above $87\%$ of all neurons in L5.
 
-50 \% of all inhibitory interneurons are baskets cells (LBC and NBC),
-these types have been simulated.
+% 50 \% of all inhibitory interneurons are baskets cells (LBC and NBC),
+% these types have been simulated.
 
 
-All models from blue brain from L5 was ran using the SphereRand simulation and were
-divided between interneurons and pyramidal neurons. 
+% All models from blue brain from L5 was ran using the SphereRand simulation and were
+% divided between interneurons and pyramidal neurons. 
 
 
 % }}} 
@@ -1119,97 +1204,10 @@ divided between interneurons and pyramidal neurons.
 %{{{ Discussion
 \chapter{Discussion}
 % Discuss spike widths from other sources and compare to results.
+% \textbf{Width Noise:}
 
 
 %}}} end of Discussion
-%{{{ Appendix
-% \begin{appendix}
-% \chapter{Appendix}
-% \section{Quasistatic Approximation in Neural Tissue}
-% \label{sec:quasi}
-% A quasistatic approximation implies that the equations have a form that does
-% not include time derivatives (static). Some quantaties can be allowed to vary over 
-% time, but slowly. 
-% 	Here we show that the quasistatic approximation is a valid assumption in
-% neural tissue. First start with Maxwell's equations.
-% \begin{align}
-% 	\nabla \cdot {\bf E} &= p / e \nonumber\\
-% 	\nabla \times {\bf E} &= -\partial \bf{B} / \partial t \label{eq:max_1}\\
-% 	\nabla \cdot {\bf B} &= 0\nonumber\\
-% 	\nabla \times {\bf B} &= \mu_0({\bf J} + \epsilon_0\partial{\bf E}/\partial t)
-% 	\label{eq:max_3}
-% \end{align}
-
-% In a passive nonmagnetic medium, {\bf J} is the sum of ohmic volume current 
-% and the polarization current
-% \begin{align}
-% 	\bf J &= \sigma{\bf E} + \partial {\bf P}/\partial t \label{eq:cur_den_0}
-% \end{align}
-% where ${\bf P} = (\epsilon - \epsilon_0){\bf E}$ is the polarization and $\epsilon$
-% is the permitivity of the material.In neuromagnetism, we generally deal with
-% frequencies that are below 100 \si{\hertz}. Cellular electrical
-% phenomena contain mostly frequencies below \si{1\kilo\hertz}. 
-% Let $\sigma$ and $\epsilon$ be uniform and let us consider elctromagnetic 
-% wave at frequencty $f$.
-% \begin{align}
-% 	{\bf E} = {\bf E}_0({\bf r})\exp(i2\pi ft)
-% \end{align}
-% With \cref{eq:max_3,eq:cur_den_0} we get,
-% \begin{align}
-% 	\nabla \times {\bf B} &= \mu_0(
-% 		\sigma{\bf E} + 
-% 		(\epsilon - \epsilon_0)\partial{\bf E}/\partial t + 
-% 		\epsilon_0\partial{\bf E}/\partial t
-% 		)
-% \end{align}
-% For the quasistatic approximation to be valid, it is necessary
-% that the time-derivative terms be small compared to the 
-% ohmic current. 
-% \begin{align}
-% 	\abs{\epsilon{\bf E}/\partial t} \ll \abs{\bf \sigma E} 
-% 		\rightarrow 2\pi f \epsilon/\sigma \ll 1
-% \end{align}
-% With $\sigma = 0.3\,\si{\per\ohm\per\meter}$, the value of brain tissue, 
-% $\epsilon = 10^5\cdot\epsilon_0$, and $f = 100\,\si{\hertz}$, we find
-% \begin{align}
-% 	2\pi f\epsilon/\sigma = 2\cdot10^{-3} \ll 1
-% \end{align}
-% In addition, $\partial {\bf B} /\partial t$ must be small. from
-% \cref{eq:max_1,eq:max_3}, 
-% \begin{align}
-% 	\nabla\times\nabla\times{\bf E} &= 
-% 		-\frac{\partial}{\partial t}(\nabla\times{\bf B})\nonumber\\
-% 	&= -\mu_0\frac{\partial}{\partial t}
-% 		(
-% 		\sigma{\bf E} + \epsilon\partial{\bf E}/\partial t
-% 		) \nonumber \\
-% 	&= -i2\pi f\mu_0(\sigma + i2\pi f\epsilon){\bf E}
-% \end{align}
-
-% Solutions of this equation have spatial changes on the characteristic
-% length scale
-% \begin{align}
-% 	\lambda_c = \abs{2\pi f \mu_0 \sigma(1+i2\pi f \epsilon/\sigma)}^{-1/2}
-% 		\approx65\,\si{\meter}
-% \end{align}
-% This length is much longer than the diameter of the head. This implies that the
-% contribution of $\partial {\bf B}/\partial t$ to $\bf E$ is small. Theautorefor,
-% the quaasistatic approximation appears justified. This does not
-% mean that we should forget time-dependent phenomena altogether. 
-% For example, the capacitative current through the cell membrane is significant in
-% determining the properties of the action potential. 
-% Nevertheless, this so-called displacement current, 
-% $\epsilon_0\partial{\bf E}/\partial t$, need not be taken into account in the 
-% calculation of $\bf B$.
-
-% Copied from
-% \textcite{hamalainen_magnetoencephalography-_1993}
-
-% \end{appendix}
-%}}} end of Appendix
-%{{{ Glossary
-% \printglossary[style=mcoltreegroup]
-%}}} end of Glossary
 %{{{ Bibliography
 %\nocite{*}
 \printbibliography[heading=bibintoc]
