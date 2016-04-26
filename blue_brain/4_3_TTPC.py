@@ -73,8 +73,13 @@ sim.push(sim_sphere)
 sim_morph = LFPy_util.sims.Morphology()
 sim.push(sim_morph)
 
+sim_width = LFPy_util.sims.SpikeWidthDef()
+sim_width.run_param['N'] = 10
+sim_width.process_param['spike_to_measure'] = 2
+sim.push(sim_width)
+
 # Simulation
 print sim
-# sim.simulate()
+sim.simulate()
 sim.plot()
 
