@@ -21,10 +21,10 @@ blue_brain.download_all_models(dir_model)
 # Names of the neurons that also match the model folders.
 neurons = []
 neurons.append('L5_TTPC2_cADpyr232_1')
-neurons.append('L5_TTPC2_cADpyr232_2')
-neurons.append('L5_TTPC2_cADpyr232_3')
-neurons.append('L5_TTPC2_cADpyr232_4')
-neurons.append('L5_TTPC2_cADpyr232_5')
+# neurons.append('L5_TTPC2_cADpyr232_2')
+# neurons.append('L5_TTPC2_cADpyr232_3')
+# neurons.append('L5_TTPC2_cADpyr232_4')
+# neurons.append('L5_TTPC2_cADpyr232_5')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -64,7 +64,7 @@ sim_multi.verbose = True
 sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
-sim_sphere.run_param['N'] = 500
+sim_sphere.run_param['N'] = 100
 sim_sphere.run_param['R'] = 100
 sim_sphere.process_param['spike_to_measure'] = 2
 sim_sphere.process_param['assert_width'] = True
@@ -80,6 +80,6 @@ sim.push(sim_width)
 
 # Simulation
 print sim
-sim.simulate()
+# sim.simulate()
 sim.plot()
 
