@@ -74,9 +74,10 @@ def load_model(nrn, add_synapses=False, comp=True, suppress=False):
     if not hasattr(neuron.h, synapses):
         # load synapses
         neuron.h.load_file(1, os.path.join('synapses', 'synapses.hoc'))
-    if not hasattr(neuron.h, templatename):
-        # Load main cell template
-        neuron.h.load_file(1, "template.hoc")
+    # This is already done in LFPy.
+    # if not hasattr(neuron.h, templatename):
+    #     # Load main cell template
+    #     neuron.h.load_file(1, "template.hoc")
 
     cells = []
     # One cell model can have multiple morphologies.

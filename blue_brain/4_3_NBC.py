@@ -66,7 +66,7 @@ sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
 sim_sphere.run_param['N'] = 500
-sim_sphere.run_param['R'] = 100
+sim_sphere.run_param['R'] = 60
 sim_sphere.process_param['spike_to_measure'] = 2
 sim_sphere.process_param['assert_width'] = True
 sim.push(sim_sphere)
@@ -81,6 +81,6 @@ sim.push(sim_width)
 
 # Simulation
 print sim
-# sim.simulate()
+sim.simulate()
 sim.plot()
 

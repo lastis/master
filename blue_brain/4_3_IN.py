@@ -26,6 +26,7 @@ neurons += glob('L5_NBC*_1')
 neurons += glob('L5_MC*_1')
 neurons += glob('L5_LBC*_1')
 neurons += glob('L5_SBC*_1')
+neurons += glob('L5_BTC*_1')
 
 # Compile and load the extra mod file(s). The ISyn electrode.
 mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -66,21 +67,21 @@ sim.push(sim_multi, False)
 
 sim_sphere = LFPy_util.sims.SphereRand()
 sim_sphere.run_param['N'] = 500
-sim_sphere.run_param['R'] = 100
+sim_sphere.run_param['R'] = 60
 sim_sphere.process_param['spike_to_measure'] = 2
 sim_sphere.process_param['assert_width'] = True
 sim.push(sim_sphere)
 
 sim_morph = LFPy_util.sims.Morphology()
-# sim.push(sim_morph)
+sim.push(sim_morph)
 
 sim_width = LFPy_util.sims.SpikeWidthDef()
 sim_width.run_param['N'] = 10
 sim_width.process_param['spike_to_measure'] = 2
-# sim.push(sim_width)
+sim.push(sim_width)
 
 # Simulation
 print sim
 sim.simulate()
-sim.plot()
+# sim.plot()
 
