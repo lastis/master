@@ -44,6 +44,8 @@
   \setbeamercolor{structure}{fg=viridis_01,bg=black!10!}
   % \setbeamercolor{palette secondary}{fg=viridis_02}
 
+  % Remove figure prefix from figures.
+  \setbeamertemplate{caption}{\insertcaption} 
 }
 
 
@@ -65,7 +67,10 @@
 \usefonttheme{serif}
 
 \title[Short title] % (optional, use only with long paper titles)
-{Title}
+{
+    Classfication of Pyramidal Neurons and Interneurons Using 
+    Spike Width and Amplitude.%
+}
 
 % \subtitle
 % {
@@ -141,40 +146,136 @@
 %   you think necessary.
 % - If you omit details that are vital to the proof/implementation,
 %   just say so once. Everybody will be happy with that.
-
-\begin{frame}{Introduction}
-    L5 P14 male Wistar Han rats. Seperated into morphological and 
-    electrophysiological types
+\begin{frame}{Goals}
+    \begin{itemize}
+        \item Can spike width and amplitude be used to classify interneurons from
+            pyramidal neurons.
+        \item Which spike width and amplitude definition are better suited for classifying.
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Introduction}
+\begin{frame}{Blue Brain Models}
+    % L5 P14 male Wistar Han rats. Seperated into morphological and 
+    % electrophysiological types
+    % I am using models from the blue brain team. Who are they, where are they. 
+    % What rats, which area. L5 because of lots of research there.
+    \centering
+    \includegraphics[width=\textwidth]{images/markram_front.png}
+\end{frame}
+
+\begin{frame}{Blue Brain Models}
+    % Show the m-types.
     \begin{figure}
         \centering
         \includegraphics[width=\textwidth]{images/m-types.jpg}\\
-        \caption*{\centering Fig. 2 in \textcite{markram_reconstruction_2015}}
+        \caption{\centering Fig. 2 in \textcite{markram_reconstruction_2015}}
     \end{figure}
 \end{frame}
 
-\begin{frame}{Introduction}
+\begin{frame}{Blue Brain Models}
+    % Show the e-types.
     \begin{figure}
         \centering
         \includegraphics[width=\textwidth]{images/e-types.jpg}\\
-        \caption*{\centering Fig. 4 in \textcite{markram_reconstruction_2015}}
+        \caption{\centering Fig. 4 in \textcite{markram_reconstruction_2015}}
     \end{figure}
 \end{frame}
 
-\begin{frame}{Optimal Width Definition}{}
+% \begin{frame}{Simulation}
+%     % Show a pyramidal neuron from the simulation with electrodes.
+%     % Want to measure many spikes at different distances from soma.
+%     \centering
+%     \includegraphics[height=\textheight]{images/sphere_morph_elec_xy.pdf}
+% \end{frame}
+
+\begin{frame}{Simulation}
+    % Show a pyramidal neuron from the simulation with electrodes and a arrow to a spike.
+    Simulation using the SphereRand class.
+    \centering
+    \includegraphics[angle=-90,width=\textwidth]{images/electrodes.pdf}
 \end{frame}
 
-\begin{frame}{Optimal Amplitude Definition}
+\begin{frame}{Spike Amplitude Definition}
+    % Zoom in on the spike. Usually two definitons used, peak to peak, baseline.
+    % Show them.
+    Peak-to-peak and baseline-to-peak amplitude definitons.
+    \centering
+    \includegraphics[angle=-90,width=\textwidth]{images/amp_def.pdf}
 \end{frame}
 
-\begin{frame}{Combine Width and Amplitude}
+\begin{frame}{Spike Width Definition}
+    Width at baseline.
+    \centering
+    \includegraphics[angle=-90,width=\textwidth]{images/width_bad.pdf}
 \end{frame}
 
-\begin{frame}{Other Spike Width Results}
+\begin{frame}{Spike Width Definition}
+    % Zoom in on the spike. Show two common definitions, width at half maximum and peak to peak width.
+    Peak-to-peak and half maximum width definitions.
+    \centering
+    \includegraphics[width=\textwidth]{images/widthdef_extracellular_1.pdf}
+\end{frame}
+
+\begin{frame}{Amplitude from Soma}
+    % Introduce the models, why they were chosen. Not very interesting.
+    % What is a good definition? The seperation is good, but for all distances.
+    % Heavy overlap for inhib types. But good seperation between the types.
+    % Points closer to soma has fewer samples. 
+    \centering
+    \includegraphics[width=\textwidth]{images/TTPC2_NBC_LBC_IN_amps.pdf}
+\end{frame}
+
+\begin{frame}{Width from Soma}
+    % Which definiton gives the better seperation. 
+    % Peak to peak gives better seperation knowing the distance from soma.
+    % Peak to peak has better variance compared
+    \centering
+    \includegraphics[width=\textwidth]{images/TTPC2_NBC_LBC_IN_widths.pdf}
+\end{frame}
+
+\begin{frame}{Width from Soma: Coefficient of Variation}
+    % Is more precise. Might be better.
+    \centering
+    \includegraphics[width=\textwidth]{images/TTPC2_NBC_LBC_IN_snr.pdf}
+\end{frame}
+
+\begin{frame}{Combined Width and Amplitude}
+    \includegraphics[width=\textwidth]{images/TTPC2_NBC_LBC_IN_combined.pdf}
+\end{frame}
+
+\begin{frame}{Combined Width and Amplitude}
+    % Variation in interneurons are much bigger than with the pyramidal models.
+    % Might be because of the models, not sure if this is a feature of the models or 
+    % the neurons.
+    \includegraphics[width=\textwidth]{images/TTPC2_NBC_LBC_IN_combined_scatter.pdf}
+\end{frame}
+
+\begin{frame}{Combined Width and Amplitude Close Up}
+    \includegraphics[width=\textwidth]{images/TTPC2_NBC_LBC_IN_combined_scatter_close.pdf}
+\end{frame}
+
+\begin{frame}{Comparing Width Definitions}
+    Other remarks:
+    \begin{itemize}
+        \item Baseline is not always well defined.
+        \item Peak-to-peak more resistant to noise.
+        \item Half width requires high temporal resolution.
+        \item Widths seem a bit long compared to other experimental results.
+    \end{itemize}
 \end{frame}
 
 
+\begin{frame}{}
+    Summary:
+    \begin{itemize}
+        \item Amplitude should be considered when classifying based on width.
+        \item Can use this simulation environment with new models for future 
+            research.
+    \end{itemize}
+    % Remarks:
+    % \begin{itemize}
+    %     \item Width was not used by blue brain, inter spike interval more commonly used recently.
+    % \end{itemize}
+\end{frame}
 
 \end{document}
