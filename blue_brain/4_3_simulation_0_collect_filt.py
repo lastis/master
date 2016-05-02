@@ -25,7 +25,7 @@ sim_sphere = LFPy_util.sims.SphereRandFilt()
 sim_sphere.process_param['filter'] = 'lfilter'
 sim_sphere.process_param['spike_to_measure'] = 2
 sim_sphere.process_param['assert_width'] = True
-sim_sphere.process_param['freq_low'] = 0.05
+sim_sphere.process_param['freq_low'] = 0.001
 
 # {{{ Define Variables
 neuron_check_name = None
@@ -372,9 +372,9 @@ ax1.set_xlabel(r"Half Max Width \textbf{[\si{\milli\second}]}")
 # }}} 
 # {{{ Limits
 ax0.set_ylim([0, 200])
-ax0.set_xlim([0.6, 2.2])
+ax0.set_xlim([0.0, 2.2])
 ax1.set_ylim([0, 200])
-ax1.set_xlim([0.0, 1.0])
+ax1.set_xlim([0.0, 2.2])
 # }}} 
 # {{{ Closing
 plt.tight_layout()

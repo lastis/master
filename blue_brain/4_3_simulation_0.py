@@ -49,7 +49,7 @@ def get_simulator(neuron_name):
     sim_multi.run_param['spikes'] = 3
     sim_multi.run_param['init_amp'] = 0.30
     sim_multi.verbose = True
-    # sim.push(sim_multi, False)
+    sim.push(sim_multi, False)
 
     sim_sphere = LFPy_util.sims.SphereRand()
     sim_sphere.run_param['N'] = 500
@@ -60,29 +60,32 @@ def get_simulator(neuron_name):
     # sim.push(sim_sphere)
 
     sim_sphere_filt = LFPy_util.sims.SphereRandFilt()
-    sim_sphere_filt.simulate = False
+    sim_sphere_filt.skip_simulation = True
     sim_sphere.process_param['spike_to_measure'] = 2
     sim_sphere.process_param['assert_width'] = True
-    # sim.push(sim_sphere_filt)
+    sim.push(sim_sphere_filt)
 
     sim_morph = LFPy_util.sims.Morphology()
-    # sim.push(sim_morph)
+    sim.push(sim_morph)
 
     sim_width = LFPy_util.sims.SpikeWidthDef()
     sim_width.run_param['N'] = 10
+    sim_width.run_param['seed'] = np.random.randint(1e6)
     sim_width.process_param['spike_to_measure'] = 2
-    # sim.push(sim_width)
+    sim.push(sim_width)
 
     sim_width_filt = LFPy_util.sims.SpikeWidthDefFilt()
     sim_width_filt.process_param['spike_to_measure'] = 2
-    sim_width_filt.simulate = False
-    # sim.push(sim_width_filt)
+    sim_width_filt.process_param['filter'] = 'filtfilt'
+    sim_width_filt.process_param['freq_low'] = 0.3
+    sim_width_filt.skip_simulation = True
+    sim.push(sim_width_filt)
 
     sim_width_lfilt = LFPy_util.sims.SpikeWidthDefFilt()
     sim_width_lfilt.process_param['spike_to_measure'] = 2
     sim_width_lfilt.process_param['filter'] = 'lfilter'
-    sim_width_lfilt.process_param['freq_low'] = 0.05
-    sim_width_lfilt.simulate = False
+    sim_width_lfilt.process_param['freq_low'] = 0.3
+    sim_width_lfilt.skip_simulation = True
     sim_width_lfilt.name += 'left'
     sim.push(sim_width_lfilt)
     return sim
@@ -93,21 +96,21 @@ if __name__ == '__main__':
 
     # Names of the neurons that also match the model folders.
     neurons = []
-    # neurons.append('L5_LBC_dSTUT214_1')
-    # neurons.append('L5_LBC_dSTUT214_2')
-    # neurons.append('L5_LBC_dSTUT214_3')
-    # neurons.append('L5_LBC_dSTUT214_4')
-    # neurons.append('L5_LBC_dSTUT214_5')
-    # neurons.append('L5_NBC_cNAC187_1')
-    # neurons.append('L5_NBC_cNAC187_2')
-    # neurons.append('L5_NBC_cNAC187_3')
-    # neurons.append('L5_NBC_cNAC187_4')
-    # neurons.append('L5_NBC_cNAC187_5')
+    neurons.append('L5_LBC_dSTUT214_1')
+    neurons.append('L5_LBC_dSTUT214_2')
+    neurons.append('L5_LBC_dSTUT214_3')
+    neurons.append('L5_LBC_dSTUT214_4')
+    neurons.append('L5_LBC_dSTUT214_5')
+    neurons.append('L5_NBC_cNAC187_1')
+    neurons.append('L5_NBC_cNAC187_2')
+    neurons.append('L5_NBC_cNAC187_3')
+    neurons.append('L5_NBC_cNAC187_4')
+    neurons.append('L5_NBC_cNAC187_5')
     neurons.append('L5_TTPC2_cADpyr232_1')
-    # neurons.append('L5_TTPC2_cADpyr232_2')
-    # neurons.append('L5_TTPC2_cADpyr232_3')
-    # neurons.append('L5_TTPC2_cADpyr232_4')
-    # neurons.append('L5_TTPC2_cADpyr232_5')
+    neurons.append('L5_TTPC2_cADpyr232_2')
+    neurons.append('L5_TTPC2_cADpyr232_3')
+    neurons.append('L5_TTPC2_cADpyr232_4')
+    neurons.append('L5_TTPC2_cADpyr232_5')
 
     # Compile and load the extra mod file(s). The ISyn electrode.
     mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -115,7 +118,7 @@ if __name__ == '__main__':
 
     # Simulation
     simm = LFPy_util.SimulatorManager()
-    simm.concurrent_neurons = 8
+    simm.concurrent_neurons = 2
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
