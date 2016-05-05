@@ -40,6 +40,17 @@
 \usepackage{multicol}
 % Commands that help placing figures side by side.
 \usepackage{subcaption}
+% Used with minted to get caption on top.
+\usepackage{floatrow}
+% Highlighting of source code.
+% \usepackage{mdframed}
+\usepackage{minted}
+\usemintedstyle{manni}
+\floatsetup[listing]{style=Plaintop}
+% \surroundwithmdframed{minted}
+% \BeforeBeginEnvironment{minted}{\begin{mdframed}}
+% \AfterEndEnvironment{minted}{\end{mdframed}}
+    
 
 % Glossary packages.
 % \usepackage[nopostdot,toc]{glossaries}
@@ -130,8 +141,8 @@
     \LetLtxMacro{\myCref}{\Cref}
 	\renewcommand{\Cref}[1]{{\color{viridis_03}\myCref{#1}}}
 }
-% Change the spacing of some math symbols in math mode.
-\setlength{\thickmuskip}{6mu}
+% % Change the spacing of some math symbols in math mode.
+% \setlength{\thickmuskip}{6pt}
 %}}} end of preamble
 \begin{document}
 % Overview {{{ %
@@ -629,7 +640,7 @@ Maybe more common is to set
 the baseline as the value during quiescence. 
 For modelling purposes this is can provide difficulties.
 % Simulations with LFPyUtil{{{ 
-\section{Simulations with LFPyUtil}
+\section{LFPyUtil}
 LFPyUtil is a python package that was created for this project with the purpose
 to simplify the simulation pipeline for multiple neurons and creating
 and easy to use interface when developing new simulations. 
@@ -650,6 +661,7 @@ This has the unfortunate consequence that the two programming langues are
 very intertwined 
 and also does not follow
 common python coding conventions. 
+% TODO: Source?
 This also makes it harder for users to troubleshoot errors as problems can
 occur either in python, hoc or between the two.
 To solve this the package LFPy has attempted to wrap the cell model and
@@ -657,18 +669,63 @@ electrodes from the Neuron engine into python objects, such as the
 {\verb LFPy.Cell } and 
 {\verb LFPy.StimIntElectrode } classes.
 
-When running a simulation with Neuron there is no inherent support for 
-running simulations simultaniously. 
-Because LFPy is an extension to Neuron this is also lacking in LFPy. 
+With Neuron there is no inherent support for 
+running simulations simultaniously and 
+this is also lacking in LFPy. 
 LFPyUtil attempts to solve this by starting each simulation
-in independent processes. This does not speed up a single simulation
-but rather speeds up the simulation of multiple neurons and simulations
-that must be run multiple times with different parameters.
+in an independent processes. 
 The major difficulties of running independent processes with
 Neuron is 
 that there is no reset function which can make 
 the state of the previous simulation effect the state of the next
 simulation. 
+With independent processes this is no longer a problem.
+
+% This does not speed up a single simulation
+% but rather speeds up the simulation of multiple neurons and simulations
+% that must be run multiple times with different parameters.
+
+
+
+\subsection{Minimal Working Examples}
+To run a simulation LFPyUtil must 
+have a 
+{\verb LFPy.Cell } object
+it can use to interact with the model.
+A template of such a function can be seen in
+\cref{code:load_model_simple}. 
+A fully working example of such a function can be seen
+in the appendix (\cref{code:load_model}).
+
+\begin{listing}[H]
+    \caption{load\_model\_simple.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/load_model_simple.py}
+    \label{code:load_model_simple}
+\end{listing}
+
+LFPyUtil uses the class Simulation and instances of this class
+to organize simulations. 
+\Cref{code:first_simulation} shows how to run a predefined simulation and plot 
+the results. 
+This simulation is not run in an independt process.
+
+\begin{listing}[H]
+    \caption{first\_simulation.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/first_simulation.py}
+    \label{code:first_simulation}
+\end{listing}
 
 
 % TODO: Include sources to the number 0.3 conductivity.
@@ -683,13 +740,10 @@ equal the input current, using ISyn prevents this and the currents are correctly
 summed to $0$.
 \newline
 
-\noindent
-The following items are python objects in LFPyUtil.
-\newline
-
-\subsection{SphereRand}
+\subsection{List of Simulations}
 \label{sec:sphere_rand}
 \noindent
+\textbf{SphereRand:}
 SphereRand places
 electrodes placed in uniformly distributied locations 
 around the soma within a default radius of \SI{50}{\micro\metre}. 
@@ -1208,8 +1262,26 @@ this definition is better suited for classification.
 
 
 %}}} end of Discussion
+% Appendix {{{ %
+% \begin{appendices}
+\chapter{Appendix}
+% \begin{listing}[H]
+    % \caption{load\_model.py - A function to load a Cell object.}
+% \begin{mdframed}
+    % \inputminted[
+    %     breaklines=true,
+    %     frame=lines,
+    %     baselinestretch=0.4,
+    %     fontsize=\footnotesize,
+    %     bgcolor=LightGray,
+    %     linenos
+    % ]{python}{examples/load_model.py}
+    % \label{code:load_model}
+% \end{listing}
+% \end{mdframed}
+    
+% \end{appendices}
+% }}} Appendix %
 %{{{ Bibliography
 %\nocite{*}
 \printbibliography[heading=bibintoc]
-%}}} end of Bibliography
-\end{document}

@@ -1,12 +1,15 @@
 # Using rubber version 1.4
 .PHONY: clean
 
+# The -c option passes arguments to the latex compiler. --unsafe is needed 
+# because of this.
 default: 
-	# rubber -m glossaries -f --pdf -s thesis
-	rubber -f --pdf -s thesis
 	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
-	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind tags
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg tags
+	rubber -f --pdf -s --unsafe -c 'setlist arguments --shell-escape' thesis
+	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg tags
 
 clean:
 	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
-	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind tags
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg tags

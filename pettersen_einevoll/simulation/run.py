@@ -9,7 +9,6 @@ dir_project = os.path.dirname(os.path.realpath(__file__))
 dir_res = os.path.join(dir_project, "res")
 dir_neurons = dir_project
 
-
 cellParameters = {
     'morphology': os.path.join(dir_res, 'morphology/L5_Mainen96_LFPy.hoc'),
     'rm': 30000,  # membrane resistance
