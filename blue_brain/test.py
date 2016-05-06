@@ -24,7 +24,7 @@ def get_cell(neuron_name):
     cell_list = blue_brain.load_model(nrn_full, suppress=True)
     cell = cell_list[0]
     cell.tstartms = 0
-    cell.tstopms = 500
+    cell.tstopms = 1000
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
     # Aligns y to axis[0] and x to axis[1]
@@ -43,8 +43,11 @@ def get_simulator(neuron_name):
     sim.set_cell_load_func(get_cell)
     sim.set_output_dir(dir_output)
 
-    sim_morph = LFPy_util.sims.Morphology()
-    sim.push(sim_morph)
+    sim_sweep = LFPy_util.sims.CurrentSweep()
+    # sim_sweep.run_param['pptype'] = 'ISyn'
+    sim_sweep.run_param['processes'] = 5
+    sim.push(sim_sweep)
+
     return sim
 
 if __name__ == '__main__':
@@ -55,10 +58,10 @@ if __name__ == '__main__':
     # Names of the neurons that also match the model folders.
     neurons = []
     neurons.append('L5_LBC_dSTUT214_1')
-    neurons.append('L5_LBC_dSTUT214_2')
-    neurons.append('L5_LBC_dSTUT214_3')
-    neurons.append('L5_LBC_dSTUT214_4')
-    neurons.append('L5_LBC_dSTUT214_5')
+    # neurons.append('L5_LBC_dSTUT214_2')
+    # neurons.append('L5_LBC_dSTUT214_3')
+    # neurons.append('L5_LBC_dSTUT214_4')
+    # neurons.append('L5_LBC_dSTUT214_5')
 
     # Compile and load the extra mod file(s). The ISyn electrode.
     mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')

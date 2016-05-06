@@ -43,7 +43,7 @@
 % Used with minted to get caption on top.
 \usepackage{floatrow}
 % Highlighting of source code.
-% \usepackage{mdframed}
+\usepackage{mdframed}
 \usepackage{minted}
 \usemintedstyle{manni}
 \floatsetup[listing]{style=Plaintop}
@@ -639,7 +639,8 @@ at the firing threshold, but for extracellular spikes this is not possible.
 Maybe more common is to set
 the baseline as the value during quiescence. 
 For modelling purposes this is can provide difficulties.
-% Simulations with LFPyUtil{{{ 
+
+% LFPyUtil{{{ 
 \section{LFPyUtil}
 LFPyUtil is a python package that was created for this project with the purpose
 to simplify the simulation pipeline for multiple neurons and creating
@@ -688,10 +689,18 @@ With independent processes this is no longer a problem.
 
 
 \subsection{Minimal Working Examples}
-To run a simulation LFPyUtil must 
+These MWEs explain how to create a new custom simulation from
+scratch and how to use them with LFPyUtil. 
+A basic understanding of object-oriented programming 
+and python is required. 
+
+To run a simulation LFPyUtil must first
 have a 
 {\verb LFPy.Cell } object
 it can use to interact with the model.
+The cell object gives access to functions such as 
+\verb+Cell.simulate()+
+which starts the Neuron simulation.
 A template of such a function can be seen in
 \cref{code:load_model_simple}. 
 A fully working example of such a function can be seen
@@ -709,8 +718,46 @@ in the appendix (\cref{code:load_model}).
     \label{code:load_model_simple}
 \end{listing}
 
-LFPyUtil uses the class Simulation and instances of this class
+LFPyUtil uses the class 
+\verb+LFPyUtil.sims.Simulation+ 
+and instances of this class
 to organize simulations. 
+The simulation class have been created 
+to reflect four parts of a typical neuron simulation.
+(1) Initilization,
+(2) simulation/gather data, 
+(3) process data and (4) plotting the data.
+These four parts are retained in the initilization
+of the object, the \verb+__init__()+ function, 
+a simulation function 
+\verb+simulate(cell)+, 
+a process function 
+\verb+process_data()+
+and a plotting function 
+\verb+plot()+.
+The LFPyUtil simulation class has other properties that 
+among other things enable saving and loading data and 
+naming those files. 
+Because of this a new custom simulation class should inherit
+LFPyUtil's simulation class. 
+
+\Cref{code:new_simulation_class} 
+inherits the LFPyUtil simulation class and
+defines functions that can insert a stimulus electrode 
+and apply a current.
+
+\begin{listing}[H]
+    \caption{new\_simulation\_class.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/new_simulation_class.py}
+    \label{code:new_simulation_class}
+\end{listing}
+
 \Cref{code:first_simulation} shows how to run a predefined simulation and plot 
 the results. 
 This simulation is not run in an independt process.
@@ -1262,26 +1309,27 @@ this definition is better suited for classification.
 
 
 %}}} end of Discussion
-% Appendix {{{ %
-% \begin{appendices}
+% % Appendix {{{ %
+\begin{appendices}
 \chapter{Appendix}
 % \begin{listing}[H]
-    % \caption{load\_model.py - A function to load a Cell object.}
+%     \caption{load\_model.py - A function to load a Cell object.}
 % \begin{mdframed}
-    % \inputminted[
-    %     breaklines=true,
-    %     frame=lines,
-    %     baselinestretch=0.4,
-    %     fontsize=\footnotesize,
-    %     bgcolor=LightGray,
-    %     linenos
-    % ]{python}{examples/load_model.py}
+    \inputminted[
+        breaklines=true,
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/load_model.py}
     % \label{code:load_model}
 % \end{listing}
 % \end{mdframed}
-    
-% \end{appendices}
 % }}} Appendix %
+\end{appendices}
 %{{{ Bibliography
-%\nocite{*}
+\nocite{*}
 \printbibliography[heading=bibintoc]
+% }}}
+\end{document}
