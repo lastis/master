@@ -24,7 +24,7 @@ def get_cell(neuron_name):
     cell_list = blue_brain.load_model(nrn_full, suppress=True)
     cell = cell_list[0]
     cell.tstartms = -50
-    cell.tstopms = 200
+    cell.tstopms = 1000
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
     # Aligns y to axis[0] and x to axis[1]
@@ -46,13 +46,15 @@ def get_simulator(neuron_name):
 
     sim_sweep = LFPy_util.sims.CurrentSweep()
     sim_sweep.run_param['pptype'] = 'ISyn'
-    sim_sweep.run_param['amp_start'] = 0.2
-    sim_sweep.run_param['amp_end'] = 0.4
     sim_sweep.run_param['duration'] = 1000
     sim_sweep.run_param['delay'] = 0
     sim_sweep.run_param['sweeps'] = 4
     sim_sweep.run_param['processes'] = 4
-    sim_sweep.process_param['threshold'] = 4
+    sim_sweep.run_param['n_elec'] = 2
+    if 'TTPC' in neuron_name:
+        sim_sweep.run_param['amp_start'] = 0.1
+        sim_sweep.run_param['amp_end'] = 1.0
+
     sim.push(sim_sweep)
 
     sim_intra = LFPy_util.sims.Intracellular()
@@ -96,6 +98,6 @@ if __name__ == '__main__':
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
-    simm.simulate()
+    # simm.simulate()
     simm.plot()
 
