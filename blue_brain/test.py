@@ -42,18 +42,22 @@ def get_simulator(neuron_name):
     sim.set_neuron_name(neuron_name)
     sim.set_cell_load_func(get_cell)
     sim.set_output_dir(dir_output)
-    sim.paralell = False
+    sim.verbose = True
 
     sim_sweep = LFPy_util.sims.CurrentSweep()
     sim_sweep.run_param['pptype'] = 'ISyn'
     sim_sweep.run_param['duration'] = 1000
     sim_sweep.run_param['delay'] = 0
-    sim_sweep.run_param['sweeps'] = 4
-    sim_sweep.run_param['processes'] = 4
+    sim_sweep.run_param['sweeps'] = 20
+    sim_sweep.run_param['processes'] = 2
     sim_sweep.run_param['n_elec'] = 2
+    sim_sweep.run_param['seed'] = 1
     if 'TTPC' in neuron_name:
         sim_sweep.run_param['amp_start'] = 0.1
         sim_sweep.run_param['amp_end'] = 1.0
+    else:
+        sim_sweep.run_param['amp_start'] = 0.1
+        sim_sweep.run_param['amp_end'] = 0.5
 
     sim.push(sim_sweep)
 
@@ -80,8 +84,12 @@ if __name__ == '__main__':
     # neurons.append('L5_LBC_dNAC222_1')
     # neurons.append('L5_LBC_dSTUT214_1')
 
-    neurons.append('L5_TTPC2_cADpyr232_1')
-    # neurons.append('L5_NBC_cNAC187_1')
+    # neurons.append('L5_LBC_bAC217_1')
+    # neurons.append('L5_TTPC2_cADpyr232_1')
+    neurons.append('L5_NBC_cNAC187_1')
+    # neurons.append('L23_LBC_cSTUT189_1')
+    # neurons.append('L23_NBC_cNAC187_1')
+    # neurons.append('L23_PC_cADpyr229_1')
 
     # neurons.append('L5_LBC_dSTUT214_2')
     # neurons.append('L5_LBC_dSTUT214_3')
@@ -94,10 +102,10 @@ if __name__ == '__main__':
 
     # Simulation
     simm = LFPy_util.SimulatorManager()
-    simm.concurrent_neurons = 1
+    simm.concurrent_neurons = 4
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
-    # simm.simulate()
+    simm.simulate()
     simm.plot()
 
