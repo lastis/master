@@ -628,6 +628,7 @@ the time from the the maximum absolute value to the preceding maximal absolute
 value on the opposing side. 
 
 %}}} end of 
+% Spike Amp. Measurement {{{ %
 \section{Spike Amplitude Measurement}
 Amplitude is easier to calculate than the width of a spike, 
 but there are still different ways to define the amplitude. 
@@ -640,8 +641,11 @@ Maybe more common is to set
 the baseline as the value during quiescence. 
 For modelling purposes this is can provide difficulties.
 
+% }}} Spike Amp. Measurement %
 % LFPyUtil{{{ 
 \section{LFPyUtil}
+% Content {{{ %
+\subsection{About}
 LFPyUtil is a python package that was created for this project with the purpose
 to simplify the simulation pipeline for multiple neurons and creating
 and easy to use interface when developing new simulations. 
@@ -651,24 +655,28 @@ The main feature of the python package LFPy is enable the calculation
 of extracellular potentials, but another major feature is the simplification
 of simulations with the simulation engine Neuron. 
 Using Neuron requires a good understanding of the programming language hoc
-which creates many challanges as hoc is outdated and is no longer
-maintained by the developers. 
-To use Neuron with python one has to use the python interface to Neuron
-which has been implemented in such a way that runs hoc code directly 
-"under the hood". 
-A common situation is that one must write hoc code inside strings and
-pass them to the python-hoc interpreter. 
-This has the unfortunate consequence that the two programming langues are
-very intertwined 
-and also does not follow
-common python coding conventions. 
-% TODO: Source?
-This also makes it harder for users to troubleshoot errors as problems can
-occur either in python, hoc or between the two.
-To solve this the package LFPy has attempted to wrap the cell model and
-electrodes from the Neuron engine into python objects, such as the 
-{\verb LFPy.Cell } and 
-{\verb LFPy.StimIntElectrode } classes.
+which creates many challanges for new users as hoc is no longer
+maintained by its developers and questions and bugs in Neuron
+modern standard.
+In addition to this the python interface to Neuron has been implemented 
+in such a way that it runs hoc code directly "under the hood". 
+This makes 
+% To use Neuron with python one has to use the python interface to Neuron
+% which has been implemented in such a way that runs hoc code directly 
+% "under the hood". 
+% A common situation is that one must write hoc code inside strings and
+% pass them to the python-hoc interpreter. 
+% This has the unfortunate consequence that the two programming langues are
+% very intertwined 
+% and also does not follow
+% common python coding conventions. 
+% % TODO: Source?
+% This also makes it harder for users to troubleshoot errors as problems can
+% occur either in python, hoc or between the two.
+% To solve this the package LFPy has attempted to wrap the cell model and
+% electrodes from the Neuron engine into python objects, such as the 
+% {\verb LFPy.Cell } and 
+% {\verb LFPy.StimIntElectrode } classes.
 
 With Neuron there is no inherent support for 
 running simulations simultaniously and 
@@ -686,8 +694,8 @@ With independent processes this is no longer a problem.
 % but rather speeds up the simulation of multiple neurons and simulations
 % that must be run multiple times with different parameters.
 
-
-
+% }}} Content %
+% MWE {{{ %
 \subsection{Minimal Working Examples}
 These MWEs explain how to create a new custom simulation from
 scratch and how to use them with LFPyUtil. 
@@ -718,15 +726,18 @@ in the appendix (\cref{code:load_model}).
     \label{code:load_model_simple}
 \end{listing}
 
-LFPyUtil uses the class 
-\verb+LFPyUtil.sims.Simulation+ 
-and instances of this class
-to organize simulations. 
-The simulation class have been created 
+\Cref{code:new_simulation_class} 
+defines a custom simulation class that 
+inherits the LFPyUtil simulation class\\
+\verb+LFPyUtil.sims.Simulation+.
+The new class has functions that inserts a stimulus electrode 
+and applies a current to soma.
+
+The LFPyUtil simulation class has been created 
 to reflect four parts of a typical neuron simulation.
 (1) Initilization,
 (2) simulation/gather data, 
-(3) process data and (4) plotting the data.
+(3) processing data and (4) plotting the data.
 These four parts are retained in the initilization
 of the object, the \verb+__init__()+ function, 
 a simulation function 
@@ -734,17 +745,19 @@ a simulation function
 a process function 
 \verb+process_data()+
 and a plotting function 
-\verb+plot()+.
-The LFPyUtil simulation class has other properties that 
+\verb+plot()+ 
+that subclasses should implement.
+Run parameters, plot parameters and data are stored in dictionaries
+in the simulation class and the variables are named
+\verb+run_param+, 
+\verb+plot_param+ and
+\verb+data+ respectively.
+
+The LFPyUtil simulation class has additional properties that 
 among other things enable saving and loading data and 
 naming those files. 
-Because of this a new custom simulation class should inherit
+Because of this a new simulation class should inherit
 LFPyUtil's simulation class. 
-
-\Cref{code:new_simulation_class} 
-inherits the LFPyUtil simulation class and
-defines functions that can insert a stimulus electrode 
-and apply a current.
 
 \begin{listing}[H]
     \caption{new\_simulation\_class.py}
@@ -758,9 +771,39 @@ and apply a current.
     \label{code:new_simulation_class}
 \end{listing}
 
-\Cref{code:first_simulation} shows how to run a predefined simulation and plot 
-the results. 
-This simulation is not run in an independt process.
+The newly created simulation class 
+can now be used to run a complete simulation
+by calling the three functions as seen in listing ??.
+%TODO: create the listing.
+
+If one attempted to run the simulation function in 
+listing ?? more than once in the same program,
+we would experience that the latter simulations would be affected by the previous
+simulations. 
+This is because a new stimulation electrode will be applied 
+once for each new simulation.
+With Neuron and LFPy there are no easy way to reset the environment
+to prevent this. 
+One workaround is to use pythons multiprocessing package
+to create multiple independent processes.
+Doing this for every simulation will require a good amount of code,
+to make this easier LFPyUtil has a class
+\verb+LFPyUtil.Simulatior+
+that can run the simulations in independent processes.
+
+The class
+\verb+LFPyUtil.Simulatior+
+accepts one or more objects that inherit the 
+\verb+LFPyUtil.Simulation+
+class and can run them either in serial or paralell
+and either in a new independent processes or in the same process. 
+Listing ?? shows how the newly created simulation class can be used with
+\verb+LFPyUtil.Simulatior+
+that runs multiple simulations in parallel and in independt processes.
+
+% \Cref{code:first_simulation} shows how to run a predefined simulation and plot 
+% the results. 
+% This simulation is not run in an independt process.
 
 \begin{listing}[H]
     \caption{first\_simulation.py}
@@ -773,6 +816,7 @@ This simulation is not run in an independt process.
     ]{python}{examples/first_simulation.py}
     \label{code:first_simulation}
 \end{listing}
+% }}} MWE %
 
 
 % TODO: Include sources to the number 0.3 conductivity.
@@ -787,6 +831,7 @@ equal the input current, using ISyn prevents this and the currents are correctly
 summed to $0$.
 \newline
 
+% List of simulations {{{ %
 \subsection{List of Simulations}
 \label{sec:sphere_rand}
 \noindent
@@ -799,8 +844,7 @@ That timing is applied to all electrodes such that all electrodes measure
 the same part of the simulation. 
 If the signal has several spikes
 the spike index must be supplied, the default setting uses the first spike.
-
-
+% }}} List of simulations %
 % }}}
 %{{{ Blue Brain
 \section{Blue Brain}
