@@ -651,44 +651,37 @@ to simplify the simulation pipeline for multiple neurons and creating
 and easy to use interface when developing new simulations. 
 LFPyUtil extends and uses the package LFPy to accomplish this. 
 
-The main feature of the python package LFPy is enable the calculation
+The main feature of the python package LFPy is to enable the calculation
 of extracellular potentials, but another major feature is the simplification
-of simulations with the simulation engine Neuron. 
-Using Neuron requires a good understanding of the programming language hoc
-which creates many challanges for new users as hoc is no longer
-maintained by its developers and questions and bugs in Neuron
-modern standard.
-In addition to this the python interface to Neuron has been implemented 
-in such a way that it runs hoc code directly "under the hood". 
-This makes 
-% To use Neuron with python one has to use the python interface to Neuron
-% which has been implemented in such a way that runs hoc code directly 
-% "under the hood". 
-% A common situation is that one must write hoc code inside strings and
-% pass them to the python-hoc interpreter. 
-% This has the unfortunate consequence that the two programming langues are
-% very intertwined 
-% and also does not follow
-% common python coding conventions. 
-% % TODO: Source?
-% This also makes it harder for users to troubleshoot errors as problems can
-% occur either in python, hoc or between the two.
+of the NEURON simulation environment.
+Using NEURON requires a good understanding of the programming language hoc
+which creates many challenges for new users.
+Hoc is not good.
+While NEURON has a python interface
+it gives the distinct feel of being a python to hoc interpreter
+
+While NEURON has support for paralell processing it does not have 
+any inherit support for multiple independent simulations at once.
+% TODO: sources, docs
+In addition there is no function to reset the simulation environment
+which can make previous simulations affect later ones.
+For "embarrasingly parallel" situations like this,
+users have had to resort to creating their own methods
+to start each simulation independently.
+For instance, one solution would be to use a python script to run other scripts
+through the command line, effectivly starting new processes.
+
+LFPyUtil uses pythons multiprocessing package to run independent simulations.
+
+% In addition, troubleshooting programs Neuron is difficult because of the 
+% relatively small user base compared 
+% In addition to this the python interface to Neuron has been implemented 
+% in such a way that it runs hoc code directly "under the hood". 
 % To solve this the package LFPy has attempted to wrap the cell model and
 % electrodes from the Neuron engine into python objects, such as the 
 % {\verb LFPy.Cell } and 
 % {\verb LFPy.StimIntElectrode } classes.
 
-With Neuron there is no inherent support for 
-running simulations simultaniously and 
-this is also lacking in LFPy. 
-LFPyUtil attempts to solve this by starting each simulation
-in an independent processes. 
-The major difficulties of running independent processes with
-Neuron is 
-that there is no reset function which can make 
-the state of the previous simulation effect the state of the next
-simulation. 
-With independent processes this is no longer a problem.
 
 % This does not speed up a single simulation
 % but rather speeds up the simulation of multiple neurons and simulations
