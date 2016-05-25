@@ -648,52 +648,47 @@ For modelling purposes this is can provide difficulties.
 \subsection{About}
 LFPyUtil is a python package that was created for this project with the purpose
 to simplify the simulation pipeline for multiple neurons and creating
-and easy to use interface when developing new simulations. 
+an easy to use interface when developing new simulations. 
 LFPyUtil extends and uses the package LFPy to accomplish this. 
+Simulations can be run in parallel and data from simulations can
+automatically be saved and loaded to avoid unnecessary processing time.
+% Some features of LFPyUtil are running simulations in parallel,
+% and automatic saving and loading run parameters and data from simulations.
 
-The main feature of the python package LFPy is to enable the calculation
-of extracellular potentials, but another major feature is the simplification
-of the NEURON simulation environment.
-Using NEURON requires a good understanding of the programming language hoc
-which creates many challenges for new users.
-Hoc is not good.
-While NEURON has a python interface
-it gives the distinct feel of being a python to hoc interpreter
+% TODO: This paragraph must be made clearer.
+LFPy is a Python package created to calculate extracellular potentials.
+Another major feature is wrapping the cell model and electrodes
+from the NEURON simulation environment into Python objects, such as the 
+\verb+LFPy.Cell+ and 
+\verb+LFPy.StimIntElectrode+ classes.
+This makes working with NEURON more pythonic as 
+it can be argued that NEURON is
+state-based.
+That is, even though the Python interface of NEURON uses objects,
+the objects are bound to the state system. 
+In practical terms this means that all functions and variables
+with NEURON are global static. 
 
-While NEURON has support for paralell processing it does not have 
-any inherit support for multiple independent simulations at once.
-% TODO: sources, docs
-In addition there is no function to reset the simulation environment
-which can make previous simulations affect later ones.
+While NEURON has support for paralell processing of single simulations
+it does not have 
+any inherit support for running multiple independent simulations.
 For "embarrasingly parallel" situations like this,
 users have had to resort to creating their own methods
 to start each simulation independently.
-For instance, one solution would be to use a python script to run other scripts
+For instance, one solution would be to use a Python script to run other scripts
 through the command line, effectivly starting new processes.
+In addition there is no function to reset the simulation environment
+which can make previous simulations affect later ones.
 
-LFPyUtil uses pythons multiprocessing package to run independent simulations.
-
-% In addition, troubleshooting programs Neuron is difficult because of the 
-% relatively small user base compared 
-% In addition to this the python interface to Neuron has been implemented 
-% in such a way that it runs hoc code directly "under the hood". 
-% To solve this the package LFPy has attempted to wrap the cell model and
-% electrodes from the Neuron engine into python objects, such as the 
-% {\verb LFPy.Cell } and 
-% {\verb LFPy.StimIntElectrode } classes.
-
-
-% This does not speed up a single simulation
-% but rather speeds up the simulation of multiple neurons and simulations
-% that must be run multiple times with different parameters.
-
+LFPyUtil uses Python's multiprocessing package to run independent simulations
+and thus overcomes some of the shortcomings of NEURON and LFPy.
 % }}} Content %
 % MWE {{{ %
 \subsection{Minimal Working Examples}
-These MWEs explain how to create a new custom simulation from
+These examples show how to create a new custom simulation from
 scratch and how to use them with LFPyUtil. 
 A basic understanding of object-oriented programming 
-and python is required. 
+and Python is required. 
 
 To run a simulation LFPyUtil must first
 have a 
@@ -701,7 +696,7 @@ have a
 it can use to interact with the model.
 The cell object gives access to functions such as 
 \verb+Cell.simulate()+
-which starts the Neuron simulation.
+which starts the NEURON simulation.
 A template of such a function can be seen in
 \cref{code:load_model_simple}. 
 A fully working example of such a function can be seen
@@ -719,12 +714,29 @@ in the appendix (\cref{code:load_model}).
     \label{code:load_model_simple}
 \end{listing}
 
-\Cref{code:new_simulation_class} 
-defines a custom simulation class that 
-inherits the LFPyUtil simulation class\\
+LFPyUtil use subclasses of the class
 \verb+LFPyUtil.sims.Simulation+.
-The new class has functions that inserts a stimulus electrode 
-and applies a current to soma.
+to organize simulations.
+\Cref{code:new_simulation_class_simple} 
+shows a very minimal example of such a subclass.
+If the functions 
+\verb+simulate+, 
+\verb+process_data+ and 
+\verb+plot+ 
+are not overrided, a
+\verb+NotImplementedError+ will be raised.
+
+\begin{listing}[H]
+    \caption{new\_simulation\_class\_simple.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/new_simulation_class_simple.py}
+    \label{code:new_simulation_class_simple}
+\end{listing}
 
 The LFPyUtil simulation class has been created 
 to reflect four parts of a typical neuron simulation.
@@ -738,19 +750,37 @@ a simulation function
 a process function 
 \verb+process_data()+
 and a plotting function 
-\verb+plot()+ 
-that subclasses should implement.
+\verb+plot()+.
 Run parameters, plot parameters and data are stored in dictionaries
 in the simulation class and the variables are named
 \verb+run_param+, 
 \verb+plot_param+ and
 \verb+data+ respectively.
-
 The LFPyUtil simulation class has additional properties that 
 among other things enable saving and loading data and 
 naming those files. 
 Because of this a new simulation class should inherit
 LFPyUtil's simulation class. 
+
+\Cref{code:new_simulation_class} 
+defines a custom simulation class that 
+inherits the LFPyUtil simulation class, 
+but adds some more functionality.
+The function \verb+simulate+
+inserts a stimulus electrode and 
+applies a current to soma with parameters defined in 
+\verb+__init__+. 
+The membrane potential is then stored in the 
+\verb+data+ dictionary.
+The function  
+\verb+process_data+
+creates a normalized version of the membrane potental
+and saves it.
+The function \verb+plot+ 
+plots the membrane potential.
+To exemplify the use of 
+\verb+run_param+, a conditional statement is used
+to decide whether or not to plot the normalized version.
 
 \begin{listing}[H]
     \caption{new\_simulation\_class.py}
@@ -764,39 +794,11 @@ LFPyUtil's simulation class.
     \label{code:new_simulation_class}
 \end{listing}
 
+\newpage
 The newly created simulation class 
 can now be used to run a complete simulation
-by calling the three functions as seen in listing ??.
-%TODO: create the listing.
-
-If one attempted to run the simulation function in 
-listing ?? more than once in the same program,
-we would experience that the latter simulations would be affected by the previous
-simulations. 
-This is because a new stimulation electrode will be applied 
-once for each new simulation.
-With Neuron and LFPy there are no easy way to reset the environment
-to prevent this. 
-One workaround is to use pythons multiprocessing package
-to create multiple independent processes.
-Doing this for every simulation will require a good amount of code,
-to make this easier LFPyUtil has a class
-\verb+LFPyUtil.Simulatior+
-that can run the simulations in independent processes.
-
-The class
-\verb+LFPyUtil.Simulatior+
-accepts one or more objects that inherit the 
-\verb+LFPyUtil.Simulation+
-class and can run them either in serial or paralell
-and either in a new independent processes or in the same process. 
-Listing ?? shows how the newly created simulation class can be used with
-\verb+LFPyUtil.Simulatior+
-that runs multiple simulations in parallel and in independt processes.
-
-% \Cref{code:first_simulation} shows how to run a predefined simulation and plot 
-% the results. 
-% This simulation is not run in an independt process.
+as seen in 
+\cref{code:first_simulation}.
 
 \begin{listing}[H]
     \caption{first\_simulation.py}
@@ -809,6 +811,41 @@ that runs multiple simulations in parallel and in independt processes.
     ]{python}{examples/first_simulation.py}
     \label{code:first_simulation}
 \end{listing}
+
+If one attempted to run the simulation function in 
+\cref{code:new_simulation_class} 
+more than once in the same program,
+we would experience that subsequent simulations would be affected by previous
+simulations. 
+This is because a new electrode will be applied 
+once for each call to the simulation function.
+With NEURON or LFPy there are no easy way to reset the environment
+to prevent this. 
+One workaround is to use Python's multiprocessing package
+to create multiple independent processes.
+Doing this for every simulation will require excessive
+amount of code.
+LFPyUtil can simplify this and has tools that 
+requires less code and are compatible with classes
+like the one defined in
+\cref{code:new_simulation_class}.
+
+
+%TODO: Include sentence about how LFPyUtil makes this easier.
+
+The class
+\verb+LFPyUtil.Simulatior+
+accepts one or more objects that inherit the 
+\verb+LFPyUtil.sims.Simulation+
+class and can run them either in serial or paralell
+and either in a new independent processes or in the same process. 
+Listing ?? shows how the newly created simulation class can be used with
+\verb+LFPyUtil.Simulatior+
+to run multiple simulations in parallel and in independt processes.
+
+% \Cref{code:first_simulation} shows how to run a predefined simulation and plot 
+% the results. 
+% This simulation is not run in an independt process.
 % }}} MWE %
 
 

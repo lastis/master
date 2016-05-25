@@ -1,21 +1,75 @@
-from LFPy_util.sim import Simulation
+import LFPy
+from LFPy_util.sims import Simulation
+import matplotlib.pyplot as plt
 
 class CustomSimulation(Simulation):
     def __init__(self):
+        """
+        Typical initialization function, called when a new instance 
+        is created.
+        """
+        # Inherit the LFPyUtil simulation class.
         Simulation.__init__(self)
-        # Used by the super save and load function.
-        self.set_name('stim_electrode')
+        # These values are used by the super class to save and load
+        # data and run_param.
+        self.name           = "custom_sim"
+        self.name_save_load = "custom_sim"
 
-        # Used by the custom simulate and plot function.
-        self.run_param['delay'] = 100
-        self.run_param['duration'] = 300
-        self.run_param['amp'] = 0.1
+        # Create some parameters that are used by the simulate method.
+        self.run_param['delay'] = 100       # ms.
+        self.run_param['duration'] = 300    # ms.
+        self.run_param['amp'] = 1.0         # nA.
+
+        # Create a parameters used by the plotting function.
+        self.plot_param['plot_norm'] = True
 
     def simulate(self, cell):
-        pass
+        """
+        Setup and starts a simulation, then gathers data.
+
+        :param LFPy.Cell cell:
+            Cell object from LFPy.
+        """
+        # Create an electrode with LFPy.
+        soma_clamp_params = {
+            'idx': cell.somaidx,
+            'amp': self.run_param['amp'],
+            'dur': self.run_param['duration'],
+            'delay': self.run_param['delay'],
+            'pptype': 'IClamp'
+        }
+        stim = LFPy.StimIntElectrode(cell, **soma_clamp_params)
+
+        cell.simulate()
+
+        # Store the data .
+        self.data['soma_v'] = cell.somav
+        self.data['soma_t'] = cell.tvec
 
     def process_data(self):
-        pass
+        """
+        Process data from the simulate function, usually to prepare
+        the data for plotting. This function creates a normalized 
+        version of the membrane potential.
+        """
+        soma_v_norm = self.data['soma_v'].copy()
+        soma_v_norm -= soma_v_norm[0]
+        soma_v_norm /= soma_v_norm.max()
+        self.data['soma_v_norm'] = soma_v_norm
 
     def plot(self, dir_plot):
-        data = self.data
+        """
+        Plot data from the simulate and process_data function.
+        This functions plots the membrane potential and the 
+        normalized version.
+
+        :param string dir_plot:
+            Path to the directory where plots should be saved. 
+            This version only shows the plots.
+        """
+        plt.plot(self.data['soma_t'], self.data['soma_v'])
+        plt.show()
+        # plot_param can be used to affect the plotting.
+        if self.plot_param['plot_norm']:
+            plt.plot(self.data['soma_t'], self.data['soma_v_norm'])
+            plt.show()

@@ -75,6 +75,7 @@ def get_cell(neuron_name):
             timeres_NEURON=2 ** -5,
             timeres_python=2 ** -5, 
             passive=False,
+            v_init=-70,
             )
         return cell
 
