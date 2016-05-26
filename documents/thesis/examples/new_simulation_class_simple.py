@@ -4,10 +4,8 @@ class CustomSimulation(Simulation):
     def __init__(self):
         # Inherit the LFPyUtil simulation class.
         Simulation.__init__(self)
-        # These values are used by the super class to save and load
-        # data and run_param.
-        self.name           = "custom_sim"
-        self.name_save_load = "custom_sim"
+        # These values are used by the super class to save and load data.
+        self.set_name("custom_sim")
 
     def simulate(self, cell):
         pass

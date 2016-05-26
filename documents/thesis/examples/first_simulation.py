@@ -8,9 +8,9 @@ from new_simulation_class import CustomSimulation
 cell = get_cell("pyramidal_1")
 
 # Create an instance of the custom simulation class.
-sim = CustomSimulation()
+sim_custom = CustomSimulation()
 
-sim.simulate(cell)
-sim.process_data()
-sim.plot(".")
-
+sim_custom.simulate(cell)
+sim_custom.process_data()
+# Plots are stored in a folder called first_simulation.
+sim_custom.plot("first_simulation")

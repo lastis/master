@@ -18,6 +18,7 @@ def get_cell(neuron_name):
     :return:
         Cell Object from LFPy.
     """
+    original_cwd = os.getcwd()
 
     neuron.h.load_file('stdrun.hoc')
     neuron.h.load_file('import3d.hoc')
@@ -62,6 +63,7 @@ def get_cell(neuron_name):
         # load synapses
         neuron.h.load_file(1, os.path.join('synapses', 'synapses.hoc'))
 
+
     for morphologyfile in glob('morphology/*'):
         # Instantiate the cell(s) using LFPy
         cell = LFPy.TemplateCell(
@@ -77,6 +79,8 @@ def get_cell(neuron_name):
             passive=False,
             v_init=-70,
             )
+        # Reset back to the previous working directory.
+        os.chdir(original_cwd)
         return cell
 
 

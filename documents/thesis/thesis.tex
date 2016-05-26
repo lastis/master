@@ -140,6 +140,10 @@
 	\renewcommand{\cref}[1]{{\color{viridis_03}\mycref{#1}}}
     \LetLtxMacro{\myCref}{\Cref}
 	\renewcommand{\Cref}[1]{{\color{viridis_03}\myCref{#1}}}
+    \LetLtxMacro{\mynameref}{\nameref}
+	\renewcommand{\nameref}[1]{{\color{viridis_03}\mynameref{#1}}}
+    % \LetLtxMacro{\myfullref}{\fullref}
+	% \renewcommand{\fullref}[1]{{\color{viridis_03}\myfullref{#1}}}
 }
 % % Change the spacing of some math symbols in math mode.
 % \setlength{\thickmuskip}{6pt}
@@ -763,14 +767,14 @@ Because of this a new simulation class should inherit
 LFPyUtil's simulation class. 
 
 \Cref{code:new_simulation_class} 
-defines a custom simulation class that 
+defines a simulation class that 
 inherits the LFPyUtil simulation class, 
 but adds some more functionality.
 The function \verb+simulate+
 inserts a stimulus electrode and 
 applies a current to soma with parameters defined in 
 \verb+__init__+. 
-The membrane potential is then stored in the 
+Then the membrane potential is then stored in the 
 \verb+data+ dictionary.
 The function  
 \verb+process_data+
@@ -779,7 +783,7 @@ and saves it.
 The function \verb+plot+ 
 plots the membrane potential.
 To exemplify the use of 
-\verb+run_param+, a conditional statement is used
+\verb+plot_param+, a conditional statement is used
 to decide whether or not to plot the normalized version.
 
 \begin{listing}[H]
@@ -824,8 +828,8 @@ to prevent this.
 One workaround is to use Python's multiprocessing package
 to create multiple independent processes.
 Doing this for every simulation will require excessive
-amount of code.
-LFPyUtil can simplify this and has tools that 
+amounts of code.
+LFPyUtil can simplify this with tools that 
 requires less code and are compatible with classes
 like the one defined in
 \cref{code:new_simulation_class}.
@@ -834,36 +838,211 @@ like the one defined in
 %TODO: Include sentence about how LFPyUtil makes this easier.
 
 The class
-\verb+LFPyUtil.Simulatior+
-accepts one or more objects that inherit the 
-\verb+LFPyUtil.sims.Simulation+
+\verb+LFPyUtil.Simulator+
+accepts one or more objects that inherit
+LFPyUtil's simulation 
 class and can run them either in serial or paralell
 and either in a new independent processes or in the same process. 
-Listing ?? shows how the newly created simulation class can be used with
-\verb+LFPyUtil.Simulatior+
+\Cref{code:multiple_simulations}
+shows how the newly created simulation class can be used with
+\verb+LFPyUtil.Simulator+
 to run multiple simulations in parallel and in independt processes.
 
-% \Cref{code:first_simulation} shows how to run a predefined simulation and plot 
-% the results. 
-% This simulation is not run in an independt process.
+\begin{listing}[H]
+    \caption{multiple\_simulations.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/multiple_simulations.py}
+    \label{code:multiple_simulations}
+\end{listing}
+
+The function 
+\verb+Simulator.push+ 
+adds the simulation objects to a list.
+When the function
+\verb+Simulator.simulate()+ 
+is ran, the 
+\verb+simulate()+ 
+function of those objects will be called
+in parallel and in independt processes.
+The 
+\verb+Simulator.plot()+ 
+function will call 
+\verb+process_data()+ 
+and 
+\verb+plot(dir_plot)+ 
+functions of those objects, and the parameter
+\verb+dir_plot+ 
+will be created based on the name of the simulation class and
+the name of the neuron name.
+In this case the plots are stored in the directories 
+\verb+./pyramidal_1/plot/custom_sim/+ 
+and
+\verb+./pyramidal_1/plot/custom_sim_2/+.
+
+The \verb+Simulator+ class utilizes save and load features 
+of the simulation class when the 
+\verb+Simulator.simulate()+
+function is called. 
+This makes the dictionaries
+\verb+data+
+and 
+\verb+run_param+
+be saved to file.
+If 
+\verb+Simulator.plot()+
+is ran without 
+\verb+Simulator.simulate()+
+being called first, the program will notice that
+the simulations are missing the 
+\verb+data+ dictionary.
+It will then attempt to load the 
+\verb+data+
+and 
+\verb+run_param+
+from file.
+After 
+\cref{code:multiple_simulations}
+has been run once 
+line 22 can thus be commented out and the data will be loaded
+instead of running the simulation.
+
+LFPyUtil comes with some predefined simulations that have 
+been used for results in this article. 
+\Cref{code:predefined_simulations}
+shows an example of how to use the predefined simulations.
+
+\begin{listing}[H]
+    \caption{predefined\_simulations.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/predefined_simulations.py}
+    \label{code:predefined_simulations}
+\end{listing}
+
+The class 
+\verb+MultiSpike+
+searches for the input current that will result in 
+3 spikes and
+then applies that electrode.
+It also plots some figures, like the input current and the spikes.
+\verb+Intracellular+ 
+simulates and plots statistics about some intracellular recordings.
+The details of the predefined simulations can be found in 
+\cref{sec:simulation_list}
+\nameref{sec:simulation_list}.
+
+Note the extra condition,
+\verb+False+,
+in line 16. 
+This tells the simulator that this simulation should not be
+run in an independent process. 
+When the 
+\verb+MultiSpike+
+simulation is finished, the electrode it used to generate
+3 spikes is still loaded in NEURON.
+When the simulation function of 
+\verb+Intracellular+ 
+runs, the electrode will excite the neuron
+and generate 3 spikes.
+This feature can be used to link simulations and 
+makes the simulations "modular".
+
+The previous examples use only one neuron model. 
+To be able to run many different models it is usefull to define 
+a function such as the one in 
+\cref{code:simulator}.
+
+\begin{listing}[H]
+    \caption{simulator.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/simulator.py}
+    \label{code:simulator}
+\end{listing}
+
+To do the same simulation as in
+\cref{code:predefined_simulations}, 
+one could write:
+\begin{listing}[H]
+    \caption{run\_simulator.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/run_simulator.py}
+    \label{code:run_simulator}
+\end{listing}
+
+\Cref{code:multiple_neurons}
+runs the two predefined simulations
+with two different neuron models.
+The class
+\verb+LFPyUtil.SimulatorManager+
+takes a list of neuron names and passes them to
+the
+\verb+get_simulator(neuron_name)+
+function in 
+\cref{code:simulator}. 
+The parameter
+\verb+neuron_name+
+are the elements of the list of 
+neuron names.
+After running the code once, 
+\verb+simm.simulate()+
+can be commented out and the simulations will load
+data instead of running the simulations.
+
+The final simulation uses four files: 
+\cref{code:load_model_simple},
+\cref{code:new_simulation_class},
+\cref{code:simulator} and 
+\cref{code:multiple_neurons}.
+
+\begin{listing}[H]
+    \caption{multiple\_neurons.py}
+    \inputminted[
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]{python}{examples/multiple_neurons.py}
+    \label{code:multiple_neurons}
+\end{listing}
+
+
 % }}} MWE %
 
+% % TODO: Include sources to the number 0.3 conductivity.
+% In all simulations the extracellular conductivity was set to 
+% $\sigma = \SI{0.3}{\ohm\metre}$
+% based upon data from experimental measurements. 
 
-% TODO: Include sources to the number 0.3 conductivity.
-In all simulations the extracellular conductivity was set to 
-$\sigma = \SI{0.3}{\ohm\metre}$
-based upon data from experimental measurements. 
-
-All stimulus electrodes uses the {\verb LFPy.StimIntElectrode } with 
-a custom made electrode named ISyn. With the default stimulus all transmembrane 
-currents will be summed
-equal the input current, using ISyn prevents this and the currents are correctly
-summed to $0$.
-\newline
+% All stimulus electrodes uses the {\verb LFPy.StimIntElectrode } with 
+% a custom made electrode named ISyn. With the default stimulus all transmembrane 
+% currents will be summed
+% equal the input current, using ISyn prevents this and the currents are correctly
+% summed to $0$.
+% \newline
 
 % List of simulations {{{ %
 \subsection{List of Simulations}
-\label{sec:sphere_rand}
+\label{sec:simulation_list}
 \noindent
 \textbf{SphereRand:}
 SphereRand places
@@ -1252,7 +1431,7 @@ LBC was delayed stuttering (dSTUT)
 and NBC was continuous non-accommodating (cNAC) 
 (\textcite[463]{markram_reconstruction_2015}).
 Simulations were ran using using the
-SphereRand (\cref{sec:sphere_rand}) simulation .
+SphereRand (\cref{sec:simulation_list}) simulation .
 \newline
 
 \noindent

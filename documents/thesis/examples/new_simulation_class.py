@@ -1,6 +1,7 @@
 import LFPy
-from LFPy_util.sims import Simulation
+import LFPy_util
 import matplotlib.pyplot as plt
+from LFPy_util.sims import Simulation
 
 class CustomSimulation(Simulation):
     def __init__(self):
@@ -10,10 +11,8 @@ class CustomSimulation(Simulation):
         """
         # Inherit the LFPyUtil simulation class.
         Simulation.__init__(self)
-        # These values are used by the super class to save and load
-        # data and run_param.
-        self.name           = "custom_sim"
-        self.name_save_load = "custom_sim"
+        # These values are used by the super class to save and load data.
+        self.set_name("custom_sim")
 
         # Create some parameters that are used by the simulate method.
         self.run_param['delay'] = 100       # ms.
@@ -68,8 +67,10 @@ class CustomSimulation(Simulation):
             This version only shows the plots.
         """
         plt.plot(self.data['soma_t'], self.data['soma_v'])
-        plt.show()
+        # Save the plot to input directory with the name "custom_sim_mem".
+        LFPy_util.plot.save_plt(plt, "custom_sim_mem", dir_plot)
         # plot_param can be used to affect the plotting.
         if self.plot_param['plot_norm']:
             plt.plot(self.data['soma_t'], self.data['soma_v_norm'])
-            plt.show()
+            # Save the plot to input directory.
+            LFPy_util.plot.save_plt(plt, "custom_sim_mem_norm", dir_plot)
