@@ -64,7 +64,6 @@ class CustomSimulation(Simulation):
 
         :param string dir_plot:
             Path to the directory where plots should be saved. 
-            This version only shows the plots.
         """
         plt.plot(self.data['soma_t'], self.data['soma_v'])
         # Save the plot to input directory with the name "custom_sim_mem".
