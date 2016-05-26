@@ -659,6 +659,10 @@ automatically be saved and loaded to avoid unnecessary processing time.
 % Some features of LFPyUtil are running simulations in parallel,
 % and automatic saving and loading run parameters and data from simulations.
 
+% TODO: Add text about NEURON, maybe skip the next paragraph.
+% TODO: Link to where the programming package is saved, pypi, 
+% and that it uses python 2 because of NEURON.
+
 % TODO: This paragraph must be made clearer.
 LFPy is a Python package created to calculate extracellular potentials.
 Another major feature is wrapping the cell model and electrodes
@@ -954,7 +958,7 @@ When the simulation function of
 runs, the electrode will excite the neuron
 and generate 3 spikes.
 This feature can be used to link simulations and 
-makes the simulations "modular".
+makes the simulations modular.
 
 The previous examples use only one neuron model. 
 To be able to run many different models it is usefull to define 
@@ -1007,11 +1011,10 @@ After running the code once,
 can be commented out and the simulations will load
 data instead of running the simulations.
 
-The final simulation uses four files: 
+The final simulation uses three files:
 \cref{code:load_model_simple},
-\cref{code:new_simulation_class},
 \cref{code:simulator} and 
-\cref{code:multiple_neurons}.
+\cref{code:multiple_neurons} and 2 predefined simulation classes.
 
 \begin{listing}[H]
     \caption{multiple\_neurons.py}

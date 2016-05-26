@@ -1,4 +1,5 @@
 Uses rubber version 1.4. Also texlive-full and biber.
+Use vim with marked folding to read the texfile.
 
 # Personal note
 When exporting sources from Zotero use Bibtex and western encoding.
