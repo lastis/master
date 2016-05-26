@@ -1,6 +1,5 @@
 # Ignore images except in the documents folder.
 *.png
-*.pdf
 !documents/**
 
 *.js
