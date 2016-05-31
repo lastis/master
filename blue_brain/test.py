@@ -48,13 +48,15 @@ def get_simulator(neuron_name):
     sim_sweep.run_param['pptype'] = 'ISyn'
     sim_sweep.run_param['duration'] = 1e5
     sim_sweep.run_param['delay'] = 0
-    sim_sweep.run_param['sweeps'] = 10
+    sim_sweep.run_param['sweeps'] = 8
     sim_sweep.run_param['processes'] = 8
     sim_sweep.run_param['n_elec'] = 2
     sim_sweep.run_param['seed'] = 1
     if 'TTPC' in neuron_name:
-        sim_sweep.run_param['amp_start'] = 0.1
-        sim_sweep.run_param['amp_end'] = 1.0
+        # sim_sweep.run_param['amp_start'] = 0.1
+        # sim_sweep.run_param['amp_end'] = 1.0
+        sim_sweep.run_param['amp_start'] = 0.0
+        sim_sweep.run_param['amp_end'] = 6.0
     elif 'L23_PC' in neuron_name:
         sim_sweep.run_param['amp_start'] = 0.05
         sim_sweep.run_param['amp_end'] = 1.0
@@ -62,13 +64,13 @@ def get_simulator(neuron_name):
         sim_sweep.run_param['amp_start'] = 0.0
         sim_sweep.run_param['amp_end'] = 0.5
 
-    # sim.push(sim_sweep)
+    sim.push(sim_sweep)
 
     sim_intra = LFPy_util.sims.Intracellular()
     # sim.push(sim_intra)
 
     sim_morph = LFPy_util.sims.Morphology()
-    sim.push(sim_morph)
+    # sim.push(sim_morph)
 
     return sim
 
@@ -79,17 +81,17 @@ if __name__ == '__main__':
 
     # Names of the neurons that also match the model folders.
     neurons = []
-    neurons.append('L23_PC_cADpyr229_1')
-    neurons.append('L4_PC_cADpyr230_1')
-    neurons.append('L5_STPC_cADpyr232_1')
+    # neurons.append('L23_PC_cADpyr229_1')
+    # neurons.append('L4_PC_cADpyr230_1')
+    # neurons.append('L5_STPC_cADpyr232_1')
     neurons.append('L5_TTPC1_cADpyr232_1')
-    neurons.append('L5_TTPC2_cADpyr232_1')
-    neurons.append('L5_UTPC_cADpyr232_1')
-    neurons.append('L6_BPC_cADpyr231_1')
-    neurons.append('L6_IPC_cADpyr231_1')
-    neurons.append('L6_TPC_L1_cADpyr231_1')
-    neurons.append('L6_TPC_L4_cADpyr231_1')
-    neurons.append('L6_UTPC_cADpyr231_1')
+    # neurons.append('L5_TTPC2_cADpyr232_1')
+    # neurons.append('L5_UTPC_cADpyr232_1')
+    # neurons.append('L6_BPC_cADpyr231_1')
+    # neurons.append('L6_IPC_cADpyr231_1')
+    # neurons.append('L6_TPC_L1_cADpyr231_1')
+    # neurons.append('L6_TPC_L4_cADpyr231_1')
+    # neurons.append('L6_UTPC_cADpyr231_1')
 
     # neurons.append('L5_LBC_bAC217_1')
     # neurons.append('L5_LBC_cACint209_1')

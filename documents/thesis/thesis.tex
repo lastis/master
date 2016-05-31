@@ -1560,9 +1560,51 @@ this definition is better suited for classification.
 %}}} end of Results
 %{{{ Discussion
 \chapter{Discussion}
-% Discuss spike widths from other sources and compare to results.
-% \textbf{Width Noise:}
+Results are based on spike width and amplitude.
+The basis for all spike shapes are the types and concentrations of
+ion channels.
+This is the central factor that decides if the neuron has short or long action potentials.
+A number things has been observed that can change spike spike width.
+Factors that change action potentials width:
+* Firing frequency.
+* Input current. Higher current gives higher frequency.
+* Number of previous spikes.
+* Bursting behavior.
+* Backproagating action potentials.
 
+Article anastassiou is consistent with Nature review, spike shape increases with 
+frequency. 
+This is not the case the models from Blue Brain.
+
+% What are the results, what do you want to show.
+% The grand wish, have a catalogue of all spikes in the brain.
+When plotting spike amplitude over spike width will neurons look different.
+
+Results: Spike width alone is often used for classifying neurons.
+They often have a bimodal distribution. 
+This is the first time many simulations have been done of the extracellular
+potential.
+Previous research have only used a few models.
+With LFPy and LFPyUtil it will be easy to adapt new models to calculate extracellular potential.
+
+The spike widths does not show dependency on the firing frequency or spike number.
+Some neurons show this feature and this should do it too.
+
+Results:
+* Which width and amp definition is most suitable for differention.
+* Classify neurons based on spike width and amplitude.
+    * Compare to other data. 
+    Hard to varify model,
+    values from experiments are vary a lot. 
+    Models were based on result from their recordings. 
+    Cannot see adaption with frequency of any kind.
+    * Is experimental distribution shape similar to mine, if so
+    that is a good result.
+* Development of LFPyUtil. Future neuron models can be adapted for 
+extracellular simulations if they include
+a morphology.
+
+% It is possible to model the extracellular potential.
 
 %}}} end of Discussion
 % % Appendix {{{ %
