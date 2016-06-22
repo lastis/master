@@ -19,7 +19,7 @@ DIR_RES = os.path.join(DIR_PROJECT, 'res/')
 DIR_MODELS = os.path.join(DIR_PROJECT, 'res/bbp_models')
 
 
-def load_model(nrn, add_synapses=False, comp=True, suppress=False):
+def load_model(nrn, add_synapses=False, suppress=False):
     """
     Load a model from the bluebrain model folder. Returns a list of cells.
     """
