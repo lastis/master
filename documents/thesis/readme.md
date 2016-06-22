@@ -1,10 +1,8 @@
-Uses rubber version 1.4. Also texlive-full and biber.
+Uses rubber version 1.4. Also texlive-full and biber. 
+Note (2016-06-10): biber has a problem with biblatex, a fix has been suggested here:
+https://bugs.launchpad.net/ubuntu/+source/biber/+bug/1565842
+
 Use vim with marked folding to read the texfile.
 
 # Personal note
 When exporting sources from Zotero use Bibtex and western encoding.
-# TODO: #
-* Compare spikes from the models with real spike data. Check if they have similar 
-  length. See what can be done to improve results.
-* Filtered signal does not look like filtered signal from experimental data. 
-* Aquire experimental data.

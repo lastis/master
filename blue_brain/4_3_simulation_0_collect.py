@@ -287,8 +287,8 @@ SNR_LBC_II = widths_LBC_II_std/widths_LBC_II_mean
 
 lplot.set_rc_param()
 
-# {{{ Plot Amps Scatter
-fname = 'TTPC2_NBC_LBC_amps_scatter'
+# {{{ Plot Widths
+fname = 'TTPC2_NBC_LBC_widths'
 print "plotting " + fname
 plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
@@ -297,29 +297,54 @@ colors = lcmaps.get_short_color_array(4)
 ax0 = plt.subplot(2,1,1)
 lplot.nice_axes(ax0)
 # Plot PC.
-ax0.scatter(
-        elec_r_PC,
-        amps_PC_I,
+plt.plot(
+        r_vectors[0],
+        widths_PC_I_mean,
         color=colors[0],
-        alpha=0.1,
-        label='TTPC2',
+        marker='o',
+        markersize=5,
+        label='PC',
         )
+ax0.fill_between(
+        r_vectors[0],
+        widths_PC_I_mean - widths_PC_I_std,
+        widths_PC_I_mean + widths_PC_I_std,
+        color=colors[0],
+        alpha=0.2
+        )
+
 # Plot NBC.
-ax0.scatter(
-        elec_r_NBC,
-        amps_NBC_I,
+plt.plot(
+        r_vectors[0],
+        widths_NBC_I_mean,
         color=colors[1],
-        alpha=0.1,
+        marker='o',
+        markersize=5,
         label='NBC',
+        )
+ax0.fill_between(
+        r_vectors[0],
+        widths_NBC_I_mean - widths_NBC_I_std,
+        widths_NBC_I_mean + widths_NBC_I_std,
+        color=colors[1],
+        alpha=0.2
         )
 
 # Plot LBC.
-ax0.scatter(
-        elec_r_LBC,
-        amps_LBC_I,
+plt.plot(
+        r_vectors[0],
+        widths_LBC_I_mean,
         color=colors[2],
-        alpha=0.1,
+        marker='o',
+        markersize=5,
         label='LBC',
+        )
+ax0.fill_between(
+        r_vectors[0],
+        widths_LBC_I_mean - widths_LBC_I_std,
+        widths_LBC_I_mean + widths_LBC_I_std,
+        color=colors[2],
+        alpha=0.2
         )
 
 handles, labels = ax0.get_legend_handles_labels()
@@ -332,42 +357,148 @@ ax0.legend(handles,
 ax1 = plt.subplot(2,1,2)
 lplot.nice_axes(ax1)
 # Plot PC.
-ax1.scatter(
-        elec_r_PC,
-        amps_PC_II,
+plt.plot(
+        r_vectors[0],
+        widths_PC_II_mean,
         color=colors[0],
-        alpha=0.1,
-        label='TTPC2',
+        marker='o',
+        markersize=5,
+        label='PC',
         )
+ax1.fill_between(
+        r_vectors[0],
+        widths_PC_II_mean - widths_PC_II_std,
+        widths_PC_II_mean + widths_PC_II_std,
+        color=colors[0],
+        alpha=0.2
+        )
+
 # Plot NBC.
-ax1.scatter(
-        elec_r_NBC,
-        amps_NBC_II,
+plt.plot(
+        r_vectors[0],
+        widths_NBC_II_mean,
         color=colors[1],
-        alpha=0.1,
+        marker='o',
+        markersize=5,
         label='NBC',
+        )
+ax1.fill_between(
+        r_vectors[0],
+        widths_NBC_II_mean - widths_NBC_II_std,
+        widths_NBC_II_mean + widths_NBC_II_std,
+        color=colors[1],
+        alpha=0.2
         )
 
 # Plot LBC.
-ax1.scatter(
-        elec_r_LBC,
-        amps_LBC_II,
+plt.plot(
+        r_vectors[0],
+        widths_LBC_II_mean,
         color=colors[2],
-        alpha=0.1,
+        marker='o',
+        markersize=5,
         label='LBC',
         )
+ax1.fill_between(
+        r_vectors[0],
+        widths_LBC_II_mean - widths_LBC_II_std,
+        widths_LBC_II_mean + widths_LBC_II_std,
+        color=colors[2],
+        alpha=0.2
+        )
 
-ax0.set_ylim([0, 100])
-ax1.set_ylim([0, 100])
-ax0.set_xlim([0, 60])
-ax1.set_xlim([0, 60])
+# ax0.set_ylim([0, 500])
+# ax1.set_ylim([0, 500])
+ax0.set_xlim([10, 60])
+ax1.set_xlim([10, 60])
 
-ax0.set_ylabel(r"Base-to-peak Amp. \textbf{[\si{\micro\volt}]}")
-ax1.set_ylabel(r"Peak-to-peak Amp. \textbf{[\si{\micro\volt}]}")
+ax0.set_ylabel(r"Peak-to-peak Width \textbf{[\si{\milli\second}]}")
+ax1.set_ylabel(r"Half Max Width \textbf{[\si{\milli\second}]}")
 ax1.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
 lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
+# # {{{ Plot Amps Scatter
+# fname = 'TTPC2_NBC_LBC_amps_scatter'
+# print "plotting " + fname
+# plt.figure(figsize=lplot.size_common)
+# ax = plt.gca()
+# colors = lcmaps.get_short_color_array(4)
+
+# ax0 = plt.subplot(2,1,1)
+# lplot.nice_axes(ax0)
+# # Plot PC.
+# ax0.scatter(
+#         elec_r_PC,
+#         amps_PC_I,
+#         color=colors[0],
+#         alpha=0.1,
+#         label='TTPC2',
+#         )
+# # Plot NBC.
+# ax0.scatter(
+#         elec_r_NBC,
+#         amps_NBC_I,
+#         color=colors[1],
+#         alpha=0.1,
+#         label='NBC',
+#         )
+
+# # Plot LBC.
+# ax0.scatter(
+#         elec_r_LBC,
+#         amps_LBC_I,
+#         color=colors[2],
+#         alpha=0.1,
+#         label='LBC',
+#         )
+
+# handles, labels = ax0.get_legend_handles_labels()
+# ax0.legend(handles,
+#           labels,
+#           loc='upper right',
+#           # bbox_to_anchor=(1, 0.5), 
+#           )
+
+# ax1 = plt.subplot(2,1,2)
+# lplot.nice_axes(ax1)
+# # Plot PC.
+# ax1.scatter(
+#         elec_r_PC,
+#         amps_PC_II,
+#         color=colors[0],
+#         alpha=0.1,
+#         label='TTPC2',
+#         )
+# # Plot NBC.
+# ax1.scatter(
+#         elec_r_NBC,
+#         amps_NBC_II,
+#         color=colors[1],
+#         alpha=0.1,
+#         label='NBC',
+#         )
+
+# # Plot LBC.
+# ax1.scatter(
+#         elec_r_LBC,
+#         amps_LBC_II,
+#         color=colors[2],
+#         alpha=0.1,
+#         label='LBC',
+#         )
+
+# ax0.set_ylim([0, 100])
+# ax1.set_ylim([0, 100])
+# ax0.set_xlim([0, 60])
+# ax1.set_xlim([0, 60])
+
+# ax0.set_ylabel(r"Base-to-peak Amp. \textbf{[\si{\micro\volt}]}")
+# ax1.set_ylabel(r"Peak-to-peak Amp. \textbf{[\si{\micro\volt}]}")
+# ax1.set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+# lplot.save_plt(plt, fname, dir_output)
+# plt.close()
+# # }}} 
 # {{{ Plot Amps
 fname = 'TTPC2_NBC_LBC_amps'
 print "plotting " + fname
@@ -384,7 +515,7 @@ plt.plot(
         color=colors[0],
         marker='o',
         markersize=5,
-        label='TTPC2',
+        label='PC',
         )
 ax0.fill_between(
         r_vectors[0],
@@ -444,7 +575,7 @@ plt.plot(
         color=colors[0],
         marker='o',
         markersize=5,
-        label='TTPC2',
+        label='PC',
         )
 ax1.fill_between(
         r_vectors[0],
@@ -488,8 +619,8 @@ ax1.fill_between(
         alpha=0.2
         )
 
-ax0.set_ylim([0, 100])
-ax1.set_ylim([0, 100])
+ax0.set_ylim([0, 500])
+ax1.set_ylim([0, 500])
 ax0.set_xlim([0, 60])
 ax1.set_xlim([0, 60])
 
@@ -515,7 +646,7 @@ ax0.scatter(
         amps_PC_II,
         color=colors[0],
         alpha=0.1,
-        label='TTPC2',
+        label='PC',
         )
 # }}} 
 # {{{ Plot NBC Type I
@@ -613,9 +744,9 @@ lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # }}} 
-# {{{ Plot Combined
+# {{{ Plot Scatter NBC
 # {{{ Init
-fname = 'TTPC2_NBC_LBC_IN_combined'
+fname = 'TTPC2_NBC_scatter'
 print "plotting " + fname
 fig = plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
@@ -624,58 +755,22 @@ colors = lcmaps.get_short_color_array(4)
 # {{{ Plot TTPC2 Type I
 ax0 = plt.subplot(1,2,1)
 lplot.nice_axes(ax0)
-ax0.plot(widths_PC_I_mean,
-        amps_PC_II_mean,
+ax0.scatter(
+        widths_PC_I,
+        amps_PC_II,
         color=colors[0],
-        label='TTPC2',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_PC_I_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_PC_I_mean[i], amps_PC_II_mean[i]),
-            width=2*widths_PC_I_std[i],
-            height=2*amps_PC_II_std[i],
-            )
-    ax0.add_artist(ell)
-    ell.set_clip_box(ax0.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[0])
+        alpha=0.1,
+        label='PC',
+        )
 # }}} 
 # {{{ Plot NBC Type I
-ax0.plot(widths_NBC_I_mean,
-        amps_NBC_II_mean,
+ax0.scatter(
+        widths_NBC_I,
+        amps_NBC_II,
         color=colors[1],
+        alpha=0.1,
         label='NBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_NBC_I_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_NBC_I_mean[i], amps_NBC_II_mean[i]),
-            width=2*widths_NBC_I_std[i],
-            height=2*amps_NBC_II_std[i],
-            )
-    ax0.add_artist(ell)
-    ell.set_clip_box(ax0.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[1])
-# }}} 
-# {{{ Plot LBC Type I
-ax0.plot(widths_LBC_I_mean,
-        amps_LBC_II_mean,
-        color=colors[2],
-        label='LBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_LBC_I_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_LBC_I_mean[i], amps_LBC_II_mean[i]),
-            width=2*widths_LBC_I_std[i],
-            height=2*amps_LBC_II_std[i],
-            )
-    ax0.add_artist(ell)
-    ell.set_clip_box(ax0.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[2])
+        )
 # }}} 
 # {{{ Horizontal Lines
 plt.axhline(
@@ -685,58 +780,22 @@ plt.axhline(
 # {{{ Plot TTPC2 Type II
 ax1 = plt.subplot(1,2,2)
 lplot.nice_axes(ax1)
-ax1.plot(widths_PC_II_mean,
-        amps_PC_II_mean,
+ax1.scatter(
+        widths_PC_II,
+        amps_PC_II,
         color=colors[0],
+        alpha=0.1,
         label='TTPC2',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_PC_II_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_PC_II_mean[i], amps_PC_II_mean[i]),
-            width=2*widths_PC_II_std[i],
-            height=2*amps_PC_II_std[i],
-            )
-    ax1.add_artist(ell)
-    ell.set_clip_box(ax1.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[0])
+        )
 # }}} 
 # {{{ Plot NBC Type II
-ax1.plot(widths_NBC_II_mean,
-        amps_NBC_II_mean,
+ax1.scatter(
+        widths_NBC_II,
+        amps_NBC_II,
         color=colors[1],
+        alpha=0.1,
         label='NBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_NBC_II_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_NBC_II_mean[i], amps_NBC_II_mean[i]),
-            width=2*widths_NBC_II_std[i],
-            height=2*amps_NBC_II_std[i],
-            )
-    ax1.add_artist(ell)
-    ell.set_clip_box(ax1.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[1])
-# }}} 
-# {{{ Plot LBC Type II
-ax1.plot(widths_LBC_II_mean,
-        amps_LBC_II_mean,
-        color=colors[2],
-        label='LBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_LBC_II_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_LBC_II_mean[i], amps_LBC_II_mean[i]),
-            width=2*widths_LBC_II_std[i],
-            height=2*amps_LBC_II_std[i],
-            )
-    ax1.add_artist(ell)
-    ell.set_clip_box(ax1.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[2])
+        )
 # }}} 
 # {{{ Horizontal Lines
 plt.axhline(
@@ -753,38 +812,37 @@ plt.figlegend(
         labelspacing=0.,
         bbox_to_anchor=(0.5, 1.00),
         )
-# ax0.legend(handles,
-#           labels,
-#           loc='upper right',
-#           # bbox_to_anchor=(1, 0.5), 
-#           )
-# handles, labels = ax1.get_legend_handles_labels()
-# ax1.legend(handles,
-#           labels,
-#           loc='upper right',
-#           # bbox_to_anchor=(1, 0.5), 
-#           )
-# }}} 
-# {{{ Limits
-ax1.set_ylim([0, 200])
-ax1.set_xlim([0.0, 1.0])
-ax0.set_ylim([0, 200])
-ax0.set_xlim([0.6, 2.2])
 # }}} 
 # {{{ Labels
 ax0.set_ylabel(r"Peak-to-peak Amp. \textbf{[\si{\micro\volt}]}")
 ax0.set_xlabel(r"Peak-to-peak Width \textbf{[\si{\milli\second}]}")
 ax1.set_xlabel(r"Half Max Width \textbf{[\si{\milli\second}]}")
 # }}} 
+# {{{ Limits
+ax0.set_ylim([0, 200])
+ax0.set_xlim([0.0, 2.2])
+ax1.set_ylim([0, 200])
+ax1.set_xlim([0.0, 2.2])
+# }}} 
 # {{{ Closing
 plt.tight_layout()
+lplot.save_plt(plt, fname, dir_output)
+# }}} 
+# {{{ Limits
+ax0.set_ylim([0, 25])
+ax0.set_xlim([0.6, 2.2])
+ax1.set_ylim([0, 25])
+ax1.set_xlim([0.0, 2.2])
+# }}} 
+# {{{ Closing
+fname += '_close'
 lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # }}} 
-# {{{ Plot Combined Double
+# {{{ Plot Scatter LBC
 # {{{ Init
-fname = 'TTPC2_NBC_LBC_IN_combined_double'
+fname = 'TTPC2_LBC_scatter'
 print "plotting " + fname
 fig = plt.figure(figsize=lplot.size_common)
 ax = plt.gca()
@@ -793,58 +851,22 @@ colors = lcmaps.get_short_color_array(4)
 # {{{ Plot TTPC2 Type I
 ax0 = plt.subplot(1,2,1)
 lplot.nice_axes(ax0)
-ax0.plot(widths_PC_I_mean,
-        amps_PC_II_mean,
+ax0.scatter(
+        widths_PC_I,
+        amps_PC_II,
         color=colors[0],
-        label='TTPC2',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_PC_I_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_PC_I_mean[i], amps_PC_II_mean[i]),
-            width=4*widths_PC_I_std[i],
-            height=4*amps_PC_II_std[i],
-            )
-    ax0.add_artist(ell)
-    ell.set_clip_box(ax0.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[0])
-# }}} 
-# {{{ Plot NBC Type I
-ax0.plot(widths_NBC_I_mean,
-        amps_NBC_II_mean,
-        color=colors[1],
-        label='NBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_NBC_I_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_NBC_I_mean[i], amps_NBC_II_mean[i]),
-            width=4*widths_NBC_I_std[i],
-            height=4*amps_NBC_II_std[i],
-            )
-    ax0.add_artist(ell)
-    ell.set_clip_box(ax0.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[1])
+        alpha=0.1,
+        label='PC',
+        )
 # }}} 
 # {{{ Plot LBC Type I
-ax0.plot(widths_LBC_I_mean,
-        amps_LBC_II_mean,
+ax0.scatter(
+        widths_LBC_I,
+        amps_LBC_II,
         color=colors[2],
+        alpha=0.1,
         label='LBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_LBC_I_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_LBC_I_mean[i], amps_LBC_II_mean[i]),
-            width=4*widths_LBC_I_std[i],
-            height=4*amps_LBC_II_std[i],
-            )
-    ax0.add_artist(ell)
-    ell.set_clip_box(ax0.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[2])
+        )
 # }}} 
 # {{{ Horizontal Lines
 plt.axhline(
@@ -854,58 +876,22 @@ plt.axhline(
 # {{{ Plot TTPC2 Type II
 ax1 = plt.subplot(1,2,2)
 lplot.nice_axes(ax1)
-ax1.plot(widths_PC_II_mean,
-        amps_PC_II_mean,
+ax1.scatter(
+        widths_PC_II,
+        amps_PC_II,
         color=colors[0],
+        alpha=0.1,
         label='TTPC2',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_PC_II_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_PC_II_mean[i], amps_PC_II_mean[i]),
-            width=4*widths_PC_II_std[i],
-            height=4*amps_PC_II_std[i],
-            )
-    ax1.add_artist(ell)
-    ell.set_clip_box(ax1.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[0])
-# }}} 
-# {{{ Plot NBC Type II
-ax1.plot(widths_NBC_II_mean,
-        amps_NBC_II_mean,
-        color=colors[1],
-        label='NBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_NBC_II_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_NBC_II_mean[i], amps_NBC_II_mean[i]),
-            width=4*widths_NBC_II_std[i],
-            height=4*amps_NBC_II_std[i],
-            )
-    ax1.add_artist(ell)
-    ell.set_clip_box(ax1.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[1])
+        )
 # }}} 
 # {{{ Plot LBC Type II
-ax1.plot(widths_LBC_II_mean,
-        amps_LBC_II_mean,
+ax1.scatter(
+        widths_LBC_II,
+        amps_LBC_II,
         color=colors[2],
+        alpha=0.1,
         label='LBC',
-        marker='o',
-        markersize=5, )
-for i in xrange(amps_LBC_II_mean.shape[0]):
-    ell = Ellipse(
-            xy=(widths_LBC_II_mean[i], amps_LBC_II_mean[i]),
-            width=4*widths_LBC_II_std[i],
-            height=4*amps_LBC_II_std[i],
-            )
-    ax1.add_artist(ell)
-    ell.set_clip_box(ax1.bbox)
-    ell.set_alpha(0.2)
-    ell.set_facecolor(colors[2])
+        )
 # }}} 
 # {{{ Horizontal Lines
 plt.axhline(
@@ -922,35 +908,372 @@ plt.figlegend(
         labelspacing=0.,
         bbox_to_anchor=(0.5, 1.00),
         )
-# ax0.legend(handles,
-#           labels,
-#           loc='upper right',
-#           # bbox_to_anchor=(1, 0.5), 
-#           )
-# handles, labels = ax1.get_legend_handles_labels()
-# ax1.legend(handles,
-#           labels,
-#           loc='upper right',
-#           # bbox_to_anchor=(1, 0.5), 
-#           )
-# }}} 
-# {{{ Limits
-ax1.set_ylim([0, 200])
-ax1.set_xlim([0.0, 1.0])
-ax0.set_ylim([0, 200])
-ax0.set_xlim([0.6, 2.2])
 # }}} 
 # {{{ Labels
 ax0.set_ylabel(r"Peak-to-peak Amp. \textbf{[\si{\micro\volt}]}")
 ax0.set_xlabel(r"Peak-to-peak Width \textbf{[\si{\milli\second}]}")
 ax1.set_xlabel(r"Half Max Width \textbf{[\si{\milli\second}]}")
 # }}} 
+# {{{ Limits
+ax0.set_ylim([0, 200])
+ax0.set_xlim([0.0, 2.2])
+ax1.set_ylim([0, 200])
+ax1.set_xlim([0.0, 2.2])
+# }}} 
 # {{{ Closing
 plt.tight_layout()
+lplot.save_plt(plt, fname, dir_output)
+# }}} 
+# {{{ Limits
+ax0.set_ylim([0, 25])
+ax0.set_xlim([0.6, 2.2])
+ax1.set_ylim([0, 25])
+ax1.set_xlim([0.0, 2.2])
+# }}} 
+# {{{ Closing
+fname += '_close'
 lplot.save_plt(plt, fname, dir_output)
 plt.close()
 # }}} 
 # }}} 
+# # {{{ Plot Combined
+# # {{{ Init
+# fname = 'TTPC2_NBC_LBC_IN_combined'
+# print "plotting " + fname
+# fig = plt.figure(figsize=lplot.size_common)
+# ax = plt.gca()
+# colors = lcmaps.get_short_color_array(4)
+# # }}} 
+# # {{{ Plot TTPC2 Type I
+# ax0 = plt.subplot(1,2,1)
+# lplot.nice_axes(ax0)
+# ax0.plot(widths_PC_I_mean,
+#         amps_PC_II_mean,
+#         color=colors[0],
+#         label='TTPC2',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_PC_I_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_PC_I_mean[i], amps_PC_II_mean[i]),
+#             width=2*widths_PC_I_std[i],
+#             height=2*amps_PC_II_std[i],
+#             )
+#     ax0.add_artist(ell)
+#     ell.set_clip_box(ax0.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[0])
+# # }}} 
+# # {{{ Plot NBC Type I
+# ax0.plot(widths_NBC_I_mean,
+#         amps_NBC_II_mean,
+#         color=colors[1],
+#         label='NBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_NBC_I_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_NBC_I_mean[i], amps_NBC_II_mean[i]),
+#             width=2*widths_NBC_I_std[i],
+#             height=2*amps_NBC_II_std[i],
+#             )
+#     ax0.add_artist(ell)
+#     ell.set_clip_box(ax0.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[1])
+# # }}} 
+# # {{{ Plot LBC Type I
+# ax0.plot(widths_LBC_I_mean,
+#         amps_LBC_II_mean,
+#         color=colors[2],
+#         label='LBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_LBC_I_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_LBC_I_mean[i], amps_LBC_II_mean[i]),
+#             width=2*widths_LBC_I_std[i],
+#             height=2*amps_LBC_II_std[i],
+#             )
+#     ax0.add_artist(ell)
+#     ell.set_clip_box(ax0.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[2])
+# # }}} 
+# # {{{ Horizontal Lines
+# plt.axhline(
+#         25,
+#         )
+# # }}} 
+# # {{{ Plot TTPC2 Type II
+# ax1 = plt.subplot(1,2,2)
+# lplot.nice_axes(ax1)
+# ax1.plot(widths_PC_II_mean,
+#         amps_PC_II_mean,
+#         color=colors[0],
+#         label='TTPC2',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_PC_II_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_PC_II_mean[i], amps_PC_II_mean[i]),
+#             width=2*widths_PC_II_std[i],
+#             height=2*amps_PC_II_std[i],
+#             )
+#     ax1.add_artist(ell)
+#     ell.set_clip_box(ax1.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[0])
+# # }}} 
+# # {{{ Plot NBC Type II
+# ax1.plot(widths_NBC_II_mean,
+#         amps_NBC_II_mean,
+#         color=colors[1],
+#         label='NBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_NBC_II_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_NBC_II_mean[i], amps_NBC_II_mean[i]),
+#             width=2*widths_NBC_II_std[i],
+#             height=2*amps_NBC_II_std[i],
+#             )
+#     ax1.add_artist(ell)
+#     ell.set_clip_box(ax1.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[1])
+# # }}} 
+# # {{{ Plot LBC Type II
+# ax1.plot(widths_LBC_II_mean,
+#         amps_LBC_II_mean,
+#         color=colors[2],
+#         label='LBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_LBC_II_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_LBC_II_mean[i], amps_LBC_II_mean[i]),
+#             width=2*widths_LBC_II_std[i],
+#             height=2*amps_LBC_II_std[i],
+#             )
+#     ax1.add_artist(ell)
+#     ell.set_clip_box(ax1.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[2])
+# # }}} 
+# # {{{ Horizontal Lines
+# plt.axhline(
+#         25,
+#         )
+# # }}} 
+# # {{{ Legend
+# handles, labels = ax0.get_legend_handles_labels()
+# plt.figlegend(
+#         handles, 
+#         labels, 
+#         loc='center',
+#         ncol=3,
+#         labelspacing=0.,
+#         bbox_to_anchor=(0.5, 1.00),
+#         )
+# # ax0.legend(handles,
+# #           labels,
+# #           loc='upper right',
+# #           # bbox_to_anchor=(1, 0.5), 
+# #           )
+# # handles, labels = ax1.get_legend_handles_labels()
+# # ax1.legend(handles,
+# #           labels,
+# #           loc='upper right',
+# #           # bbox_to_anchor=(1, 0.5), 
+# #           )
+# # }}} 
+# # {{{ Limits
+# ax1.set_ylim([0, 200])
+# ax1.set_xlim([0.0, 1.0])
+# ax0.set_ylim([0, 200])
+# ax0.set_xlim([0.6, 2.2])
+# # }}} 
+# # {{{ Labels
+# ax0.set_ylabel(r"Peak-to-peak Amp. \textbf{[\si{\micro\volt}]}")
+# ax0.set_xlabel(r"Peak-to-peak Width \textbf{[\si{\milli\second}]}")
+# ax1.set_xlabel(r"Half Max Width \textbf{[\si{\milli\second}]}")
+# # }}} 
+# # {{{ Closing
+# plt.tight_layout()
+# lplot.save_plt(plt, fname, dir_output)
+# plt.close()
+# # }}} 
+# # }}} 
+# # {{{ Plot Combined Double
+# # {{{ Init
+# fname = 'TTPC2_NBC_LBC_IN_combined_double'
+# print "plotting " + fname
+# fig = plt.figure(figsize=lplot.size_common)
+# ax = plt.gca()
+# colors = lcmaps.get_short_color_array(4)
+# # }}} 
+# # {{{ Plot TTPC2 Type I
+# ax0 = plt.subplot(1,2,1)
+# lplot.nice_axes(ax0)
+# ax0.plot(widths_PC_I_mean,
+#         amps_PC_II_mean,
+#         color=colors[0],
+#         label='TTPC2',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_PC_I_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_PC_I_mean[i], amps_PC_II_mean[i]),
+#             width=4*widths_PC_I_std[i],
+#             height=4*amps_PC_II_std[i],
+#             )
+#     ax0.add_artist(ell)
+#     ell.set_clip_box(ax0.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[0])
+# # }}} 
+# # {{{ Plot NBC Type I
+# ax0.plot(widths_NBC_I_mean,
+#         amps_NBC_II_mean,
+#         color=colors[1],
+#         label='NBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_NBC_I_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_NBC_I_mean[i], amps_NBC_II_mean[i]),
+#             width=4*widths_NBC_I_std[i],
+#             height=4*amps_NBC_II_std[i],
+#             )
+#     ax0.add_artist(ell)
+#     ell.set_clip_box(ax0.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[1])
+# # }}} 
+# # {{{ Plot LBC Type I
+# ax0.plot(widths_LBC_I_mean,
+#         amps_LBC_II_mean,
+#         color=colors[2],
+#         label='LBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_LBC_I_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_LBC_I_mean[i], amps_LBC_II_mean[i]),
+#             width=4*widths_LBC_I_std[i],
+#             height=4*amps_LBC_II_std[i],
+#             )
+#     ax0.add_artist(ell)
+#     ell.set_clip_box(ax0.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[2])
+# # }}} 
+# # {{{ Horizontal Lines
+# plt.axhline(
+#         25,
+#         )
+# # }}} 
+# # {{{ Plot TTPC2 Type II
+# ax1 = plt.subplot(1,2,2)
+# lplot.nice_axes(ax1)
+# ax1.plot(widths_PC_II_mean,
+#         amps_PC_II_mean,
+#         color=colors[0],
+#         label='TTPC2',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_PC_II_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_PC_II_mean[i], amps_PC_II_mean[i]),
+#             width=4*widths_PC_II_std[i],
+#             height=4*amps_PC_II_std[i],
+#             )
+#     ax1.add_artist(ell)
+#     ell.set_clip_box(ax1.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[0])
+# # }}} 
+# # {{{ Plot NBC Type II
+# ax1.plot(widths_NBC_II_mean,
+#         amps_NBC_II_mean,
+#         color=colors[1],
+#         label='NBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_NBC_II_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_NBC_II_mean[i], amps_NBC_II_mean[i]),
+#             width=4*widths_NBC_II_std[i],
+#             height=4*amps_NBC_II_std[i],
+#             )
+#     ax1.add_artist(ell)
+#     ell.set_clip_box(ax1.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[1])
+# # }}} 
+# # {{{ Plot LBC Type II
+# ax1.plot(widths_LBC_II_mean,
+#         amps_LBC_II_mean,
+#         color=colors[2],
+#         label='LBC',
+#         marker='o',
+#         markersize=5, )
+# for i in xrange(amps_LBC_II_mean.shape[0]):
+#     ell = Ellipse(
+#             xy=(widths_LBC_II_mean[i], amps_LBC_II_mean[i]),
+#             width=4*widths_LBC_II_std[i],
+#             height=4*amps_LBC_II_std[i],
+#             )
+#     ax1.add_artist(ell)
+#     ell.set_clip_box(ax1.bbox)
+#     ell.set_alpha(0.2)
+#     ell.set_facecolor(colors[2])
+# # }}} 
+# # {{{ Horizontal Lines
+# plt.axhline(
+#         25,
+#         )
+# # }}} 
+# # {{{ Legend
+# handles, labels = ax0.get_legend_handles_labels()
+# plt.figlegend(
+#         handles, 
+#         labels, 
+#         loc='center',
+#         ncol=3,
+#         labelspacing=0.,
+#         bbox_to_anchor=(0.5, 1.00),
+#         )
+# # ax0.legend(handles,
+# #           labels,
+# #           loc='upper right',
+# #           # bbox_to_anchor=(1, 0.5), 
+# #           )
+# # handles, labels = ax1.get_legend_handles_labels()
+# # ax1.legend(handles,
+# #           labels,
+# #           loc='upper right',
+# #           # bbox_to_anchor=(1, 0.5), 
+# #           )
+# # }}} 
+# # {{{ Limits
+# ax1.set_ylim([0, 200])
+# ax1.set_xlim([0.0, 1.0])
+# ax0.set_ylim([0, 200])
+# ax0.set_xlim([0.6, 2.2])
+# # }}} 
+# # {{{ Labels
+# ax0.set_ylabel(r"Peak-to-peak Amp. \textbf{[\si{\micro\volt}]}")
+# ax0.set_xlabel(r"Peak-to-peak Width \textbf{[\si{\milli\second}]}")
+# ax1.set_xlabel(r"Half Max Width \textbf{[\si{\milli\second}]}")
+# # }}} 
+# # {{{ Closing
+# plt.tight_layout()
+# lplot.save_plt(plt, fname, dir_output)
+# plt.close()
+# # }}} 
+# # }}} 
 # # {{{ Plot Widths
 # fname = 'TTPC2_NBC_LBC_widths'
 # print "plotting " + fname
