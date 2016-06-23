@@ -4,13 +4,12 @@ Compare width analysis for TTPC and NBC, LBC.
 # pylint: disable=invalid-name
 import os
 import numpy as np
-from itertools import chain
 import LFPy_util
 import LFPy_util.plot as lplot
 import LFPy_util.colormaps as lcmaps
 import LFPy_util.data_extraction as de
 import matplotlib.pyplot as plt
-from matplotlib.patches import Ellipse
+import sklearn.metrics as metrics
 
 dir_input = "4_3_width_similarity"
 dir_output = "4_3_width_similarity_collected"
@@ -30,55 +29,10 @@ sim_sphere.process_param['assert_width'] = True
 neuron_check_name = None
 
 neuron_names = []
-r_vectors = []
-elec_r = []
 widths_I = []
-widths_I_mean = []
-widths_I_std = []
 widths_II = []
-widths_II_mean = []
-widths_II_std = []
-amps_I = []
-amps_I_mean = []
-amps_I_std = []
 amps_II = []
-amps_II_mean = []
-amps_II_std = []
-# }}} 
-
-# {{{ Reset Variable Function
-def reset_variables():
-    global neuron_names
-    global r_vectors
-    global elec_r
-    global widths_I
-    global widths_I_mean
-    global widths_I_std
-    global widths_II
-    global widths_II_mean
-    global widths_II_std 
-    global amps_I 
-    global amps_I_mean
-    global amps_I_std
-    global amps_II
-    global amps_II_mean
-    global amps_II_std
-
-    neuron_names = []
-    r_vectors = []
-    elec_r = []
-    widths_I = []
-    widths_I_mean = []
-    widths_I_std = []
-    widths_II = []
-    widths_II_mean = []
-    widths_II_std = []
-    amps_I = []
-    amps_I_mean = []
-    amps_I_std = []
-    amps_II = []
-    amps_II_mean = []
-    amps_II_std = []
+dt = None
 # }}} 
 
 # {{{ Data Gather Function
@@ -87,9 +41,10 @@ def gather_data(neuron_name, dir_data, sim):
     """
     Gathers data from the simulations into lists.
     """
+    global dt
 
-    if not neuron_check_name in neuron_name:
-        return
+    # if not "PC" in neuron_name:
+    #     return
 
     print neuron_name
     neuron_names.append(neuron_name)
@@ -99,180 +54,81 @@ def gather_data(neuron_name, dir_data, sim):
     data = sim.data
 
     widths_I.append(data['widths_I'])
-    widths_I_mean.append(data['widths_I_mean'])
-    widths_I_std.append(data['widths_I_std'])
     widths_II.append(data['widths_II'])
-    widths_II_mean.append(data['widths_II_mean'])
-    widths_II_std.append(data['widths_II_std'])
-
-    amps_I.append(data['amps_I'])
-    amps_I_mean.append(data['amps_I_mean'])
-    amps_I_std.append(data['amps_I_std'])
-    amps_II.append(data['amps_II'])
-    amps_II_mean.append(data['amps_II_mean'])
-    amps_II_std.append(data['amps_II_std'])
-
-    r_vectors.append(data['bins'])
-    elec_r.append(data['elec_r'])
+    amps_II.append(data['amps_I'])
+    if dt is None:
+        dt = data['dt']
+    if data['dt'] != dt:
+        raise ValueError("Mismatching simulations.")
+    dt = data['dt']
 # }}} 
-
-# {{{ Format Data Function
-def format_data():
-    global neuron_names
-    global r_vectors
-    global elec_r
-    global widths_I
-    global widths_I_mean
-    global widths_I_std
-    global widths_II
-    global widths_II_mean
-    global widths_II_std 
-    global amps_I 
-    global amps_I_mean
-    global amps_I_std
-    global amps_II
-    global amps_II_mean
-    global amps_II_std
-
-    # Convert to numpy arrays.
-    widths_I_mean = np.array(widths_I_mean)
-    widths_I_std = np.array(widths_I_std)
-    widths_II_mean = np.array(widths_II_mean)
-    widths_II_std = np.array(widths_II_std)
-    amps_I_mean = np.array(amps_I_mean)
-    amps_I_std = np.array(amps_I_std)
-    amps_II_mean = np.array(amps_II_mean)
-    amps_II_std = np.array(amps_II_std)
-
-    # Flatten matrices. Each list entry are the data from all electrodes 
-    # each neuron. Flatten so all electrodes from the neurons are together.
-    widths_I = np.fromiter(chain.from_iterable(widths_I), np.float)
-    widths_II = np.fromiter(chain.from_iterable(widths_II), np.float)
-    amps_I = np.fromiter(chain.from_iterable(amps_I), np.float)
-    amps_II = np.fromiter(chain.from_iterable(amps_II), np.float)
-    elec_r = np.fromiter(chain.from_iterable(elec_r), np.float)
-
-    # Combine data.
-    widths_I_mean, widths_I_std = \
-        de.combined_mean_std(widths_I_mean, widths_I_std)
-    widths_II_mean, widths_II_std = \
-        de.combined_mean_std(widths_II_mean, widths_II_std)
-    amps_I_mean, amps_I_std = \
-        de.combined_mean_std(amps_I_mean, amps_I_std)
-    amps_II_mean, amps_II_std = \
-        de.combined_mean_std(amps_II_mean, amps_II_std)
-
-    # Make sure the r_vectors are the same for all simulations.
-    for i in xrange(len(neuron_names) - 1):
-        if not np.array_equal(r_vectors[i], r_vectors[i+1]) :
-            print "Simulations not equal, finishing."
-            close()
-# }}} 
-
-# {{{ Data PC
-
-reset_variables()
-
-neuron_check_name = 'PC'
 
 # Collecting data from PC neurons.
 LFPy_util.other.collect_data(dir_input, sim_sphere, gather_data)
 
-format_data()
+# sort_indices = np.argsort(neuron_names[:])
+# neuron_names = np.take(neuron_names, sort_indices)
+# widths_I = np.take(widths_I, sort_indices)
+# widths_II = np.take(widths_II, sort_indices)
+# amps_II = np.take(amps_II, sort_indices)
 
-# Rename data.
-neuron_names_PC = neuron_names
-
-r_vectors_PC = r_vectors
-elec_r_PC = elec_r
-
-widths_PC_I = widths_I
-widths_PC_I_mean = widths_I_mean
-widths_PC_I_std = widths_I_std
-
-widths_PC_II = widths_II
-widths_PC_II_mean = widths_II_mean
-widths_PC_II_std = widths_II_std
-
-amps_PC_I = amps_I
-amps_PC_I_mean = amps_I_mean
-amps_PC_I_std = amps_I_std
-
-amps_PC_II = amps_II
-amps_PC_II_mean = amps_II_mean
-amps_PC_II_std = amps_II_std
-
-# }}} 
-
-# {{{ Data LBC
-
-reset_variables()
-
-neuron_check_name = 'LBC'
-
-# Collecting data from LBC neurons.
-LFPy_util.other.collect_data(dir_input, sim_sphere, gather_data)
-
-format_data()
-
-# Rename data.
-neuron_names_LBC = neuron_names
-
-r_vectors_LBC = r_vectors
-elec_r_LBC = elec_r
-
-widths_LBC_I = widths_I
-widths_LBC_I_mean = widths_I_mean
-widths_LBC_I_std = widths_I_std
-
-widths_LBC_II = widths_II
-widths_LBC_II_mean = widths_II_mean
-widths_LBC_II_std = widths_II_std
-
-amps_LBC_I = amps_I
-amps_LBC_I_mean = amps_I_mean
-amps_LBC_I_std = amps_I_std
-
-amps_LBC_II = amps_II
-amps_LBC_II_mean = amps_II_mean
-amps_LBC_II_std = amps_II_std
-
-# }}} 
-
-# {{{ Data NBC
-
-reset_variables()
-
-neuron_check_name = 'NBC'
-
-# Collecting data from NBC neurons.
-LFPy_util.other.collect_data(dir_input, sim_sphere, gather_data)
-
-format_data()
-
-# Rename data.
-neuron_names_NBC = neuron_names
-
-r_vectors_NBC = r_vectors
-elec_r_NBC = elec_r
-
-widths_NBC_I = widths_I
-widths_NBC_I_mean = widths_I_mean
-widths_NBC_I_std = widths_I_std
-
-widths_NBC_II = widths_II
-widths_NBC_II_mean = widths_II_mean
-widths_NBC_II_std = widths_II_std
-
-amps_NBC_I = amps_I
-amps_NBC_I_mean = amps_I_mean
-amps_NBC_I_std = amps_I_std
-
-amps_NBC_II = amps_II
-amps_NBC_II_mean = amps_II_mean
-amps_NBC_II_std = amps_II_std
-
-# }}} 
+def jac_score(hist_x, hist_y):
+    union = np.minimum(hist_x, hist_y)
+    intersect = np.maximum(hist_x, hist_y)
+    return sum(union)/float(sum(intersect))
 
 lplot.set_rc_param(False)
+lplot.plot_format = ['png']
+
+# {{{ 
+widths_I_hist = []
+# bin_edges = np.arange(0, 2.5, dt)
+bin_edges = np.linspace(0, 2.5, 20)
+for i in xrange(len(widths_I)):
+    hist, _ = np.histogram(widths_I[i], bin_edges)
+    hist = hist/float(sum(hist))
+    hist = np.round(hist*1000)
+    widths_I_hist.append(hist)
+jaccard_index = np.zeros([len(neuron_names), len(neuron_names)])
+for i, nrn_1 in enumerate(neuron_names):
+    for j, nrn_2 in enumerate(neuron_names):
+        jaccard_index[i,j] = jac_score(widths_I_hist[i], widths_I_hist[j])
+plt.imshow(jaccard_index, interpolation="nearest")
+plt.colorbar()
+lplot.save_plt(plt, "hist_width_I", dir_output)
+plt.close()
+# }}} 
+
+# {{{ 
+amp_width_hist = []
+# width_bin_edges = np.arange(0, 2.5, dt)
+width_bin_edges = np.linspace(0, 2.5, 20)
+amp_bin_edges = np.linspace(0,300,20)
+bin_edges = [amp_bin_edges, width_bin_edges]
+for i in xrange(len(widths_I)):
+    hist, _, _ = np.histogram2d(amps_II[i], widths_I[i], bin_edges)
+    hist = hist/float(hist.sum())
+    hist = np.round(hist*1000)
+    amp_width_hist.append(hist)
+jaccard_index = np.zeros([len(neuron_names), len(neuron_names)])
+for i, nrn_1 in enumerate(neuron_names):
+    for j, nrn_2 in enumerate(neuron_names):
+        jaccard_index[i,j] = jac_score(
+                amp_width_hist[i].flatten(), 
+                amp_width_hist[j].flatten(),
+                )
+plt.imshow(jaccard_index, interpolation="nearest")
+plt.colorbar()
+lplot.save_plt(plt, "hist_amp_width", dir_output)
+plt.close()
+# }}} 
+
+print "hist"
+for i, name in enumerate(neuron_names):
+    print name
+    plt.imshow(amp_width_hist[i], interpolation="nearest")
+    plt.colorbar()
+    lplot.save_plt(plt, name+"_hist", dir_output)
+    plt.close()
+
 
