@@ -11,8 +11,8 @@ import LFPy_util.data_extraction as de
 import matplotlib.pyplot as plt
 import sklearn.metrics as metrics
 
-dir_input = "4_3_width_similarity"
-dir_output = "4_3_width_similarity_collected"
+dir_input = "width_sim"
+dir_output = "width_col"
 
 # Gather directory paths.
 dir_current = os.path.dirname(os.path.realpath(__file__))
@@ -25,17 +25,12 @@ sim_sphere.process_param['spike_to_measure'] = 2
 sim_sphere.process_param['assert_width'] = True
 # sim_sphere.process_param['width_half_thresh'] = 0.2
 
-# {{{ Define Variables
-neuron_check_name = None
-
 neuron_names = []
 widths_I = []
 widths_II = []
 amps_II = []
 dt = None
-# }}} 
 
-# {{{ Data Gather Function
 # Specify data gather function.
 def gather_data(neuron_name, dir_data, sim):
     """
@@ -61,7 +56,6 @@ def gather_data(neuron_name, dir_data, sim):
     if data['dt'] != dt:
         raise ValueError("Mismatching simulations.")
     dt = data['dt']
-# }}} 
 
 # Collecting data from PC neurons.
 LFPy_util.other.collect_data(dir_input, sim_sphere, gather_data)
@@ -95,9 +89,11 @@ for i, nrn_1 in enumerate(neuron_names):
         jaccard_index[i,j] = jac_score(widths_I_hist[i], widths_I_hist[j])
 plt.imshow(jaccard_index, interpolation="nearest")
 plt.colorbar()
+plt.clim(0,1.0)
 lplot.save_plt(plt, "hist_width_I", dir_output)
 plt.close()
 # }}} 
+
 # {{{ 
 widths_II_hist = []
 # bin_edges = np.arange(0, 2.5, dt)
@@ -113,11 +109,12 @@ for i, nrn_1 in enumerate(neuron_names):
         jaccard_index[i,j] = jac_score(widths_II_hist[i], widths_II_hist[j])
 plt.imshow(jaccard_index, interpolation="nearest")
 plt.colorbar()
+plt.clim(0,1.0)
 lplot.save_plt(plt, "hist_width_II", dir_output)
 plt.close()
 # }}} 
 
-# {{{ 
+# {{{ amp width hist
 amp_width_hist = []
 # width_bin_edges = np.arange(0, 2.5, dt)
 width_bin_edges = np.linspace(0, 2.5, 20)
@@ -137,7 +134,12 @@ for i, nrn_1 in enumerate(neuron_names):
                 )
 plt.imshow(jaccard_index, interpolation="nearest")
 plt.colorbar()
+plt.clim(0,1.0)
 lplot.save_plt(plt, "hist_amp_width", dir_output)
+
+plt.imshow(jaccard_index>0.3, interpolation="nearest")
+lplot.save_plt(plt, "hist_amp_width_thresh", dir_output)
+
 plt.close()
 # }}} 
 
