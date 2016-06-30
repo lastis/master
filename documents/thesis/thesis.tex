@@ -149,107 +149,6 @@
 % \setlength{\thickmuskip}{6pt}
 %}}} end of preamble
 \begin{document}
-% Overview {{{ %
-\chapter*{Overview}
-
-Abstract (1/10):
-\newline
-Summary of the summary. A short introduction with results stated clearly.
-\newline
-
-Introduction (1/10):
-\newline
-Introduce the topic, the problem and how the problem is being solved. 
-The target audience are other master students. 
-% Keywords: Action potential shape, cell classification, electrodes.
-\newline 
-
-Theory:
-\begin{itemize}
-    \setlength\itemsep{0pt}
-    \item Basic information about neurons and the cell membrane. (7/10)
-    \item Basic information about different types of neurons, how they serve
-        different purposes and have different functions. (0/10)
-    \item Turning the neuron into a electronic circuit, explaining ion pumps and 
-        channels. (5/10)
-    \item Explanation of action potentials and the generation of
-        action potentials with a the hudgekin and huxley model. (1/10)
-    \item Explanation of the principle of compartmental models with diagrams.
-        There are many kinds. Not too long. (0/10)
-    \item Explanation of electrodes, how they are used,
-        what they measure, how tetrodes work. (1/10)
-    \item Mentioning that neurons measured from the same electrode must
-        be seperated. Cocktail party problem, source seperation. (0/10)
-    \item Explanation of extracellular potential, the physics behind the
-        problem, current sum to zero, how it can be calculated, etc.(4/10)
-    \item Discussion of the difference between intracellular and extracellular 
-        spike shape. Some say the extracellular spike is the derivative. (0/10)
-    \item Explanation of Neuron and LFPy. How they work, the principle 
-        behind them, what they are intended to calculate. (2/10)
-    \item Explanation of the current state of cell classification.
-        Why is it important, how is it done. Mentioning most influential 
-        work from early to current work. (0/10)
-    \item Explanation of the Blue Brain cell database, how it was made, 
-        why is it useful, what were the focus of the models, models are public. (0/10)
-\end{itemize}
-\noindent 
-Note to self, mention the most influential work that has been done on all
-topics mentioned in the theory. I should show I know all the basic 
-important work that has been done in these fields. 
-\newline
-
-Methods
-\newline
-Everything here is work which I have done myself. Show what I have done, make sure
-it understood as a lot.
-\begin{itemize}
-    \item Explanation of the basis of differentiating spikes, how does
-        one measure how spikes are different. Meantion spike width and 
-        ampltiude. (0/10)
-    \item Explain different definitions of spike width and amplitude measurements. (1/10)
-    \item Detailed explanation about the simulation environment. 
-        What does LFPyUtil solve and how does it solve it. (3/10)
-    \item Showing a minimum working example of LFPyUtil, show what it makes easier. (0/10)
-    \item Detailed explanation of each simulation, what are the parameters. (3/10)
-    \item How did I use the BlueBrain models, which models are used, why are they used. (0/10)
-\end{itemize}
-
-Results:
-\newline
-State the results in such a way they clearly show what I want to show, but
-does not "jump to conclusions". State the results without bias.
-Include figures with text, at a glance the figures will be read seen and read
-first. 
-\begin{itemize}
-    \item Detailed explanation of the replication of Pettersen and Einevoll, show 
-        that the simulation environment can be trusted. (6/10)
-    \item Explain any deviations from Pettersen and Einevoll in the replication. (5/10)
-    \item Create a conclusion of the results from Pettersen and Einevoll. (0/10)
-    \item Show which definition is best for differentiating spikes from different
-        kinds of neurons. (0/10)
-    \item Show that interneurons and pyramidal neurons can be classified. (0/10)
-    \item Explain why spikes look differnt, what are the physical processes that 
-        does this? (0/10)
-\end{itemize}
-
-Discussion:
-\newline
-The discussion is important, make it of high quality and maybe long. 
-\begin{itemize}
-    \item Using spike width have already been used for differentiate neurons, 
-        show how current results backs up this statement. (0/10)
-    \item Research has shown that thin spikes can also come from measuring near
-        axons of pyramidal cells. (0/10)
-    \item Argue that the models are relateable to real spikes. (0/10)
-    \item The analysis framework can be used for future cell models. (0/10)
-\end{itemize}
-
-Note to self, when trying to explain a method first show the problem clearly
-then propose the solution to the problem. Engage the reader by showing the 
-problem in such a way they can become curious for a solution. 
-
-
-% }}} Overview %
 %{{{ Abstract
 \chapter*{Abstract}
 \noindent
@@ -342,7 +241,7 @@ and in the human brain there is an estimated $10^{11}$ neurons.
 Special proteins in the cell membrane enables the neuron to
 fire action potentials when it is electrically excited. 
 These action potentials are sharp voltage changes that propagates through
-the full structure of the neuron. 
+the full structure of the neuron.
 The same properties that makes the neuron able to fire makes 
 the action potential {regenerative}, meaning it will propagate
 without decay.
@@ -352,7 +251,7 @@ the {axon} attached to it.
 The dendrites and the axon are very thin branching structures 
 with a width usually in the order of \SI{1}{\micro\metre}. 
 While neurons often have many dendrites directly attached to the soma
-there is only one axon attached through the \emph{axon hillock}.
+there is only one axon attached to the soma at the axon hillock.
 The axon can branch several times before it ends and 
 usually connects to the dendrites of other neurons via synapes.
 
@@ -394,8 +293,9 @@ the cell membrane as it
 consists of a \SI{5}{\nano\metre} lipid bilayer which is mostly impenetrable 
 to ions. 
 
-In the membrane sits differnt \emph{ion channels} and 
-\emph{ion pumps} which can have selective permeability to ions, this creates 
+In the membrane sits ion channels and 
+ion pumps which can have selective permeability to ions. 
+This creates 
 a potential gradient across the membrane. 
 The most significant ions in this process are Sodium (Na$^+$), Potassium (K$^+$), 
 Calcium (Ca$^{2+}$), Magnecium (Mg$^{2+}$) and Chloride (Cl$^{-}$). 
@@ -568,17 +468,6 @@ electric field outside the neuron.
 % \cite{mountcastle_cortical_1969}.
 
 %}}} end of Cell classification
-%{{{ Allen Cell Types Database
-
-% \section{Allen Cell Types Database}
-% The Allen Brain Institute have gather individual neuron data from lateral geniculate
-% nucleus (LGN) and primary visual cortex (V1) of young laboratory mice. 
-% The data's main categories are electrophysiology, morphology and modeling.
-% With the morphological data the extracellular potential can be calculated given
-% a model for the transmembrane currents. 
-% % \subsection{Background}
-
-%}}} end of Allen Cell Types Database
 %}}} end of Theory
 %{{{ Methods
 \chapter{Methods}
