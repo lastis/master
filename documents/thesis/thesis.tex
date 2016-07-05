@@ -38,6 +38,8 @@
 % Have to import this at the end for this to work somehow.
 \usepackage{cleveref}		
 \usepackage{multicol}
+% Caption options. Used to change label color.
+\usepackage{caption}
 % Commands that help placing figures side by side.
 \usepackage{subcaption}
 % Used with minted to get caption on top.
@@ -122,6 +124,8 @@
 	linkcolor={},
 	urlcolor=black,
 }
+% Change the color of caption labels.
+\captionsetup{labelfont={color=viridis_03}}
 
 % Glossary settings commented out:
 % % Change the color of the glossary commands \gls and \Gls.
@@ -225,7 +229,7 @@ on future models as long as the models can be loaded with LFPy.
 \begin{figure}[h]
     \centering
     \includegraphics[angle=-90,width=1.0\textwidth]{images/2_1/neuron_structure.pdf}
-    \caption{Stuff about this neuron.}
+    \caption{}
     \label{fig:2_1_neuron}
 \end{figure}
 \noindent
@@ -281,7 +285,13 @@ and if it is of a chemical or electrical type.
 \begin{figure}[h]
     \centering
     \includegraphics[angle=-90,width=1.0\textwidth]{images/2_1/ion_pumps_0.pdf}
-    \caption{Something about ion pumps and channels.}
+    \caption{
+        Common portrayal of ion channels and pumps. They are responsible for
+        creating a potential gradient across the membrane. 
+        Ion channels have
+        selective permeability of ions. Ion pumps activly transport ions
+        through the membrane, often against the potential gradient.
+    }
     \label{fig:2_1_ion_channels}
 \end{figure}
 The potential difference between the inside and outside the neurons 
@@ -295,14 +305,18 @@ to ions.
 
 In the membrane sits ion channels and 
 ion pumps which can have selective permeability to ions. 
-This creates 
-a potential gradient across the membrane. 
+These are created by proteins in complicated shapes. 
+There and there are over 200 
+kinds of electrically sensitive ion channels.
+Together they create a 
+potential gradient across the membrane. 
 The most significant ions in this process are Sodium (Na$^+$), Potassium (K$^+$), 
 Calcium (Ca$^{2+}$), Magnecium (Mg$^{2+}$) and Chloride (Cl$^{-}$). 
 Ion channels are divided between passive channels and 
 active channels where the active channels can change 
 permeability under certain conditions while passive channels have a constant
 permeability. 
+Figure .. shows a common portrayal of ion channels and pumps. 
 
 The ion pumps differ from the channels by activly transporting certain
 ions through the membrane. 
@@ -317,6 +331,13 @@ into the cell.
 To understand the electrical activity of neurons it is useful
 to view the neuron as an electronic circuit where the ion channels, ion pumps
 and the membrane serve as different electronic components.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/2_1/compartment.pdf}
+    \caption{Them compartment.}
+    \label{fig:2_2_hud_hux}
+\end{figure}
 
 \textcites{hodgkin_quantitative_1952,connor_prediction_1971,sterratt_principles_2011}
 
@@ -459,15 +480,25 @@ electric field outside the neuron.
 %}}} end of Neuron and lfpy
 %{{{ Cell classification
 
-% \section{Cell Type Classification}
-% \subsection*{Background}
-% It was early observed that the shape of action potentials are different for 
-% individual neurons. \textcite{mountcastle_cortical_1969} discovered what
-% they called regular spiking and fast spiking.
+\section{Cell Type Classification}
+It was early observed that the shape of action potentials are different for 
+individual neurons. \textcite{mountcastle_cortical_1969} discovered what
+they called regular spiking and fast spiking.
 
-% \cite{mountcastle_cortical_1969}.
+\cite{mountcastle_cortical_1969}.
+Results are based on spike width and amplitude.
+The basis for all spike shapes are the types and concentrations of
+ion channels.
+This is the central factor that decides if the neuron has short or long action potentials.
+A number things has been observed that can change spike spike width.
+Factors that change action potentials width:
+* Firing frequency.
+* Input current. Higher current gives higher frequency.
+* Number of previous spikes.
+* Bursting behavior.
+* Backproagating action potentials.
 
-%}}} end of Cell classification
+% }}} end of Cell classification
 %}}} end of Theory
 %{{{ Methods
 \chapter{Methods}
@@ -1430,8 +1461,21 @@ this definition is better suited for classification.
 % \Cref{fig:4_2_amp} shows the 
 
 % }}}  %
-% {{{ Classifing Neurons%
-% \section{Classifying Inter and Pyramidal Neurons}
+{{{ Classifing Neurons%
+\section{Classifying Inter and Pyramidal Neurons}
+Classification using computer methods is a field in much development where new
+methods are emerging rapidly. 
+Classification of neurons based on this data could probably be done better 
+using computer methods, but still it is usefull to get a number on the 
+similarity between models. 
+To measure the similarity between two models the histograms of the
+spike width and spike amplitude has been compared. 
+The jaccard coefficient is a measurement that can be used to compute
+the overlap between two histograms and has been used here to compare the 
+models against each other. 
+Picture ** shows a comparison between each model using the jaccard coefficient
+of the histograms. 
+The spike 
 % Blue brain reconstruced neurons and indentified 55 types of 
 % morphological structures. 
 
@@ -1445,55 +1489,101 @@ this definition is better suited for classification.
 % divided between interneurons and pyramidal neurons. 
 
 
-% }}} 
+}}} 
 %}}} end of Results
 %{{{ Discussion
 \chapter{Discussion}
-Results are based on spike width and amplitude.
-The basis for all spike shapes are the types and concentrations of
-ion channels.
-This is the central factor that decides if the neuron has short or long action potentials.
-A number things has been observed that can change spike spike width.
-Factors that change action potentials width:
-* Firing frequency.
-* Input current. Higher current gives higher frequency.
-* Number of previous spikes.
-* Bursting behavior.
-* Backproagating action potentials.
+% TODO: Fill
+LFPyUtil: 
+LFPyUtil is a useful tool that can be used to easily gather
+new data when new models arrive. 
+As long as a model has the mechanics defined with NEURON and has
+a morphology the same simulations and data as seen here can be ran 
+and extraced.
 
-Article anastassiou is consistent with Nature review, spike shape increases with 
-frequency. 
-This is not the case the models from Blue Brain.
+% TODO: Fill
+Spike Width and Spike Amplitude:
+It has been seen that of the spike width definitions investigated here, 
+one type of spike width definition is overall
+better suited to classify this set of neurons. 
+This has also been seen in the literature. 
+A similar investigation was done using the spike amplitude and of the
+definitions investigated here the peak-to-peak amplitude gave the best
+seperation between interneuron and pyramidal neurons. 
 
-% What are the results, what do you want to show.
-% The grand wish, have a catalogue of all spikes in the brain.
-When plotting spike amplitude over spike width will neurons look different.
+Classification:
+It has been previously shown that using only spike width as 
+a way to classify neurons is not the best. 
+Several papers have stated that other methods can be used to give 
+a clearer distinction, such as considering the interspike interval. 
+Also one group looked at the spike width from axons which gave a short 
+durtion. 
 
-Results: Spike width alone is often used for classifying neurons.
-They often have a bimodal distribution. 
-This is the first time many simulations have been done of the extracellular
-potential.
-Previous research have only used a few models.
-With LFPy and LFPyUtil it will be easy to adapt new models to calculate extracellular potential.
+Using a simple measure of the similarity between populations
+neuron models it can be clearly stated that interneurons can be seperated
+from pyramidal neurons. 
+Excitatory interneurons cannot be clearly distinguished from the rest of the
+interneurons. 
+Using machine learning algorithms it might be possible to divide these
+into even small groups, how can I show this?
+Neurons could probably be seperated into smaller groups based on
+spike width and spike amplitude. 
 
-The spike widths does not show dependency on the firing frequency or spike number.
-Some neurons show this feature and this should do it too.
+% TODO: Fill
+The models did now show the expected variance with firing frequency. 
+% Article anastassiou is consistent with Nature review, spike shape increases with 
+% frequency. 
+% This is not the case the models from Blue Brain.
 
-Results:
-* Which width and amp definition is most suitable for differention.
-* Classify neurons based on spike width and amplitude.
-    * Compare to other data. 
-    Hard to varify model,
-    values from experiments are vary a lot. 
-    Models were based on result from their recordings. 
-    Cannot see adaption with frequency of any kind.
-    * Is experimental distribution shape similar to mine, if so
-    that is a good result.
-* Development of LFPyUtil. Future neuron models can be adapted for 
-extracellular simulations if they include
-a morphology.
+% TODO: Fill
+Comparisons with other data:
+several articles was investigated to compare current data with.
+There is a large variance in the literature of spike widths and amplitude. 
+All in all the data fall within the variance of the investigated articles. 
+The number range between this and that.
 
-% It is possible to model the extracellular potential.
+
+Sources of variation:
+
+% Results are based on spike width and amplitude.
+% The basis for all spike shapes are the types and concentrations of
+% ion channels.
+% This is the central factor that decides if the neuron has short or long action potentials.
+% A number things has been observed that can change spike spike width.
+% Factors that change action potentials width:
+% * Firing frequency.
+% * Input current. Higher current gives higher frequency.
+% * Number of previous spikes.
+% * Bursting behavior.
+% * Backproagating action potentials.
+
+% % What are the results, what do you want to show.
+% % The grand wish, have a catalogue of all spikes in the brain.
+% When plotting spike amplitude over spike width will neurons look different.
+
+% Results: Spike width alone is often used for classifying neurons.
+% They often have a bimodal distribution. 
+% This is the first time many simulations have been done of the extracellular
+% potential.
+% Previous research have only used a few models.
+% With LFPy and LFPyUtil it will be easy to adapt new models to calculate extracellular potential.
+
+% The spike widths does not show dependency on the firing frequency or spike number.
+% Some neurons show this feature and this should do it too.
+
+% Results:
+% * Which width and amp definition is most suitable for differention.
+% * Classify neurons based on spike width and amplitude.
+%     * Compare to other data. 
+%     Hard to varify model,
+%     values from experiments are vary a lot. 
+%     Models were based on result from their recordings. 
+%     Cannot see adaption with frequency of any kind.
+%     * Is experimental distribution shape similar to mine, if so
+%     that is a good result.
+% * Development of LFPyUtil. Future neuron models can be adapted for 
+% extracellular simulations if they include
+% a morphology.
 
 %}}} end of Discussion
 % % Appendix {{{ %
