@@ -72,6 +72,84 @@ def jac_score(hist_x, hist_y):
 lplot.set_rc_param(False)
 lplot.plot_format = ['png']
 
+def get_roc(negative, positive, thresholds):
+    bins = len(thresholds)
+    true_area = float(len(positive))
+    false_area = float(len(negative))
+    tp = np.zeros(bins)
+    fp = np.zeros(bins)
+    # ROC curves
+    for k in xrange(bins):
+        thresh = thresholds[k]
+        tp[k] = (positive <= thresh).sum() / true_area
+        fp[k] = (negative <= thresh).sum() / false_area
+    return fp, tp
+
+# {{{ amp width I roc
+bins = 20
+thresholds = np.linspace(0, 2.5, bins)
+score = np.zeros([len(neuron_names), len(neuron_names)])
+for i, nrn_1 in enumerate(neuron_names):
+    for j, nrn_2 in enumerate(neuron_names):
+        w1 = widths_I[i]
+        w2 = widths_I[j]
+        fp, tp = get_roc(w1, w2, thresholds)
+        score[i,j] = metrics.auc(fp, tp)
+        if score[i,j] < 0.5:
+            score[i,j] = 1 - score[i,j]
+
+plt.imshow(score, interpolation="nearest")
+plt.colorbar()
+plt.clim(0.5,1.0)
+lplot.save_plt(plt, "roc_width", dir_output)
+plt.close()
+# }}} 
+
+# {{{ amp width roc I meaned
+bins = 20
+thresholds = np.linspace(0, 2.5, bins)
+score = np.zeros([len(neuron_names)/5, len(neuron_names)/5])
+meaned = [np.array([]) for _ in range(len(neuron_names)/5)]
+for i, nrn in enumerate(neuron_names):
+    meaned[i/5] = np.append(meaned[i/5], widths_I[i])
+for i in xrange(len(neuron_names)/5):
+    for j in xrange(len(neuron_names)/5):
+        w1 = meaned[i]
+        w2 = meaned[j]
+        fp, tp = get_roc(w1, w2, thresholds)
+        score[i,j] = metrics.auc(fp, tp)
+        if score[i,j] < 0.5:
+            score[i,j] = 1 - score[i,j]
+
+plt.imshow(score, interpolation="nearest")
+plt.colorbar()
+plt.clim(0.5,1.0)
+lplot.save_plt(plt, "roc_width_I_meaned", dir_output)
+plt.close()
+# }}} 
+# {{{ amp width roc II meaned
+bins = 20
+thresholds = np.linspace(0, 2.5, bins)
+score = np.zeros([len(neuron_names)/5, len(neuron_names)/5])
+meaned = [np.array([]) for _ in range(len(neuron_names)/5)]
+for i, nrn in enumerate(neuron_names):
+    meaned[i/5] = np.append(meaned[i/5], widths_II[i])
+for i in xrange(len(neuron_names)/5):
+    for j in xrange(len(neuron_names)/5):
+        w1 = meaned[i]
+        w2 = meaned[j]
+        fp, tp = get_roc(w1, w2, thresholds)
+        score[i,j] = metrics.auc(fp, tp)
+        if score[i,j] < 0.5:
+            score[i,j] = 1 - score[i,j]
+
+plt.imshow(score, interpolation="nearest")
+plt.colorbar()
+plt.clim(0.5,1.0)
+lplot.save_plt(plt, "roc_width_II_meaned", dir_output)
+plt.close()
+# }}} 
+
 # {{{ amp width hist meaned
 size_amp = 20
 size_width = 20
