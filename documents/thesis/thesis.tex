@@ -362,7 +362,7 @@ and if it is of a chemical or electrical type.
 
 %}}} end of The Neuron
 %{{{ Electrical Activity
-\section{Electrical Activity}
+\section{The Cell Membrane}
 \begin{figure}[h]
     \centering
     \includegraphics[angle=-90,width=1.0\textwidth]{images/2_1/ion_pumps_0.pdf}
@@ -388,6 +388,7 @@ to ions.
 
 In the membrane sits ion channels and 
 ion pumps which can have selective permeability to ions. 
+Collectivly they are refered to as ion transporters. 
 These are created by proteins in complicated shapes. 
 There and there are over 200 
 kinds of electrically sensitive ion channels.
@@ -416,14 +417,8 @@ to view the neuron as an electronic circuit where the ion channels, ion pumps
 and the membrane serve as different electronic components.
 \Cref{fig:2_hud_hux} shows the electronic circuit used by hudgkin
 and huxley in their original description of a neuron membrane. 
-Here the ion pump has been ignored as the concentrations were 
-assumed to be constant at boths sides of the membrane in their model.
-Given very spesific functions for the active conductances $g_\text{Na}$
-and $g_\text{K}$, this circuit is enough to describe an important feature
-of neurons, called action potentials.
-
-In essence the hudgkin and huxley circuit model is a modified
-RC circuit. 
+% Here the ion pump has been ignored as the concentrations were 
+% assumed to be constant at boths sides of the membrane in their model.
 
 \begin{figure}[h]
     \centering
@@ -433,10 +428,23 @@ RC circuit.
 \end{figure}
 
 \textcites{hodgkin_quantitative_1952,connor_prediction_1971,sterratt_principles_2011}
-
 % The temperature is important.
-
 %}}} end of Neuronal Models
+%{{{ Ciruit Model 
+\section{Circuit Model}
+Hudgking and Huxley originally tried to understand the
+electrical properties of neuron by studing squid axons. 
+Given very spesific functions for the active conductances $g_\text{Na}$
+and $g_\text{K}$, this circuit is enough to describe an important feature
+of neurons, called action potentials.
+The model was developed by recording the activity of each
+type channel in the membrane. 
+The model of each channel was then constructed by fitting 
+the data to functions. 
+The final model of the cell membane was then constructed 
+by incorperating each channel model. 
+
+%}}} 
 %{{{ Action Potential
 \section{Action Potential}
 Action potentials are sharp increases in the membrane potential
@@ -450,12 +458,18 @@ it returns to its resting potential.
 
 %}}} end of Action Potential
 % Neuron Models {{{ %
-\section{Neuron Models}
+\section{Compartmental Models}
 There are multiple models for neurons, some of the main groups are 
 point models and compartmental models. List many models?
 Multi-compartmental models 
 can be useful to understand the processing of neurons with
 complex morphological structures
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/2_1/compartments.pdf}
+    \caption{Compartmental model.}
+    \label{fig:2_comp_mod}
+\end{figure}
 % }}} 
 %{{{ Electrodes
 \section{Electrodes}

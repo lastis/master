@@ -7,7 +7,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    sodipodi:docname="hist_inter.svg"
@@ -30,9 +29,9 @@
      inkscape:window-maximized="1"
      inkscape:window-y="27"
      inkscape:window-x="73"
-     inkscape:cy="153.19162"
-     inkscape:cx="197.87592"
-     inkscape:zoom="4"
+     inkscape:cy="104.40195"
+     inkscape:cx="219.86189"
+     inkscape:zoom="2.8284271"
      showgrid="false"
      id="namedview8970"
      inkscape:window-height="1053"
@@ -79,17 +78,12 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs8972">
-    <pattern
-       inkscape:collect="always"
-       xlink:href="#pattern8638"
-       id="pattern4992"
-       patternTransform="translate(-3.515625e-6,-1.9130859e-5)" />
     <marker
        inkscape:stockid="TriangleInL"
        orient="auto"
@@ -447,60 +441,6 @@
            inkscape:connector-curvature="0" />
       </g>
     </pattern>
-    <pattern
-       patternUnits="userSpaceOnUse"
-       width="10"
-       height="10.00001"
-       patternTransform="translate(135.5061,479.71811)"
-       id="pattern5018">
-      <rect
-         id="rect8645"
-         y="0"
-         x="0"
-         height="10.00001"
-         width="10"
-         style="fill:url(#pattern4992);stroke:none" />
-    </pattern>
-    <pattern
-       patternUnits="userSpaceOnUse"
-       width="10.000015"
-       height="10.000029"
-       patternTransform="translate(135.48833,478.09309)"
-       id="pattern5053">
-      <g
-         transform="translate(-133.73833,-479.71809)"
-         id="g5046">
-        <rect
-           style="fill:none;stroke:none"
-           width="10"
-           height="10.00001"
-           x="133.73834"
-           y="479.71811"
-           id="rect5021" />
-        <rect
-           style="fill:none;stroke:none"
-           width="10"
-           height="10.00001"
-           x="133.73833"
-           y="479.71811"
-           id="rect5027" />
-        <path
-           style="fill:none;stroke:none"
-           d="m 133.73833,479.71809 10,0 0,10 -10,0 z"
-           id="path5033"
-           inkscape:connector-curvature="0" />
-        <path
-           id="path5036"
-           style="fill:#55c667;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           d="m 143.73833,479.7181 -10,10 5,0 5,-5 z m -10,0 c 5,0 5,0 5,0 l -5,5 z"
-           inkscape:connector-curvature="0" />
-        <path
-           inkscape:connector-curvature="0"
-           d="m 138.73833,489.7181 5,-5 0,5 -5,0 m -5,-5 0,5 10,-10 -5,0 z"
-           style="fill:#440154;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           id="path5040" />
-      </g>
-    </pattern>
   </defs>
   <g
      inkscape:groupmode="layer"
@@ -541,15 +481,15 @@
       </g>
     </g>
     <g
-       style="display:inline;opacity:0.5;fill:url(#pattern5053);fill-opacity:1.0;fill-rule:evenodd;stroke:url(#pattern4380);stroke-opacity:1"
+       style="display:inline;opacity:0.507;fill:url(#pattern8638);fill-opacity:1;fill-rule:evenodd;stroke:url(#pattern4380);stroke-opacity:1"
        transform="matrix(0.77537559,0,0,-0.77537559,22.31011,684.48055)"
        id="g5836">
       <g
-         style="fill:url(#pattern5053);fill-opacity:1.0;fill-rule:evenodd;stroke:url(#pattern4380);stroke-opacity:1"
+         style="fill:url(#pattern8638);fill-opacity:1;fill-rule:evenodd;stroke:url(#pattern4380);stroke-opacity:1"
          clip-path="url(#clipPath5299)"
          id="g5838">
         <path
-           style="fill:url(#pattern5053);fill-opacity:1.0;fill-rule:evenodd;stroke:url(#pattern4380);stroke-width:1.16306341;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:url(#pattern8638);fill-opacity:1;fill-rule:evenodd;stroke:url(#pattern4380);stroke-width:1.16306341;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
            d="m 244.19336,135.72852 c -16.31298,18.59505 -39.73997,34.25976 -78.45703,34.25976 l 154.54101,0 c -36.42691,0 -59.44775,-15.66438 -76.08398,-34.25976 z"
            transform="matrix(1.2896976,0,0,-1.2896976,-28.773294,267.25128)"
            id="path5840"
@@ -617,6 +557,13 @@
          clip-path="url(#clipPath5299)"
          id="g8598" />
     </g>
+    <rect
+       style="stroke:none;fill:url(#pattern8638)"
+       width="10"
+       height="10.00001"
+       x="115"
+       y="473.00058"
+       id="rect8645" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -628,13 +575,6 @@
          id="tspan8629"
          x="77.25"
          y="484.50058" /></text>
-    <rect
-       style="stroke:none;fill:url(#pattern5053)"
-       width="10.000015"
-       height="10.000029"
-       x="135.48833"
-       y="478.09309"
-       id="rect5061" />
   </g>
   <g
      inkscape:groupmode="layer"
