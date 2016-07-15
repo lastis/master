@@ -1376,22 +1376,27 @@ How can I explain this descrepancy?
         \vspace{-10pt}
     \end{center}
 \end{wrapfigure}
-Many different definitions of spike width has been used to differentiate neurons,
-and some investigation hase gone into which definitions are best suited
-for classification. 
-Notebly Bartho 2004 concluded that of all the spike features investigated, 
-the spike durtion most reliably gave the best seperation between pyramidal and
+
+Many different definitions of spike width has been used to differentiate neurons.
+Of the most common ones are the spike width measured at half ampltiude (Bean 2007) 
+and the peak-to-peak width.
+
+Some investigation hase gone into which features of the action potential 
+are best suited
+for classifying neurons. 
+Notebly Bartho 2004 concluded that of the spike features investigated, 
+the spike duration most reliably gave the best seperation between pyramidal neurons and
 interneurons
 in the somatosensory cortex and prefrontal cortex for both the anethesiased
-and the drug-free animals. 
+and drug-free animals. 
 Moreover they suggested that the peak-to-peak width definition
 of the unfiltered trace reliably gave the better bimodal distributions
 
-% This section covers an analysis of two different commonly used spike definitions
-% that have been used to classify interneurons and pyramidal neurons.
-The two width definitions analyzed are
-the peak-to-peak spike definition and 
-width at half amplitude from baseline,
+Based on the spike definitions seen in the literature
+two width definitions were used for further investigation. 
+The peak-to-peak spike definition and 
+width at half amplitude.
+These two are 
 respectively referred to as Type I and Type II
 (\cref{fig:4_2_width_def}).
 \newline
@@ -1446,11 +1451,77 @@ SphereRand (\cref{sec:simulation_list}) simulation .
 
 \noindent
 \textbf{Seperation:}
-A good definition is recoqnized by having a better
+A good width definition is recoqnized by having a better
 seperation between inhibitory
 and excitatory neurons.
+To compare the width definitions simulations were done 
+with 1000 electrodes around the soma of each model withing 
+a radius of 60 um.
+The distance from the soma is usually unknown in most extracellular 
+recording experiments so the electrodes were placed randomly,
+using the SphereRand simulation (Methods section ??). 
+
+The extracellular spike width was recorded from each of the
+electrodes and binned by according to the spike width.
+The resulting histogram was then used for the basis
+of measuring the seperation between neuron models.
+An example of the histogram from two neuron models and 
+the two width defintions can be seen in figure ??. 
+
+The histograms represent a probability distribution of
+measuring a certain spike width given a spesific neuron
+model. 
+
+% Picture of 2 x 2 histograms in 2 plots. 
+Little overlap of the neurons models signify
+a good ability to seperate the models into two classes. 
+It is useful to have a metric to measure the seperation 
+between models.
+A proper distance metric for histogram data is already 
+an important component for some machine learning tasks. 
+This kind of binary discrimination task has been researched
+a lot.
+
+Though the classification this data is better suited for a
+meachine learning algorithm 
+it is still useful to have a number on the seperation 
+between the neuron models. 
+A common measure of the perfomance of a binary classifyer
+is ROC curves. 
+The area under curve of the ROC, often called the AUC, 
+has been used as a measure 
+of the accuracy of the classifyer. 
+The AUC of the MODEL TPPCP and LCLC was XX for
+the peak-to-peak definition and XX for the half-amplitude 
+definition. 
+In this case the peak-to-peak definition serves as a better
+classification criteria then half-amplitude.
+
+To further investigate the seperation between pyramidal
+neurons and interneurons, this metric was applied to 
+all available neuron models in L5. 
+To make the measurements clearer neuron models
+of the same morphological type has been binned together
+and then compared to the other morphological classes. 
+
+
+
+% New
+
+The two spike widths were recorded and binned according 
+to their distance from soma. 
 The results of the simulations can be seen in 
 \cref{fig:4_2_width}.
+First it is important to note that during single unit 
+recordings
+the distance to soma is usually unknow. 
+It is still useful to know the dependence to 
+the distance to soma. 
+For classification purposes, if the distance to
+the soma is unknow it would be good if the width 
+is constant.
+But most importantaly that the 
+
 For both deifinitions the spike width of interneurons are smaller
 than the width of pyramidal neurons. 
 These findings are in line with previously established research.
@@ -1526,10 +1597,6 @@ this definition is better suited for classification.
     \end{center}
 \end{figure}
 
-The distance from the soma is usually unknown in most extracellular 
-recording experiments so measurements from random positions around 
-withing a distance of XX of the soma has been collected. 
-
 
 
 \noindent
@@ -1558,11 +1625,15 @@ withing a distance of XX of the soma has been collected.
 \section{Classifying Inter and Pyramidal Neurons}
 
 
-Classification using computer methods is a field in much development where new
-methods are emerging rapidly. 
-Classification of neurons based on this data could probably be done better 
-using computer methods, but still it is useful to have a metric 
-to measure similarity between models. 
+When combining spike amplitude and spike width it is no longer
+possible to apply the AUC seperation metric because
+the classification cannot be based on a single threshold. 
+To compare the 2d histogram of spike amplitude and width the 
+intersection divided by the union of the two histograms were compared. 
+
+Some neurons can be placed in certain areas of amplitude width space.
+
+
 % To measure the similarity between two models the histograms of the
 % spike width and spike amplitude has been compared. 
 The jaccard coefficient is a measurement that can be used to compute
