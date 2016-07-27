@@ -1622,39 +1622,94 @@ this definition is better suited for classification.
 
 % }}}  %
 % {{{ Classifying Neurons%
-\section{Classifying Inter and Pyramidal Neurons}
+\newpage
+\section{Interneurons and Pyramidal Neurons}
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/sec_4/int_pyr_hist.pdf}
+        \caption{Notin.}
+        \label{fig:4_int_pyr_hist}
+    \end{center}
+\end{figure}
+The spike width combined with the amplitude was
+used to see if this gave a better criteria for
+classification than
+using spike width alone.
 
+The spike width and amplitude
+can be combined into
+2d histograms as seen in the right column of
+figure \cref{fig:4_int_pyr_hist}. 
+The left column shows the histogram only based on the spike width.
+The histograms are made up of the spike width and amplitude
+data from all pyramidal and interneuron models.
+The pyramidal models consisted of 20 neuron models
+from the 4 me-types
+TTPC1, TTPC2, STPC, and UTPC. 
+The interneuron models consisted of 240 neuron models
+from 48 me-types.
 
 When combining spike amplitude and spike width it is no longer
-possible to apply the AUC seperation metric because
-the classification cannot be based on a single threshold. 
-To compare the 2d histogram of spike amplitude and width the 
-intersection divided by the union of the two histograms were compared. 
+possible to apply the AUC similarity metric as was done in 
+Optimal Width Definition.
+To compare pyramidal neurons against interneurons
+the histograms were compared using a similarity metric 
+defined as the histogram intersection divided by the union (Methods sec. XX). 
+This metric can be interpreted as the overlap between the two histograms
+and is a valid metric for both 1d and 2d histograms.
 
-Some neurons can be placed in certain areas of amplitude width space.
-
-
-% To measure the similarity between two models the histograms of the
-% spike width and spike amplitude has been compared. 
-The jaccard coefficient is a measurement that can be used to compute
-the overlap between two histograms and has been used here to compare the 
-models against each other. 
-Picture ** shows a comparison between each model using the jaccard coefficient
-of the histograms. 
-% Blue brain reconstruced neurons and indentified 55 types of 
-% morphological structures. 
-
-% Excitatory neurons represented above $87\%$ of all neurons in L5.
-
-% 50 \% of all inhibitory interneurons are baskets cells (LBC and NBC),
-% these types have been simulated.
-
-
-% All models from blue brain from L5 was ran using the SphereRand simulation and were
-% divided between interneurons and pyramidal neurons. 
-
-
+A considerable difference was seen when comparing the overlap
+between the histograms. 
+When only using spike width the overlap between interneurons
+and pyramidal neurons was $12.15\%$.
+In the case of spike width and amplitude the overlap
+was $5.10\%$.
+This suggests that using spike amplitude as an additional 
+parameter for classification will give a more accurate result. 
 % }}} 
+% {{{ %
+\section{Subclasses}
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/sec_4/pyr_overlap.pdf}
+        \caption{Notin.}
+        \label{fig:4_pyr_overlap}
+    \end{center}
+\end{figure}
+The spike width and amp. 2d histogram for the pyramidal models
+has a multimodal distribution that could suggest this group could
+be split into subclasses.
+The multimodal distribution could be a result of
+a low diversity among the pyramidal models, as 
+the pyramidal data is based on 20 models versus the 240
+interneuron models. 
+Though there is a much higher number of interneuron models,
+the number of models were based on the diversity of neurons encountered
+in the mouse somatosensory cortex. 
+If the diversity in the pyramidal models correctly represent the
+diversity in the mouse brain it is possible to classify some of
+the me-types of pyramidal neurons based only on spike width and
+amplitude.
+
+\Cref{fig:4_pyr_overlap} shows the histograms of the 
+different classes of pyramidal neurons. 
+where each class has 5 models.
+Each class is a me-type 
+but also represents the
+morphological class, m-type, as the pyramidal neurons only have one 
+e-type. 
+Each pyramidal models tends to have a "hockey stick" shaped 
+distribution. 
+
+
+\Cref{fig:4_pyr_overlap} also shows the overlap between
+each of the classes.
+
+There is no clear multimodal distribution 
+in the interneuron group but it might still be possible 
+to assign models into subclasses. 
+
+% }}}  %
 % Comparing results {{{ %
 \section{Comparing Results}
 Bartho 2004, spike widths  = 0.43 +- 0.27 ms than that of the

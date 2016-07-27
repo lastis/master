@@ -250,12 +250,12 @@ plt.close()
 # }}} 
 
 
-print "hist"
-for i, name in enumerate(neuron_names):
-    print name
-    plt.imshow(amp_width_hist[i], interpolation="nearest")
-    plt.colorbar()
-    lplot.save_plt(plt, name+"_hist", dir_output)
-    plt.close()
+# print "hist"
+# for i, name in enumerate(neuron_names):
+#     print name
+#     plt.imshow(amp_width_hist[i], interpolation="nearest")
+#     plt.colorbar()
+#     lplot.save_plt(plt, name+"_hist", dir_output)
+#     plt.close()
 
 
