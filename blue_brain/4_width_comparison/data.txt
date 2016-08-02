@@ -1,0 +1,4 @@
+pyr width I slope = 0.0080371687531
+int width I slope = 0.00299880728584
+pyr width II slope = 0.00696701748213
+int width II slope = 0.00379732639965

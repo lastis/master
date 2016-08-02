@@ -40,16 +40,16 @@ def gather_data(neuron_name, dir_data, sim):
     """
     Gathers data from the simulations into lists.
     """
-    global cnt_int
-    global cnt_pyr
-    if 'PC' in neuron_name:
-        cnt_pyr += 1
-        if cnt_pyr > 20:
-            return
-    else:
-        cnt_int += 1
-        if cnt_int > 20:
-            return
+    # global cnt_int
+    # global cnt_pyr
+    # if 'PC' in neuron_name:
+    #     cnt_pyr += 1
+    #     if cnt_pyr > 20:
+    #         return
+    # else:
+    #     cnt_int += 1
+    #     if cnt_int > 20:
+    #         return
     global dt
 
     print neuron_name
@@ -87,24 +87,63 @@ pyr_hist_2d = np.zeros(amp_width_hist[0].shape)
 int_hist_2d = np.zeros(amp_width_hist[0].shape)
 pyr_hist = np.zeros(len(width_bins)-1)
 int_hist = np.zeros(len(width_bins)-1)
+pyr_hist_II = np.zeros(len(width_bins)-1)
+int_hist_II = np.zeros(len(width_bins)-1)
 for i, name in enumerate(neuron_names):
     if 'PC' in name:
-        hist, _ = np.histogram(widths_I[i], width_bins)
-        pyr_hist += hist
+        hist_I, _ = np.histogram(widths_I[i], width_bins)
+        pyr_hist += hist_I
+
+        hist_II, _ = np.histogram(widths_II[i], width_bins)
+        pyr_hist_II += hist_II
+
         pyr_hist_2d += amp_width_hist[i]
     else:
-        hist, _ = np.histogram(widths_I[i], width_bins)
-        int_hist += hist
+        hist_I, _ = np.histogram(widths_I[i], width_bins)
+        int_hist += hist_I
+
+        hist_II, _ = np.histogram(widths_II[i], width_bins)
+        int_hist_II += hist_II
+
         int_hist_2d += amp_width_hist[i]
 
 pyr_hist_2d /= pyr_hist_2d.sum()
 int_hist_2d /= int_hist_2d.sum()
 pyr_hist /= pyr_hist.sum()
 int_hist /= int_hist.sum()
+pyr_hist_II /= pyr_hist_II.sum()
+int_hist_II /= int_hist_II.sum()
 # }}} 
 
 lplot.set_rc_param(True)
 lplot.plot_format = ['pdf', 'png']
+
+# {{{ Plot interneuron and pyramidal neuron histograms.
+fig, ax = plt.subplots(2,1, 
+        sharex=True,
+        sharey=True, 
+        figsize=lplot.size_common)
+dx = (width_bins[1]-width_bins[0])/2.0
+
+ax[0].bar(width_bins[:-1], int_hist, width=dx)
+ax[0].spines['top'].set_visible(False)
+ax[0].spines['right'].set_visible(False)
+
+ax[0].bar(width_bins[:-1] + dx, pyr_hist, width=dx)
+ax[0].spines['top'].set_visible(False)
+ax[0].spines['right'].set_visible(False)
+
+ax[1].bar(width_bins[:-1], int_hist_II, width=dx)
+ax[1].spines['top'].set_visible(False)
+ax[1].spines['right'].set_visible(False)
+
+ax[1].bar(width_bins[:-1] + dx, pyr_hist_II, width=dx)
+ax[1].spines['top'].set_visible(False)
+ax[1].spines['right'].set_visible(False)
+
+lplot.save_plt(plt, "int_pyr_width_I_II", dir_output)
+plt.close()
+# }}} 
 
 # {{{ Plot interneuron and pyramidal neuron histograms.
 fig, ax = plt.subplots(2,2, 
@@ -153,7 +192,7 @@ def overlap(hist_x, hist_y):
     intersect = np.maximum(hist_x, hist_y)
     return sum(union)/float(sum(intersect))
 
-# {{{ Save processed data about histograms.
+# {{{ Save some data to text file.
 info = open(dir_output+'/data.txt', 'w')
 info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))
 info.write('overlap_width_amp = {}\n'.format(
@@ -161,6 +200,7 @@ info.write('overlap_width_amp = {}\n'.format(
         int_hist_2d.flatten(), 
         pyr_hist_2d.flatten()
         )))
+info.close()
 # }}} 
 
 # {{{ Compute amp. and width histograms.
@@ -204,6 +244,11 @@ ax1.set_xticklabels([])
 ax2.set_xticklabels([])
 ax2.set_yticklabels([])
 ax4.set_yticklabels([])
+
+ax1.set_title('TTPC1')
+ax2.set_title('TTPC2')
+ax3.set_title('UTPC')
+ax4.set_title('STPC')
 
 vmax = max(
         hist_TTPC1.max(),

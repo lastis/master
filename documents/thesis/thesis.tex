@@ -28,9 +28,10 @@
 \usepackage{appendix}
 \usepackage[
 	backend=biber,
-	style=numeric,
+    style=numeric,
+    citestyle=authoryear,
 	doi=false,
-	% isbn=false, 
+    sorting=none,
 	maxcitenames=2,
 ]{biblatex}
 % Place figures inline with text.
@@ -156,11 +157,32 @@
 %{{{ Abstract
 \chapter*{Abstract}
 \noindent
-The physical processes that creates electrical signals in neurons are well understood, 
-but how the signals are processed into actions and thoughts has yet to 
-receive a scientifically robust answer
-Cell type classification is of high importance because the function of different 
-neurons is still largely a mystery. 
+% The physical processes that creates electrical signals in neurons are well understood, 
+% but how the signals are processed into actions and thoughts has yet to 
+% receive a robust answer
+% Cell type classification is of high importance because the function of different 
+% neurons is still largely a mystery. 
+
+Long spikes has been used as an indicator 
+pyramidal cells but some doubt has been raised of its validity. 
+
+Spike width and amplitude were simulated in 250 biophysical models
+from the Blue Brain project. 
+Several spike width and amplitude definitons were compared to 
+asses which were most suited for classification. 
+% The width definitionse were analysed
+% using ROC curves. 
+The peak-to-peak spike width definition proved to be a considerably 
+better definition compared to half amplitude spike width. 
+The peak-to-peak amplitude definition was compared to base-to-peak 
+but neither showed any significant advantage over the other. 
+
+The spike width combined with the amplitude was
+used to see if this gave a better criteria for
+classification than
+using spike width alone.
+
+
 %}}} end of Abstract
 %{{{ Table of Contents
 \setcounter{tocdepth}{1}
@@ -332,7 +354,7 @@ the action potential {regenerative}, meaning it will propagate
 without decay.
 
 The body of the neuron, the {soma}, has {dendrites} and 
-the {axon} attached to it. 
+the axon attached to it. 
 The dendrites and the axon are very thin branching structures 
 with a width usually in the order of \SI{1}{\micro\metre}. 
 While neurons often have many dendrites directly attached to the soma
@@ -1364,77 +1386,81 @@ How can I explain this descrepancy?
 % {{{ Optimal Spike Width%
 \newpage
 \section{Optimal Width Definition}
-\begin{wrapfigure}[17]{r}{.5\textwidth}
+\begin{wrapfigure}[22]{r}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
-        \includegraphics[width=\linewidth]{images/4_2/widthdef_soma_mem_small.pdf}
+        \includegraphics[width=\linewidth]{images/sec_4/widthdef_soma_mem_small.pdf}
         \vspace{-20pt}
         \caption{%
-            Width types.
+            Two commonly used spike width definitions, 
+            the peak-to-peak spike width
+            (\SI{2.656}{\milli\second})
+            and 
+            the width at half amplitude
+            (\SI{0.563}{\milli\second}),
+            respectively referred to as Type I and Type II in the programs.
+            Measured from the soma from a simulation of a nested basket cell 
+            (model L5\_NBC\_L5\_NBC\_cNAC187\_1).
             }
-        \label{fig:4_2_width_def}
+        \label{fig:4_width_def}
         \vspace{-10pt}
     \end{center}
 \end{wrapfigure}
 
-Many different definitions of spike width has been used to differentiate neurons.
-Of the most common ones are the spike width measured at half ampltiude (Bean 2007) 
-and the peak-to-peak width.
+Many different definitions of spike width has been used to differentiate neurons
+and it is not clear which spike definitions are better suited for classification.
+Of the most common definitons are 
+peak-to-peak spike width 
+and 
+spike width measured at half ampltiude 
+(\textcite{bean_action_2007}, \cref{fig:4_width_def}).
+Here models from the Human Brain Project
+has been used to question
+if some spike width definition prove better than others for classification.
 
-Some investigation hase gone into which features of the action potential 
+Some investigation has previously gone into which features of 
+the action potential 
 are best suited
 for classifying neurons. 
-Notebly Bartho 2004 concluded that of the spike features investigated, 
+\Textcite{bartho_characterization_2004}
+evaluated several spike features and 
+concluded that
 the spike duration most reliably gave the best seperation between pyramidal neurons and
-interneurons
-in the somatosensory cortex and prefrontal cortex for both the anethesiased
-and drug-free animals. 
+interneurons. 
 Moreover they suggested that the peak-to-peak width definition
 of the unfiltered trace reliably gave the better bimodal distributions
-
-Based on the spike definitions seen in the literature
-two width definitions were used for further investigation. 
-The peak-to-peak spike definition and 
-width at half amplitude.
-These two are 
-respectively referred to as Type I and Type II
-(\cref{fig:4_2_width_def}).
+than the half-amplitude width. 
+Their experiments were carried out in
+the somatosensory cortex and prefrontal cortex of both anethesiased
+and drug-free mice.
 \newline
-
-% Make plot of width over width. 
 
 \noindent
 \textbf{Models:}
-To investigate which of the two 
-width definitions is more optimal for differentiating
-interneurons from pyramidal neurons,
-three classes of the most abundant neurons were selected 
-from the blue brain models.
-Two classes of interneurons and one class of pyramidal neurons. 
-There were two classes of pyramidal models available but as the
-one class had identical dendrites it was not analyzed.
-The number of inhibitory neuron classes were much greater,
-the two classes were selected by being the most abundant 
-inhibitory neurons in the L5 area.
-In addition to these classes, one addition group
-was analyzed named "All Inter." 
-which included all available interneuron
-models in L5.
-In this group many of the classes represent only
-a very small portion of the number of neurons in L5. 
-The findings from 
-\textcite{markram_reconstruction_2015} 
-suggest
-that overall the ratio between excitatory
-and inhibitory neurons is around $87\% \pm 1\%$. 
-Of these, $50\%$ were classified as 
-baskets cells (LBC and NBC).
-The interneurons from L5 were seperated into 
-9 m-types (morphological) and 10 e-types (electrophysiological)
-which gave a total number
-of 48 uniquie models.
-As such some small classes of 
-interneurons are overrepresented in the grouped called "All Inter.".
+The Human Brain Project Neocortical
+Microciruit Collarboration Portal
+(\textcite{ramaswamy_neocortical_2015})
+gives access to neuron models from the somatosensory cortex 
+with full morphological reconstruction. 
+The models have been classified both by morpholigcal and electrophysical
+features. 
+Here the models have been simulated with NEURON and LFPy 
+to measure the extracellular potentials. 
+All available models from the L5 area were used.
+The pyramidal models consisted of 20 models
+from 4 me-types with the morphology
+TTPC1, TTPC2, STPC, and UTPC. 
+The interneuron models consisted of 240 neuron models
+from 48 me-types.
+% To investigate which of the two 
+% width definitions is more optimal for differentiating
+% interneurons from pyramidal neurons,
+% three classes of the most abundant neurons were selected 
+% from the blue brain models.
+% Two classes of interneurons and one class of pyramidal neurons. 
+% There were two classes of pyramidal models available but as the
+% one class had identical dendrites it was not analyzed.
+
 
 The classes of neurons were Thick Thufted Pyramidal Cell with
 an early bifurcating apical thuft (TTPC2), Large Basket Cell (LBC) and
@@ -1445,34 +1471,62 @@ The e-type of TTPC2 class was continuous adapting (cAD),
 LBC was delayed stuttering (dSTUT) 
 and NBC was continuous non-accommodating (cNAC) 
 (\textcite[463]{markram_reconstruction_2015}).
-Simulations were ran using using the
-SphereRand (\cref{sec:simulation_list}) simulation .
 \newline
 
 \noindent
-\textbf{Seperation:}
+\textbf{Setup:}
+In most experiments when electrodes are placed in the brain the distance
+from the elcetrode to the neurons are usually unknow. 
+The electrodes positions are usually adjusted until they 
+pick up a signal from nearby neurons. 
+To simulate this type of positioning of electrodes, the electrodes in the simulations
+were placed at random location around the soma. 
+The maximum distance an electrode can pick up the signal from neurons highly depends
+on the quality of the electrode used, 
+but by todays standards the distance can usually be no longer than 
+\SI{100}{\micro\metre}.
+1000 electrodes were placed around each soma within a distance
+of 
+\SI{60}{\micro\metre}. 
+This max distance were chosen because even the models with the strongest
+extracellular amplitude were no higher than 
+\SI{50}{\micro\volt}
+at a distance of 
+\SI{60}{\micro\metre}. 
+As the electrodes were randomly placed in euclidian space 
+the number of electrodes per distance $r$ increases as a function
+of $r^2$. 
+Electrodes closer than 
+\SI{15}{\micro\metre}
+have been ignored since not all models had
+any electrodes within this distance. 
+The electrodes were placed and measured using the 
+SphereRand (\cref{sec:simulation_list}) simulation class.
+\newline
+
+\noindent
+\textbf{Width Distribution:}
 A good width definition is recoqnized by having a better
 seperation between inhibitory
 and excitatory neurons.
-To compare the width definitions simulations were done 
-with 1000 electrodes around the soma of each model withing 
-a radius of 60 um.
-The distance from the soma is usually unknown in most extracellular 
-recording experiments so the electrodes were placed randomly,
-using the SphereRand simulation (Methods section ??). 
-
 The extracellular spike width was recorded from each of the
 electrodes and binned by according to the spike width.
 The resulting histogram was then used for the basis
 of measuring the seperation between neuron models.
-An example of the histogram from two neuron models and 
-the two width defintions can be seen in figure ??. 
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{images/sec_4/int_pyr_width_I_II.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_width_I_II_histograms}
+    \end{center}
+\end{figure}
 
 The histograms represent a probability distribution of
 measuring a certain spike width given a spesific neuron
 model. 
 
-% Picture of 2 x 2 histograms in 2 plots. 
 Little overlap of the neurons models signify
 a good ability to seperate the models into two classes. 
 It is useful to have a metric to measure the seperation 
@@ -1496,7 +1550,10 @@ the peak-to-peak definition and XX for the half-amplitude
 definition. 
 In this case the peak-to-peak definition serves as a better
 classification criteria then half-amplitude.
+\newline
 
+\noindent
+\textbf{Width by Distance from Soma:}
 To further investigate the seperation between pyramidal
 neurons and interneurons, this metric was applied to 
 all available neuron models in L5. 
@@ -1504,9 +1561,15 @@ To make the measurements clearer neuron models
 of the same morphological type has been binned together
 and then compared to the other morphological classes. 
 
-
-
-% New
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{images/sec_4/int_pyr_widths_dist.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_2_width}
+    \end{center}
+\end{figure}
 
 The two spike widths were recorded and binned according 
 to their distance from soma. 
@@ -1538,18 +1601,26 @@ and
 \SI{0.35}{\milli\second} at \SI{100}{\micro\metre}.
 These results suggests that using a type I deifinition of the spike width
 increases the chance of correctly classifying the neuron class.
+
+% Mention similar morphologies.
+In this group many of the classes represent only
+a very small portion of the number of neurons in L5. 
+The findings from 
+\textcite{markram_reconstruction_2015} 
+suggest
+that overall the ratio between excitatory
+and inhibitory neurons is around $87\% \pm 1\%$. 
+Of these, $50\%$ were classified as 
+baskets cells (LBC and NBC).
+The interneurons from L5 were seperated into 
+9 m-types (morphological) and 10 e-types (electrophysiological)
+which gave a total number
+of 48 uniquie models.
+As such some small classes of 
+interneurons are overrepresented in the grouped called "All Inter.".
 \newline
 
 
-\begin{figure}[h]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_widths.pdf}
-        \caption{
-            Nothing.
-        }
-        \label{fig:4_2_width}
-    \end{center}
-\end{figure}
 
 \noindent
 \textbf{Variance:}
@@ -1581,7 +1652,7 @@ is the relative variance compared to the mean.
 Because the variance is of similar magnitude for both width definitions, 
 the overall greater mean of the Type I definition results in a
 lesser $c_v$ at all distances, for all groups except LBC
-(\cref{fig:4_2_width_snr}).
+(\cref{fig:4_width_snr}).
 To minimalize errors when classifing neurons based on width 
 it is best to minize the overlap between the two definitions.
 Because the seperation is higher and $c_v$ is lower with Type I,
@@ -1589,11 +1660,11 @@ this definition is better suited for classification.
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_snr.pdf}
+        \includegraphics[width=\textwidth]{images/sec_4/int_pyr_widths_snr.pdf}
         \caption{
             Nothing.
         }
-        \label{fig:4_2_width_snr}
+        \label{fig:4_width_snr}
     \end{center}
 \end{figure}
 
@@ -1602,23 +1673,41 @@ this definition is better suited for classification.
 \noindent
 % }}}  %
 % {{{  Optimal Amplitude Definition%
-% \section{Optimal Amplitude Definition}
-% \begin{figure}[h]
-%     \begin{center}
-%         \includegraphics[width=1\textwidth]{images/4_2/TTPC2_NBC_LBC_IN_amps.pdf}
-%         \caption{
-%             Nothing.
-%         }
-%         \label{fig:4_2_amp}
-%     \end{center}
-% \end{figure}
-% The two amplitude definitions investigated are
-% the amplitude from baseline (Type I) and 
-% the peak-to-peak amplitude definition (Type II).
-% The simulations were ran using the same neurons and simulations
-% as the previous section.
+\newpage
+\section{Optimal Amplitude Definition}
+The two amplitude definitions investigated are
+the amplitude from baseline (Type I) and 
+the peak-to-peak amplitude definition (Type II).
+The simulations were ran using the same neurons and simulations
+as the previous section.
 
-% \Cref{fig:4_2_amp} shows the 
+% Interneurons and pyramidal neurons cannot reliably be classified 
+% based on amplitude alone. 
+\Cref{fig:4_amp_distance} shows the amplitude over distance from soma. 
+Though there is a clear seperation between pyramidal neurons and interneurons
+at a given distance, the distance is usually unknown during experiments. 
+The resulting histogram when ignoring distance does not show a clear
+biomodal distribution and is not suited as a classification parameter alone. 
+In addition the number of electrodes increase with distance from soma where
+the overlap between the two functions area greater. 
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{images/sec_4/int_pyr_amps_dist.pdf}
+        \caption{
+            Nothing.
+        }
+        \label{fig:4_amp_distance}
+    \end{center}
+\end{figure}
+
+There seems not to be a clear distinction of which amplitude definition is better. 
+Using amplitude alone neither is well suited as a classification parameter. 
+As with the width definition we can calculate the coefficient of variation. 
+The coefficient of variation is lower for the peak-to-peak width definition. 
+This can be attributed to that the variance for both definitions are similar 
+while the mean value of peak-to-peak amplitude is always higher. 
+
 
 % }}}  %
 % {{{ Classifying Neurons%
@@ -1631,10 +1720,13 @@ this definition is better suited for classification.
         \label{fig:4_int_pyr_hist}
     \end{center}
 \end{figure}
-The spike width combined with the amplitude was
-used to see if this gave a better criteria for
-classification than
-using spike width alone.
+It has been discovered that the spike width generally 
+increases with distance from soma while the amplitude
+decreases following a power law of the same distance. 
+As long spike widths from interneurons accompany 
+low amplitudes and short spike widths from pyramidal neurons
+accompany high amplitudes it is reasonable to conclude that
+the amplitude could be used as an addition parameter for classification. 
 
 The spike width and amplitude
 can be combined into
@@ -1642,12 +1734,7 @@ can be combined into
 figure \cref{fig:4_int_pyr_hist}. 
 The left column shows the histogram only based on the spike width.
 The histograms are made up of the spike width and amplitude
-data from all pyramidal and interneuron models.
-The pyramidal models consisted of 20 neuron models
-from the 4 me-types
-TTPC1, TTPC2, STPC, and UTPC. 
-The interneuron models consisted of 240 neuron models
-from 48 me-types.
+data from all pyramidal and interneuron models from L5.
 
 When combining spike amplitude and spike width it is no longer
 possible to apply the AUC similarity metric as was done in 
@@ -1667,7 +1754,7 @@ was $5.10\%$.
 This suggests that using spike amplitude as an additional 
 parameter for classification will give a more accurate result. 
 % }}} 
-% {{{ %
+% {{{ Subclasses %
 \section{Subclasses}
 \begin{figure}[h]
     \begin{center}
@@ -1676,40 +1763,55 @@ parameter for classification will give a more accurate result.
         \label{fig:4_pyr_overlap}
     \end{center}
 \end{figure}
-The spike width and amp. 2d histogram for the pyramidal models
+{\bf Pyramidal Neurons:}
+The spike width and amp. 2d histogram of the pyramidal models
 has a multimodal distribution that could suggest this group could
-be split into subclasses.
-The multimodal distribution could be a result of
-a low diversity among the pyramidal models, as 
-the pyramidal data is based on 20 models versus the 240
+be split into subclasses (\cref{fig:4_int_pyr_hist}).
+This could be a result of
+a low diversity among the pyramidal models as 
+the pyramidal data is based on 20 models versus 240
 interneuron models. 
 Though there is a much higher number of interneuron models,
 the number of models were based on the diversity of neurons encountered
 in the mouse somatosensory cortex. 
 If the diversity in the pyramidal models correctly represent the
-diversity in the mouse brain it is possible to classify some of
-the me-types of pyramidal neurons based only on spike width and
+diversity in the mouse brain it will be possible to classify some
+subclasses of pyramidal neurons based only on spike width and
 amplitude.
 
 \Cref{fig:4_pyr_overlap} shows the histograms of the 
 different classes of pyramidal neurons. 
 where each class has 5 models.
-Each class is a me-type 
-but also represents the
-morphological class, m-type, as the pyramidal neurons only have one 
+Each of these classes are a me-type but also represents the
+morphological class, the m-type, as the pyramidal neurons only have one 
 e-type. 
+The e-type of signifies a similar firing pattern based on features such as 
+XXX. 
+Since the firing patterns are similar
+the difference of the histograms
+show that the morphology has a big impact on the extracellular spikes. 
 Each pyramidal models tends to have a "hockey stick" shaped 
 distribution. 
 
 
 \Cref{fig:4_pyr_overlap} also shows the overlap between
 each of the classes.
+The two groups TTPC1 and TTPC2 has a high overlap of XX\%
+and as such they cannot be distingushed from another. 
+The group UTPC has little overlap with both TTPC1 and TTPC2, but
+overlaps STPC with XX\%. 
 
+
+{\bf Interneurons:}
 There is no clear multimodal distribution 
 in the interneuron group but it might still be possible 
 to assign models into subclasses. 
 
+
 % }}}  %
+% Filterig effects {{{ %
+\section{Filtering effects.}
+% }}} Filterig effects %
 % Comparing results {{{ %
 \section{Comparing Results}
 Bartho 2004, spike widths  = 0.43 +- 0.27 ms than that of the
@@ -1833,7 +1935,6 @@ Sources of variation:
 % }}} Appendix %
 \end{appendices}
 %{{{ Bibliography
-\nocite{*}
 \printbibliography[heading=bibintoc]
 % }}}
 \end{document}

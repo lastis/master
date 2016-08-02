@@ -1,2 +1,2 @@
-overlap_width = 0.13744426145
-overlap_width_amp = 0.0553805580176
+overlap_width = 0.121663909403
+overlap_width_amp = 0.0510499737439
