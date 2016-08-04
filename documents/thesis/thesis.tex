@@ -712,7 +712,7 @@ Methods mentioned here have been developed spesifically for this research.
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
 % Spike Width Measurement {{{ %
 \section{Spike Width Measurement}
-The width of an action potential depends on the definition and there
+There
 are several definitions of spike width used in neuroscience. 
 In some cases the definition of the spike width is not mentioned
 and simply addressed as the spike duration. 
@@ -722,8 +722,8 @@ amplitude
 
 Often the choice of spike width definition is chosen by
 seeing which gives the best bimodal distribution. 
-
-Of some spike width definitions encountered were:
+Of some spike width definitions encountered in the literature 
+were:
 width at half amplitude, 
 peak-to-peak width, 
 width at base
@@ -733,13 +733,6 @@ width of afterhyporalization phase.
 Most extracellular spikeshapes has a minimum value greater than the maximum 
 value,
 but this is not always the case at certain positions of the neuron. 
-
-The baseline is not always well define with spikeshapes.
-For the intracellular potential the baseline can for instance be set
-at the firing threshold, but for extracellular spikes this is not possible.
-Maybe more common is to set
-the baseline as the value during quiescence. 
-For modelling purposes this is can provide difficulties.
 \\
 \begin{figure}[h]
     \centering
@@ -766,12 +759,40 @@ the maximum value to the preceding minimum value.
 
 \noindent 
 {\bf Half Amplitude Width:} 
-Width is measured as the duration the spike is below half amplitude of the signal measured
-from the baseline at the start of the signal. 
+Width is measured as the duration the spike is below half amplitude of the 
+signal measured from the baseline.
+The baseline is commonly set as the value of the start of the signal, 
+though this is not always well defined. 
+In many cases the start of the signal is chosen trivialy
+and if exciting a neuron with a square current the membrane potential will 
+rise gradually. 
+A more accurate description would be to set the baseline at the firing 
+threshold of 
+the intracellular spike. 
+This is not possible in the case of extracellular spikes,
+but here the baseline can simply be set as 0. 
 \newline
 
 \noindent 
 {\bf Width at Base:} 
+Experimentally the width at the baseline is commenly used.
+It can be difficult to get a good resolution as spikes are very short
+and measured width at baseline gives a longer duration than width at half 
+amplitude. 
+
+Calculating width at baseline can pose problems when doing computer simulations
+of extracellular spikes as there is no firing threshold. 
+If the baseline is set at 0 the duration of spike has a tendency to become 
+unnaturally long due to the slight potential created by the charging
+of the membrane before firing. 
+Experimentally this is not a problem as there is always noise
+in the signal. 
+When attempting to measure 
+the width at baseline for extracellular simulations
+the baseline can either be set to some fraction of max amplitude
+or set as a constant value. 
+Both of these solutions have drawbacks however because 
+it makes the threshold be chosen trivially. 
 \newline
 
 \noindent 
@@ -1748,10 +1769,18 @@ classification criteria then half-amplitude.
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=.45\linewidth]{images/sec_4/roc_width_I_meaned.pdf}
         \includegraphics[width=.45\linewidth]{images/sec_4/roc_width_II_meaned.pdf}
+        \includegraphics[width=.45\linewidth]{images/sec_4/roc_width_I_meaned.pdf}
         \caption{
-            not complete.
+            Comparisons between each group of models using ROCAUC
+            of the width histograms. 
+            Left matrix is the half amplitude width definition; 
+            right matrix is the peak-to-peak amplitude definition.
+            Pyramidal models can be seen bottom right corner. 
+            Higher values indicate the models can be distinguished from one
+            another using a threshold as classification criteria. 
+            The peak-to-peak matrix indicate that all pyramidal models can be 
+            from interneurons. 
         }
         \label{fig:4_roc_width_I_II}
     \end{center}
@@ -2066,18 +2095,24 @@ as a cylindrical compartment when calculating the extracellular potential.
 The page Neuroelectro has a collection of spike data from over 413 published 
 articles.
 It is immediatly clear that there is a big variance in spike width data. 
-Using 
 
 Bartho 2004, spike widths  = 0.43 +- 0.27 ms than that of the
 putative pyramidal cells 0.86 +- 0.17 ms.
 
 To further compare results 
 our models and simulations were used to replicate 
-the paper
+some results from the paper
 \textcite{anastassiou_cell_2015}.
 The paper was chosen because the focus of the article was 
 comparing extracelluar measurements to internal measurements
 and the brain area investigated was the somatosensory cortex. 
+
+They measured the extracellular and intracellular action potential
+and looked at how the shape changes as the firing rate of the neuron 
+increases. 
+It has been reported that the spike width of neurons
+increase as the firing rate increases. 
+
 
 The article also gives an estimate of the extracellular conductivity
 which was estimated by fitting the spike amplitude data to the 

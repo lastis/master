@@ -14,7 +14,7 @@ import copy
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_output = os.path.join(dir_current, "test")
+dir_output = os.path.join(dir_current, "4_comparison")
 
 def get_cell(neuron_name):
     """
@@ -23,7 +23,7 @@ def get_cell(neuron_name):
     nrn_full = os.path.join(dir_model, neuron_name)
     cell_list = blue_brain.load_model(nrn_full, suppress=True)
     cell = cell_list[0]
-    cell.tstartms = 0
+    cell.tstartms = -100
     cell.tstopms = 1000
     # Find the principal component axes and rotate cell.
     axes = LFPy_util.data_extraction.find_major_axes()
@@ -46,24 +46,16 @@ def get_simulator(neuron_name):
 
     sim_sweep = LFPy_util.sims.CurrentSweep()
     sim_sweep.run_param['pptype'] = 'ISyn'
-    sim_sweep.run_param['duration'] = 1e5
+    sim_sweep.run_param['duration'] = 1000
     sim_sweep.run_param['delay'] = 100
-    sim_sweep.run_param['sweeps'] = 10
+    sim_sweep.run_param['sweeps'] = 3
     sim_sweep.run_param['processes'] = 4
     sim_sweep.run_param['n_elec'] = 2
     sim_sweep.run_param['seed'] = 1
     sim_sweep.plot_param['use_tex'] = False
-    if 'TTPC' in neuron_name:
-        # sim_sweep.run_param['amp_start'] = 0.1
-        # sim_sweep.run_param['amp_end'] = 1.0
+    if 'L5_TTPC1_cADpyr232_1' in neuron_name:
         sim_sweep.run_param['amp_start'] = 0.0
         sim_sweep.run_param['amp_end'] = 6.0
-    elif 'L23_PC' in neuron_name:
-        sim_sweep.run_param['amp_start'] = 0.05
-        sim_sweep.run_param['amp_end'] = 1.0
-    else:
-        sim_sweep.run_param['amp_start'] = 0.095
-        sim_sweep.run_param['amp_end'] = 0.105
 
     sim.push(sim_sweep)
 
@@ -90,7 +82,7 @@ if __name__ == '__main__':
     # neurons.append('L5_STPC_cADpyr232_4')
     # neurons.append('L5_STPC_cADpyr232_5')
     neurons.append('L5_TTPC1_cADpyr232_1')
-    neurons.append('L5_TTPC2_cADpyr232_1')
+    # neurons.append('L5_TTPC2_cADpyr232_1')
     # neurons.append('L5_UTPC_cADpyr232_1')
     # neurons.append('L5_UTPC_cADpyr232_2')
     # neurons.append('L5_UTPC_cADpyr232_3')
@@ -132,7 +124,7 @@ if __name__ == '__main__':
 
     # Simulation
     simm = LFPy_util.SimulatorManager()
-    simm.concurrent_neurons = 3
+    simm.concurrent_neurons = 1
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
