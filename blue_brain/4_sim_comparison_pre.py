@@ -127,6 +127,6 @@ if __name__ == '__main__':
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
-    simm.simulate()
+    # simm.simulate()
     simm.plot()
 

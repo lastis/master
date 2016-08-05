@@ -53,13 +53,13 @@
 % \BeforeBeginEnvironment{minted}{\begin{mdframed}}
 % \AfterEndEnvironment{minted}{\end{mdframed}}
     
-
-% Glossary packages.
-% \usepackage[nopostdot,toc]{glossaries}
-% % Enables multi column glossary.
-% \usepackage{glossary-mcols}
-% % Necessary for the glossaries package.
-% \makeglossaries
+%%%% BUGFIX in titlesec%%%%
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}
+\makeatother
+%%%% END BUGFIX %%%%
 
 \addbibresource{master.bib}
 
@@ -101,17 +101,14 @@
 \titleformat{\subsection}
     {\color{viridis_02}\large\bfseries}	
     {\color{viridis_02}\thesubsection}{1em}{}
-% Change section formatting.
+
+% Change chapter formatting.
 \titleformat{\chapter}[hang] 				
     {\bfseries\Huge} 	
     {\color{viridis_01}\thechapter\hspace{20pt}\rule[-3pt]{2pt}{23pt}\hspace{10pt}}
     {0.5ex} 			
     {\color{viridis_01}} 	
     [
-        % This will be applied after each chapter?
-        %\small
-        %\startcontents
-        %\printcontents{}{1}{\setcounter{tocdepth}{1}}
     ]		
 % Change the color of every citation.
 \AtEveryCite{\color{viridis_03}}
@@ -124,20 +121,10 @@
 	linkcolor={},
 	urlcolor=black,
 }
+
 % Change the color of caption labels.
 \captionsetup{labelfont={color=viridis_03}}
 
-% Glossary settings commented out:
-% % Change the color of the glossary commands \gls and \Gls.
-% \LetLtxMacro{\mygls}{\gls}
-% \renewcommand{\gls}[1]{{\color{viridis_03}\mygls{#1}} }
-% \LetLtxMacro{\myGls}{\Gls}
-% \renewcommand{\Gls}[1]{{\color{viridis_03}\myGls{#1}} }
-% % Include the glossary file. 
-% \input{glossary}
-
-% % Change the emph command.
-% \DeclareTextFontCommand{\emph}{\color{viridis_03}}
 % Change color of clever ref.
 \AtBeginDocument{
     \LetLtxMacro{\mycref}{\cref}
@@ -162,25 +149,38 @@
 % Cell type classification is of high importance because the function of different 
 % neurons is still largely a mystery. 
 
-Long spikes has been used as an indicator 
-pyramidal cells but some doubt has been raised of its validity. 
-
-Spike width and amplitude were simulated in 250 biophysical models
-from the Blue Brain project. 
-Several spike width and amplitude definitons were compared to 
-asses which were most suited for classification. 
-% The width definitionse were analysed
-% using ROC curves. 
-The peak-to-peak spike width definition proved to be a considerably 
-better definition compared to half amplitude spike width. 
-The peak-to-peak amplitude definition was compared to base-to-peak 
-but neither showed any significant advantage over the other. 
-
-The spike width combined with the amplitude was
-used to see if this gave a better criteria for
-classification than
-using spike width alone.
-
+% Optimal Spike widht
+% Optimal spike amplitude
+% Amplitude gives better seperation between classes. 
+% It works under filter. 
+Duration of intracellular spikes has long been an indicator 
+of pyramidal neurons versus interneurons. 
+Using NEURON and LFPy spike width and amplitude measurements from
+\Textcite{pettersen_amplitude_2008}
+using the Hay model
+were replicated.
+To investigate how spike amplitude
+and width can classify pyramidal neurons and interneurons,
+measurements were done 
+in 260 biophysical models
+from the Blue Brain Project. 
+1000 electrodes were positioned randomly around each soma to mimic
+experemental procedures.
+Probability distributions of the measured widths and amplitudes
+were compared using AOC curves and a overlap measure. 
+The spike width definitions were found to considerably effect
+how well classification can be done with 
+the peak-to-peak spike width definition providing the best results. 
+When the spike width combined with spike amplitude 
+significantly increased 
+the seperation between
+interneuron and pyramidal neurons.
+This suggests that areas in the spike amplitude width space 
+can be attributed to certain kinds of cell types. 
+When a butterworth filter were applied to the spike shapes
+the seperation between interneuron and pyramidal neurons remained
+showing that classification can still be done using the filtered 
+signals. 
 
 %}}} end of Abstract
 %{{{ Table of Contents
@@ -194,6 +194,19 @@ using spike width alone.
 % Since 
 % the conception of neuroscience the neurons function have been studied on many levels
 % from the properties of the cell membrane to clustered networks of neurons.
+
+Early research showed that interneurons that high firing rates
+showed "thin" action potentials with short durations. 
+These action potentials could be distinguised from pyramidal 
+cells with longer action potentials and showed a 
+more regular spiking pattern
+(\textcite{mountcastle_cortical_1969}).
+Pyramidal cells excibiting long and regular spike patterns
+has since been refered to as regular spiking. 
+These difference between these spike shapes were 
+thouroughly examined in brain slices from rodents. 
+
+
 
 % TODO: COPY Vigneswaran.
 % Early investigators first suggested that
@@ -817,6 +830,7 @@ in a similar manner as a sinusoid.
 % }}} Spike Amp. Measurement %
 % Similiarty measure {{{ %
 \section{Histogram Similarity Measure}
+\label{sec:similarity_measure}
 To asses width and amplitude definitions on how well they 
 classify interneuron from pyramidal neurons
 one needs a way to analyze the resulting data. 
@@ -891,22 +905,60 @@ and 1 if compared to itself.
     \end{center}
 \end{figure}
 % }}} Similiarty measure %
+% PCA analysis {{{ %
+\section{Rotate Cells using PCA}
+\label{sec:pca_analysis}
+% }}} PCA analysis %
 %{{{ Blue Brain
-\section{Blue Brain}
-The Blue Brain project released XXX models based upon neurons from 
-the hind-limb somatosensory cortex
-from 2-week-old Wistar Han rats.
+\section{Blue Brain Models}
+\label{sec:blue_brain}
+Obtaining a reconstruction of the morphology of neurons is an
+arduous task which has limitied the number of fully
+reconstructed neuron models.
+
+The Human Brain Project Neocortical
+Microciruit Collarboration Portal
+(\url{bbp.epfl.ch/nmc-portal/welcome},
+\textcite{ramaswamy_neocortical_2015})
+released mutliple neuron models from the hind limb somatosensory cortex 
+of 2-week-old Wistar Han rats.
+The models have been classified into both morpholigcal and electrophysical
+types with full morphological reconstruction. 
 
 The neuron models are based on the classication criteria set by the Blue Brain 
-team there is only 2 classes of pyramidal neurons avaiable in L5, while
-the diversity in interneuron models are much greater.
-The number of available models were based on the variability of 
-neurons depending on their morphological type and 
-electrophysiological response to stimuli.
-As most of the encountered pyramidal neurons had a similar morphological
-structure and response to stimuli the team choose to only recoqnize
-two morphological types and one electrophysiological type, 
-referred to as m-type and e-type.
+team.
+% there is only 2 classes of pyramidal neurons avaiable in L5, while
+% the diversity in interneuron models are much greater.
+% The number of available models were based on the variability of 
+% neurons depending on their morphological type and 
+% electrophysiological response to stimuli.
+% As most of the encountered pyramidal neurons had a similar morphological
+% structure and response to stimuli the team choose to only recoqnize
+% two morphological types and one electrophysiological type, 
+% referred to as m-type and e-type.
+
+% Here the models have been simulated with NEURON and LFPy 
+% to measure the extracellular potentials. 
+% All available models from the L5 area were used.
+% To investigate which of the two 
+% width definitions is more optimal for differentiating
+% interneurons from pyramidal neurons,
+% three classes of the most abundant neurons were selected 
+% from the blue brain models.
+% Two classes of interneurons and one class of pyramidal neurons. 
+% There were two classes of pyramidal models available but as the
+% one class had identical dendrites it was not analyzed.
+
+
+% The classes of neurons were Thick Thufted Pyramidal Cell with
+% an early bifurcating apical thuft (TTPC2), Large Basket Cell (LBC) and
+% Nest Basket Cell (NBC).
+% Each of the three class had 5 seperate models where each model
+% had different m-type but identical e-type.
+% The e-type of TTPC2 class was continuous adapting (cAD), 
+% LBC was delayed stuttering (dSTUT) 
+% and NBC was continuous non-accommodating (cNAC) 
+% (\textcite[463]{markram_reconstruction_2015}).
 
 % Use the models. Write code to capture one action potential. Bursting neurons
 % often hav adapting action potential, what to do there. 
@@ -922,10 +974,12 @@ an easy to use interface when developing new simulations.
 LFPyUtil extends and uses the package LFPy to accomplish this. 
 Simulations can be run in parallel and data from simulations can
 automatically be saved and loaded to avoid unnecessary processing time.
+LFPyUtil has 9000 lines of code, documentation can be found at
+\url{www.documentation.lastis}. 
+% TODO
 % Some features of LFPyUtil are running simulations in parallel,
 % and automatic saving and loading run parameters and data from simulations.
 
-% TODO: Add text about NEURON, maybe skip the next paragraph.
 % TODO: Link to where the programming package is saved, pypi, 
 % and that it uses python 2 because of NEURON.
 
@@ -1296,22 +1350,17 @@ The final simulation uses three files:
 
 
 % }}} MWE %
-
-% % TODO: Include sources to the number 0.3 conductivity.
-% In all simulations the extracellular conductivity was set to 
-% $\sigma = \SI{0.3}{\ohm\metre}$
-% based upon data from experimental measurements. 
-
-% All stimulus electrodes uses the {\verb LFPy.StimIntElectrode } with 
-% a custom made electrode named ISyn. With the default stimulus all transmembrane 
-% currents will be summed
-% equal the input current, using ISyn prevents this and the currents are correctly
-% summed to $0$.
-% \newline
-
 % List of simulations {{{ %
-\subsection{List of Simulations}
+\newpage
+\subsection{List of Simulation Classes}
 \label{sec:simulation_list}
+These are the predifined simulation classes included in LFPyutil. 
+Each class has a simulation function that sets up 
+electrodes and/or recording positions. 
+Here the function and implementation 
+of each class is explained.
+\newline
+
 \noindent
 \textbf{SphereRand:}
 SphereRand places
@@ -1322,6 +1371,58 @@ That timing is applied to all electrodes such that all electrodes measure
 the same part of the simulation. 
 If the signal has several spikes
 the spike index must be supplied, the default setting uses the first spike.
+\newline
+
+\noindent
+\textbf{SphereRand Parameters:}
+\begin{listing}[H]
+    \caption{SphereRand Parameters}
+    \begin{minted}
+    [
+        frame=lines,
+        baselinestretch=0.4,
+        fontsize=\footnotesize,
+        bgcolor=LightGray,
+        linenos
+    ]
+    {python}
+class SphereRand(Simulation):
+    def __init__(self):
+        Simulation.__init__(self)
+        # Used by the super save and load function.
+        self.set_name("sphere")
+
+        self.debug = False
+        self.run_param['N'] = 1000
+        self.run_param['R'] = 50
+        self.run_param['sigma'] = 0.3
+        self.run_param['ext_method'] = 'som_as_point'
+        self.run_param['seed'] = 1234
+
+        self.process_param['amp_option'] = 'both'
+        self.process_param['pre_dur'] = 16.7 * 0.5
+        self.process_param['post_dur'] = 16.7 * 0.5
+        self.process_param['threshold'] = 3
+        self.process_param['width_half_thresh'] = 0.5
+        self.process_param['bins'] = 11
+        self.process_param['spike_to_measure'] = 0 
+        self.process_param['assert_width'] = False
+        self.process_param['assert_width_I_low'] = 0.2 # ms
+        self.process_param['assert_width_I_high'] = 3 # ms
+        self.process_param['assert_width_II_low'] = 0.1 # ms
+        self.process_param['assert_width_II_high'] = 2.0 # ms
+    \end{minted}
+    % \inputminted
+    % [
+    %     frame=lines,
+    %     baselinestretch=0.4,
+    %     fontsize=\footnotesize,
+    %     bgcolor=LightGray,
+    %     linenos
+    % ]
+    % {python}{examples/load_model_simple.py}
+\end{listing}
+
 % }}} List of simulations %
 % }}}
 %}}} end of Methods
@@ -1358,9 +1459,9 @@ some results from
 Spesifically the spike width and amplitude dependency in relation to 
 the distance from soma was compared to current results. 
 
-% {{{ Simulation%
-\subsection{Simulation}
-\textbf{Cell:}
+% {{{ Setup%
+\subsection{Setup}
+\textbf{Model:}
 The \textcite{mainen_influence_1996} morphology was used with a passive model, which is 
 the same model used in \textcite{pettersen_amplitude_2008}. 
 The cell was rotated using PCA (principal component analysis) on the compartment
@@ -1593,9 +1694,96 @@ at
 
 % }}}  %
 %}}} end of Pettersen and Einvoll
-% {{{ Optimal Spike Width%
+%{{{ Blue brain models. 
 \newpage
-\section{Optimal Width Definition}
+\section{Blue Brain Model Simulations}
+The number of previous simulations of extracellular action potentials are
+few. 
+The publicly avaiable models from the Blue Brain
+(\cref{sec:blue_brain})
+include neuron models with full reconstruction of the morphology. 
+The neuron models are ment to cover the whole diversity of neuronal
+types encounted in the mouse somatosensory cortex. 
+This is one of the first simulations where 
+the extracellular action potentials
+of a large number of different neuronal types are being compared. 
+
+Spike widht and amplitude are known to be markers 
+for pyramidal neurons and interneurons. 
+% In order to investigate the difference in
+% spike width and amplitude 
+\newline
+% Setup {{{ %
+\noindent
+\textbf{Models:}
+Each simulation uses all available models in the L5
+area. 
+The pyramidal models consisted of models
+from 4 me-types with the morphologies
+TTPC1, TTPC2, STPC, and UTPC and the same e-type. 
+The interneuron models consisted of the remainding 48 me-types.
+Each me-type had 5 models which in total summed to 20
+pyramidal models and 240 interneuron models. 
+
+Each of the models a me-type 
+were implied to have slightly different morphological
+shape and/or firing pattern. 
+The degree of difference is not made clear in the documentation. 
+
+All neuron models were rotated using PCA before simulations were
+instigated 
+(\cref{sec:pca_analysis}).
+
+In all simulations the extracellular conductivity was set to 
+$\sigma = \SI{0.3}{\ohm\metre}$
+based upon data from experimental measurements. 
+\newline
+
+% All stimulus electrodes uses the {\verb LFPy.StimIntElectrode } with 
+% a custom made electrode named ISyn. With the default stimulus all transmembrane 
+% currents will be summed
+% equal the input current, using ISyn prevents this and the currents are correctly
+% summed to $0$.
+
+\noindent
+\textbf{Spike Generation:}
+
+\noindent
+\textbf{Electrode placement:}
+In most experiments when electrodes are placed in the brain the distance
+from the elcetrode to the neurons are usually unknow. 
+The electrodes positions are usually adjusted until they 
+pick up a signal from nearby neurons. 
+To simulate this type of positioning of electrodes, the electrodes in the simulations
+were placed at random location around the soma. 
+The maximum distance an electrode can pick up the signal from neurons highly depends
+on the quality of the electrode used, 
+but by todays standards the distance can usually be no longer than 
+\SI{100}{\micro\metre}.
+1000 electrodes were placed around each soma within a distance
+of 
+\SI{60}{\micro\metre}. 
+This max distance were chosen because even the models with the strongest
+extracellular amplitude were no higher than 
+\SI{50}{\micro\volt}
+at a distance of 
+\SI{60}{\micro\metre}. 
+As the electrodes were randomly placed in euclidian space 
+the number of electrodes per distance $r$ increases as a function
+of $r^2$. 
+Electrodes closer than 
+\SI{15}{\micro\metre}
+have been ignored since not all models had
+any electrodes within this distance. 
+The electrodes were placed and measured using the 
+SphereRand 
+(\cref{sec:simulation_list}) 
+simulation class.
+
+% }}} Setup %
+% {{{ Optimal Spike Width%
+\subsection{Choosing the Optimal Width Definition}
+\label{sec:optimal_width_def}
 \begin{wrapfigure}[22]{r}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
@@ -1643,76 +1831,6 @@ than the half-amplitude width.
 Their experiments were carried out in
 the somatosensory cortex and prefrontal cortex of both anethesiased
 and drug-free mice.
-\newline
-
-\noindent
-\textbf{Models:}
-The Human Brain Project Neocortical
-Microciruit Collarboration Portal
-(\url{bbp.epfl.ch/nmc-portal/welcome},
-\textcite{ramaswamy_neocortical_2015})
-gives access to neuron models from the somatosensory cortex 
-with full morphological reconstruction. 
-The models have been classified both by morpholigcal and electrophysical
-features. 
-Here the models have been simulated with NEURON and LFPy 
-to measure the extracellular potentials. 
-All available models from the L5 area were used.
-The pyramidal models consisted of 20 models
-from 4 me-types with the morphology
-TTPC1, TTPC2, STPC, and UTPC. 
-The interneuron models consisted of 240 neuron models
-from 48 me-types.
-% To investigate which of the two 
-% width definitions is more optimal for differentiating
-% interneurons from pyramidal neurons,
-% three classes of the most abundant neurons were selected 
-% from the blue brain models.
-% Two classes of interneurons and one class of pyramidal neurons. 
-% There were two classes of pyramidal models available but as the
-% one class had identical dendrites it was not analyzed.
-
-
-The classes of neurons were Thick Thufted Pyramidal Cell with
-an early bifurcating apical thuft (TTPC2), Large Basket Cell (LBC) and
-Nest Basket Cell (NBC).
-Each of the three class had 5 seperate models where each model
-had different m-type but identical e-type.
-The e-type of TTPC2 class was continuous adapting (cAD), 
-LBC was delayed stuttering (dSTUT) 
-and NBC was continuous non-accommodating (cNAC) 
-(\textcite[463]{markram_reconstruction_2015}).
-\newline
-
-\noindent
-\textbf{Setup:}
-In most experiments when electrodes are placed in the brain the distance
-from the elcetrode to the neurons are usually unknow. 
-The electrodes positions are usually adjusted until they 
-pick up a signal from nearby neurons. 
-To simulate this type of positioning of electrodes, the electrodes in the simulations
-were placed at random location around the soma. 
-The maximum distance an electrode can pick up the signal from neurons highly depends
-on the quality of the electrode used, 
-but by todays standards the distance can usually be no longer than 
-\SI{100}{\micro\metre}.
-1000 electrodes were placed around each soma within a distance
-of 
-\SI{60}{\micro\metre}. 
-This max distance were chosen because even the models with the strongest
-extracellular amplitude were no higher than 
-\SI{50}{\micro\volt}
-at a distance of 
-\SI{60}{\micro\metre}. 
-As the electrodes were randomly placed in euclidian space 
-the number of electrodes per distance $r$ increases as a function
-of $r^2$. 
-Electrodes closer than 
-\SI{15}{\micro\metre}
-have been ignored since not all models had
-any electrodes within this distance. 
-The electrodes were placed and measured using the 
-SphereRand (\cref{sec:simulation_list}) simulation class.
 \newline
 
 \noindent
@@ -1788,9 +1906,9 @@ classification criteria then half-amplitude.
 
 \noindent
 \textbf{Width by Distance from Soma:}
-To further investigate the seperation between pyramidal
-neurons and interneurons, this metric was applied to 
-all available neuron models in L5. 
+% To further investigate the seperation between pyramidal
+% neurons and interneurons, this metric was applied to 
+% all available neuron models in L5. 
 To make the measurements clearer neuron models
 of the same morphological type has been binned together
 and then compared to the other morphological classes. 
@@ -1911,7 +2029,7 @@ this definition is better suited for classification.
 % }}}  %
 % {{{  Optimal Amplitude Definition%
 \newpage
-\section{Optimal Amplitude Definition}
+\subsection{Choosing the Optimal Amplitude Definition}
 The two amplitude definitions investigated are
 the amplitude from baseline (Type I) and 
 the peak-to-peak amplitude definition (Type II).
@@ -1949,36 +2067,55 @@ while the mean value of peak-to-peak amplitude is always higher.
 % }}}  %
 % {{{ Classifying Neurons%
 \newpage
-\section{Interneurons and Pyramidal Neurons}
+\subsection{Combining Spike Width and Amplitude}
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=\linewidth]{images/sec_4/int_pyr_hist.pdf}
-        \caption{Notin.}
+        \caption{Spike width and amplitude histograms. 
+        Right column shows the combined histogram of spike amplitude and 
+        width; 
+        left column shows the distribution of only spike width. 
+        The overlap of the distributions are greater when 
+        not considering the amplitude. 
+        The overlap of the distributions for 
+        spike width alone is $12.15\%$. 
+        The overlap for the combined distribution of amplitude and width
+        is $5.10\%$. 
+        Data basen on 240 interneuron models and 20 pyramidal models. 
+        }
         \label{fig:4_int_pyr_hist}
     \end{center}
 \end{figure}
-It has been discovered that the spike width generally 
-increases with distance from soma while the amplitude
-decreases following a power law of the same distance. 
+
 As long spike widths from interneurons accompany 
 low amplitudes and short spike widths from pyramidal neurons
 accompany high amplitudes it is reasonable to conclude that
 the amplitude could be used as an addition parameter for classification. 
+From this point on the peak-to-peak width and amplitude 
+definitions will be used. 
+
+% It has been discovered that the spike width generally 
+% increases with distance from soma while the amplitude
+% decreases following a power law of the same distance. 
 
 The spike width and amplitude
 can be combined into
 2d histograms as seen in the right column of
 figure \cref{fig:4_int_pyr_hist}. 
-The left column shows the histogram only based on the spike width.
-The histograms are made up of the spike width and amplitude
-data from all pyramidal and interneuron models from L5.
+The left column shows the histogram only based on spike width.
+The histograms are made from the spike width and amplitude
+data from all pyramidal (20) and interneuron models(250) from L5.
 
 When combining spike amplitude and spike width it is no longer
 possible to apply the AUC similarity metric as was done in 
-Optimal Width Definition.
+% Optimal Width Definition
+\nameref{sec:optimal_width_def}
+(\cref{sec:optimal_width_def}).
 To compare pyramidal neurons against interneurons
 the histograms were compared using a similarity metric 
-defined as the histogram intersection divided by the union (Methods sec. XX). 
+defined as the histogram intersection divided by the union 
+\nameref{sec:similarity_measure}
+(\cref{sec:similarity_measure}).
 This metric can be interpreted as the overlap between the two histograms
 and is a valid metric for both 1d and 2d histograms.
 
@@ -1992,8 +2129,7 @@ This suggests that using spike amplitude as an additional
 parameter for classification will give a more accurate result. 
 % }}} 
 % {{{ Subclasses %
-\newpage
-\section{Subclasses}
+\subsection{Subclasses}
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=\linewidth]{images/sec_4/pyr_overlap.pdf}
@@ -2048,7 +2184,7 @@ to assign models into subclasses.
 
 % }}}  %
 % Filterig effects {{{ %
-\section{Filtering effects}
+\subsection{Filtering effects}
 As filtering is a common manipulation of the signal
 to remove noise
 it is interesting to see if the same separation between interneurons
@@ -2075,7 +2211,7 @@ from each other by about value.
 
 % }}} Filterig effects %
 % Comparing results {{{ %
-\section{Comparing Results}
+\subsection{Comparing Results}
 We wanted to compare 
 the spike widths and and amplitude found in this project 
 with spike data from other sources. 
@@ -2124,6 +2260,7 @@ The high uncertainty was attributed to the estimation of
 the membrane capacity $C$.
 
 % }}} Comparing results %
+%}}}
 %}}} end of Results
 %{{{ Discussion
 \chapter{Discussion}

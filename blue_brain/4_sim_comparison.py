@@ -14,7 +14,7 @@ import copy
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_output = os.path.join(dir_current, "4_comparison")
+dir_output = os.path.join(dir_current, "4_sim_comparison")
 
 def get_cell(neuron_name):
     """
@@ -48,19 +48,16 @@ def get_simulator(neuron_name):
     sim_sweep.run_param['pptype'] = 'ISyn'
     sim_sweep.run_param['duration'] = 1000
     sim_sweep.run_param['delay'] = 100
-    sim_sweep.run_param['sweeps'] = 3
+    sim_sweep.run_param['sweeps'] = 16
     sim_sweep.run_param['processes'] = 4
     sim_sweep.run_param['n_elec'] = 2
     sim_sweep.run_param['seed'] = 1
     sim_sweep.plot_param['use_tex'] = False
     if 'L5_TTPC1_cADpyr232_1' in neuron_name:
-        sim_sweep.run_param['amp_start'] = 0.0
-        sim_sweep.run_param['amp_end'] = 6.0
+        sim_sweep.run_param['amp_start'] = 0.213
+        sim_sweep.run_param['amp_end'] = 0.931
 
     sim.push(sim_sweep)
-
-    sim_intra = LFPy_util.sims.Intracellular()
-    sim.push(sim_intra)
 
     sim_morph = LFPy_util.sims.Morphology()
     sim.push(sim_morph)
@@ -124,7 +121,7 @@ if __name__ == '__main__':
 
     # Simulation
     simm = LFPy_util.SimulatorManager()
-    simm.concurrent_neurons = 1
+    simm.concurrent_neurons = 2
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
