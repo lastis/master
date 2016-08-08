@@ -41,16 +41,16 @@ def gather_data(neuron_name, dir_data, sim):
     """
     Gathers data from the simulations into lists.
     """
-    global cnt_int
-    global cnt_pyr
-    if 'PC' in neuron_name:
-        cnt_pyr += 1
-        if cnt_pyr > 20:
-            return
-    else:
-        cnt_int += 1
-        if cnt_int > 20:
-            return
+    # global cnt_int
+    # global cnt_pyr
+    # if 'PC' in neuron_name:
+    #     cnt_pyr += 1
+    #     if cnt_pyr > 20:
+    #         return
+    # else:
+    #     cnt_int += 1
+    #     if cnt_int > 20:
+    #         return
     global dt
 
     print neuron_name
@@ -137,6 +137,79 @@ int_widths_II = np.fromiter(chain.from_iterable(int_widths_II), np.float)
 lplot.set_rc_param(True)
 lplot.plot_format = ['pdf', 'png']
 
+def overlap(hist_x, hist_y):
+    union = np.minimum(hist_x, hist_y)
+    intersect = np.maximum(hist_x, hist_y)
+    return sum(union)/float(sum(intersect))
+
+def get_roc(negative, positive, thresholds):
+    # Inputs all samples unbinned. 
+    bins = len(thresholds)
+    true_area = float(len(positive))
+    false_area = float(len(negative))
+    tp = np.zeros(bins)
+    fp = np.zeros(bins)
+    for k in xrange(bins):
+        thresh = thresholds[k]
+        tp[k] = (positive <= thresh).sum() / true_area
+        fp[k] = (negative <= thresh).sum() / false_area
+    return fp, tp
+
+# {{{ Save some data to text file.
+info = open(dir_output+'/data.txt', 'w')
+y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
+score_I = metrics.auc(x, y)
+y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
+score_II = metrics.auc(x, y)
+
+soma_width_mean = np.mean(soma_widths_II)
+soma_width_std = np.sqrt(np.var(soma_widths_II))
+
+info.write('mean soma width II = {}\n'.format(soma_width_mean))
+info.write('std soma width II = {}\n'.format(soma_width_std))
+info.write('roc_auc_width_I = {}\n'.format(score_I))
+info.write('roc_auc_width_II = {}\n'.format(score_II))
+info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))
+info.write('overlap_width_amp = {}\n'.format(
+    overlap(
+        int_hist_2d.flatten(), 
+        pyr_hist_2d.flatten()
+        )))
+info.close()
+# }}} 
+
+# {{{ ROC curves
+fig = plt.figure(figsize=lplot.size_square)
+
+plt.axis('equal')
+
+c = lcmaps.get_short_color_array(3)
+
+y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
+plt.plot(x, y, label='Peak-to-peak Width', color=c[0])
+
+y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
+plt.plot(x, y, label='Half-amp. Width', color=c[1])
+
+ax = plt.gca()
+lplot.nice_axes(ax)
+ax.set_xlabel(r"True positive rate")
+ax.set_ylabel(r"False positive rate")
+
+ticks = np.linspace(0,1,5)
+ax.set_xticks(ticks)
+ax.set_yticks(ticks)
+
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(handles,
+          labels,
+          loc='lower right',
+          )
+
+lplot.save_plt(plt, "roc_curves", dir_output)
+plt.close()
+# }}} 
+
 # {{{ Plot interneuron and pyramidal neuron histograms.
 fig, ax = plt.subplots(2,1, 
         sharex=True,
@@ -144,21 +217,46 @@ fig, ax = plt.subplots(2,1,
         figsize=lplot.size_common)
 dx = (width_bins[1]-width_bins[0])/2.0
 
-ax[0].bar(width_bins[:-1], int_hist, width=dx)
+c = lcmaps.get_short_color_array(3)
+
+ax[0].bar(width_bins[:-1], int_hist, width=dx, 
+        label='Inter.', 
+        color=c[1], 
+        )
 ax[0].spines['top'].set_visible(False)
 ax[0].spines['right'].set_visible(False)
 
-ax[0].bar(width_bins[:-1] + dx, pyr_hist, width=dx)
+ax[0].bar(width_bins[:-1] + dx, pyr_hist, width=dx, 
+        label='Pyramidal',
+        color=c[0], 
+        )
 ax[0].spines['top'].set_visible(False)
 ax[0].spines['right'].set_visible(False)
 
-ax[1].bar(width_bins[:-1], int_hist_II, width=dx)
+ax[1].bar(width_bins[:-1], int_hist_II, width=dx,
+        color=c[1], 
+        )
 ax[1].spines['top'].set_visible(False)
 ax[1].spines['right'].set_visible(False)
 
-ax[1].bar(width_bins[:-1] + dx, pyr_hist_II, width=dx)
+ax[1].bar(width_bins[:-1] + dx, pyr_hist_II, width=dx,
+        color=c[0], 
+        )
 ax[1].spines['top'].set_visible(False)
 ax[1].spines['right'].set_visible(False)
+
+handles, labels = ax[0].get_legend_handles_labels()
+ax[0].legend(handles,
+          labels,
+          loc='upper right',
+          )
+
+ax[0].set_ylabel(r"Probability")
+ax[1].set_ylabel(r"Probability")
+ax[1].set_xlabel(r"Width \textbf{[\si{\milli\second}]}")
+
+ax[0].set_title('Peak-to-peak Width')
+ax[1].set_title('Half-Amplitude Width')
 
 lplot.save_plt(plt, "int_pyr_width_I_II", dir_output)
 plt.close()
@@ -201,106 +299,23 @@ im = ax2.imshow(pyr_hist_2d,
 ax1.set_aspect(aspect)
 ax2.set_aspect(aspect)
 
+ticks = np.arange(0, width_bins.max(), 0.5)
+ax1.set_xticks(ticks)
+ax2.set_xticks(ticks)
+
+ax1.set_xlabel(r"Width \textbf{[\si{\milli\second}]}")
+ax2.set_xlabel(r"Width \textbf{[\si{\milli\second}]}")
+ax1.set_ylabel(r"Amplitude \textbf{[\si{\micro\volt}]}")
+
+ax1.set_title('Interneurons')
+ax2.set_title('Pyramidal Neurons')
+
 cax, kw = mpl.colorbar.make_axes([ax1, ax2])
 plt.colorbar(im, cax=cax, **kw)
 
 lplot.save_plt(plt, "int_pyr_hist", dir_output)
 plt.close()
 # }}} 
-
-# # {{{ Unused - Plot interneuron and pyramidal neuron histograms 2d 
-# fig, ax = plt.subplots(2,2, 
-#         sharex='col', 
-#         figsize=lplot.size_common)
-# ax[0][0].bar(width_bins[:-1], int_hist, width=width_bins[1]-width_bins[0])
-# ax[0][0].spines['top'].set_visible(False)
-# ax[0][0].spines['right'].set_visible(False)
-# ax[1][0].bar(width_bins[:-1], pyr_hist, width=width_bins[1]-width_bins[0])
-# ax[1][0].spines['top'].set_visible(False)
-# ax[1][0].spines['right'].set_visible(False)
-
-# vmax = max(int_hist_2d.max(), pyr_hist_2d.max())
-# im = ax[0][1].imshow(int_hist_2d, 
-#         interpolation="none", 
-#         origin='lower',
-#         vmin=0,
-#         vmax=vmax,
-#         extent=[
-#             width_bins.min(), 
-#             width_bins.max(), 
-#             ampli_bins.min(), 
-#             ampli_bins.max()])
-# ax[0][1].set_aspect('auto');
-
-# im = ax[1][1].imshow(pyr_hist_2d, 
-#         interpolation="none", 
-#         origin='lower',
-#         vmin=0,
-#         vmax=vmax,
-#         extent=[
-#             width_bins.min(), 
-#             width_bins.max(), 
-#             ampli_bins.min(), 
-#             ampli_bins.max()])
-# ax[1][1].set_aspect('auto');
-# cax, kw = mpl.colorbar.make_axes([ax[0][1], ax[1][1]])
-# plt.colorbar(im, cax=cax, **kw)
-
-# lplot.save_plt(plt, "int_pyr_hist", dir_output)
-# plt.close()
-# # }}} 
-
-def overlap(hist_x, hist_y):
-    union = np.minimum(hist_x, hist_y)
-    intersect = np.maximum(hist_x, hist_y)
-    return sum(union)/float(sum(intersect))
-
-def get_roc(negative, positive, thresholds):
-    # Inputs all samples unbinned. 
-    bins = len(thresholds)
-    true_area = float(len(positive))
-    false_area = float(len(negative))
-    tp = np.zeros(bins)
-    fp = np.zeros(bins)
-    for k in xrange(bins):
-        thresh = thresholds[k]
-        tp[k] = (positive <= thresh).sum() / true_area
-        fp[k] = (negative <= thresh).sum() / false_area
-    return fp, tp
-
-# {{{ Save some data to text file.
-info = open(dir_output+'/data.txt', 'w')
-y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
-score_I = metrics.auc(x, y)
-y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
-score_II = metrics.auc(x, y)
-
-soma_width_mean = np.mean(soma_widths_II)
-soma_width_std = np.sqrt(np.var(soma_widths_II))
-
-info.write('mean soma width II = {}\n'.format(soma_width_mean))
-info.write('std soma width II = {}\n'.format(soma_width_std))
-info.write('roc_auc_width_I = {}\n'.format(score_I))
-info.write('roc_auc_width_II = {}\n'.format(score_II))
-info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))
-info.write('overlap_width_amp = {}\n'.format(
-    overlap(
-        int_hist_2d.flatten(), 
-        pyr_hist_2d.flatten()
-        )))
-info.close()
-# }}} 
-
-fig = plt.figure(figsize=lplot.size_square)
-
-plt.axis('equal')
-y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
-plt.plot(x, y)
-y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
-plt.plot(x, y)
-
-lplot.save_plt(plt, "roc_curves", dir_output)
-plt.close()
 
 # {{{ Compute amp. and width histograms.
 hist_TTPC1 = np.zeros(amp_width_hist[0].shape)

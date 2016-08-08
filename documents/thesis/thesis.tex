@@ -1787,6 +1787,42 @@ any electrodes within this distance.
 %     \end{center}
 % \end{wrapfigure}
 
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{images/sec_4/int_pyr_width_I_II.pdf}
+        \caption{
+            Spike widths of all L5 interneuron and pyramidal models from
+            the simulations. 
+            Top is peak-to-peak spike width; bottom is 
+            width at half amplitude.
+            Width measurements has been binned by the size of the simulation timestep 
+            $dt$.
+            Width of the bars are half $dt$.
+            The histograms represent a probability distribution of measuring a width
+            given a neuronal type. 
+        }
+        \label{fig:4_width_I_II_histograms}
+    \end{center}
+\end{figure}
+
+\begin{wrapfigure}[22]{r}{.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/sec_4/roc_curves.pdf}
+        \vspace{-20pt}
+        \caption{%
+            Comparisons between each group of models using ROC curves
+            of the width samples of pyramidal neurons and interneurons. 
+            Graphs closer to $(0,1)$ indicate a better seperation
+            of the models. 
+            The peak-to-peak area under curve is $0.94$ while
+            area under curve of half-amplitude width is $0.78$.
+            }
+        \label{fig:4_roc_curves}
+        \vspace{-10pt}
+    \end{center}
+\end{wrapfigure}
+
 Some investigation has previously gone into which features of 
 the action potential 
 are best suited
@@ -1803,19 +1839,6 @@ Their experiments were carried out in
 the somatosensory cortex and prefrontal cortex of both anethesiased
 and drug-free mice.
 \newline
-
-\begin{figure}[h]
-    \begin{center}
-        \includegraphics[width=\textwidth]{images/sec_4/int_pyr_width_I_II.pdf}
-        \caption{
-            Spike widths of all L5 interneurons (blue) and pyramidal models 
-            (orange).
-            Top histograms show peak-to-peak spike width; bottom show 
-            width at half amplitude.
-        }
-        \label{fig:4_width_I_II_histograms}
-    \end{center}
-\end{figure}
 
 \noindent
 \textbf{Width Distribution:}
@@ -1842,24 +1865,6 @@ It is useful to have a metric to measure the seperation
 between models.
 A proper distance metric for histogram data is already 
 an important component for some machine learning tasks. 
-
-\begin{wrapfigure}[22]{r}{.5\textwidth}
-    \vspace{-20pt}
-    \begin{center}
-        \includegraphics[width=\linewidth]{images/sec_4/roc_curves.pdf}
-        \vspace{-20pt}
-        \caption{%
-            Comparisons between each group of models using ROC curves
-            of the width samples of pyramidal neurons and interneurons. 
-            Graphs closer to $(0,1)$ indicate a better seperation
-            of the models. 
-            The peak-to-peak area under curve is $0.94$ while
-            area under curve of half-amplitude width is $0.78$.
-            }
-        \label{fig:4_roc_curves}
-        \vspace{-10pt}
-    \end{center}
-\end{wrapfigure}
 
 Though the classification this data is better suited for a
 meachine learning algorithm 
@@ -2146,11 +2151,11 @@ The page
 \textcite{_neuroelectro_????}
 (\url{http://neuroelectro.org/ephys_prop/23/})
 has a collection electrophysiological data 
-from a large number of articles published articles.  
+from a large number of published articles.  
 They store data about several features such as spike width, resting potential, 
 memrbane time constants 
 and other spike data. 
-The data is only intracellular measurements, 
+The data is only intracellular measurements
 though it gives an insight in the variance of the 
 action potentials in the literature. 
 The duration of the intracellular action potential is significant 
@@ -2165,11 +2170,11 @@ The half-amplitude width of these cells were
 This is a very large variance as the 
 as the intracellular spike widths for the simulations 
 were
-\SI[separate-uncertainty = true]{0.70 \pm 0.10}{\per\ohm\per\metre}.
+\SI[separate-uncertainty = true]{0.70 \pm 0.10}{\milli\second}.
 The sources of this variation is hard to approximate. 
 It is likely due to a mixture of reasons including
 different species of animals, measuring equipment, 
-preperation procedures, etc. 
+preperation procedures, different brain areas, etc. 
 This large variance in spike widths suggests that
 comparing data must be done in very similar conditions
 as the models are based on. 
@@ -2844,3 +2849,4 @@ class MultiSpike(Simulation):
 \end{appendices}
 %{{{ Bibliography
 \printbibliography[heading=bibintoc]
+\end{document}
