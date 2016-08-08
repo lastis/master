@@ -2064,7 +2064,19 @@ parameter for classification will give a more accurate result.
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=\linewidth]{images/sec_4/pyr_overlap.pdf}
-        \caption{Notin.}
+        \caption{
+            Comparison of the pyramidal types. 
+            Each group is a differnt
+            morphological type classified but share the 
+            electrophysiological type. 
+            Right side shows the overlap of each histogram. 
+            The thick thufted morphological types (TTPC1, TTPC2)
+            have more in commen than the untufted (UTPC) 
+            and slender-tufted (STPC). 
+            This suggests that
+            pyramidal cells can be split into subclasses using spike width
+            and amplitude alone. 
+        }
         \label{fig:4_pyr_overlap}
     \end{center}
 \end{figure}
@@ -2128,24 +2140,36 @@ bandpassfiltering.
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=\linewidth]{images/sec_4/int_pyr_hist_filt.pdf}
-        \caption{Notin.}
+        \caption{
+            Amplitude and width histograms using filtered signals. 
+            The shape of the histograms change drasticially compared to
+            \cref{fig:4_int_pyr_hist}, though a seperation between 
+            interneurons and pyramidal neurons can still be observed. 
+        }
         \label{fig:4_int_pyr_hist_filt}
     \end{center}
 \end{figure}
 
 Though the histograms have changed drastically, 
-the distance metric still shows that they the models can be seperated 
-from each other by about value. 
+the distance metric shows that the models can be seperated 
+from each other. 
+The overlap in the filtered amplitude width histograms 
+are $9.90\%$, an increase from the unfiltered signal that was 
+$5.10\%$. 
 
-In the filtered data the pyramidal models are closer together than 
+In the filtered data the different 
+pyramidal models are closer together than 
 the unfiltered data, 
-though they still retain the seperation between similar as before
+though they still retain the seperation between them similar as before
 (\cref{fig:4_pyr_overlap_filt}).
 
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=\linewidth]{images/sec_4/pyr_overlap_filt.pdf}
-        \caption{Notin.}
+        \caption{
+            Comparisong of the individual pyramidal types using the filtered signals.
+            Overlap between the histograms are still maintained.
+        }
         \label{fig:4_pyr_overlap_filt}
     \end{center}
 \end{figure}

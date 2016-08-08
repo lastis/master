@@ -41,16 +41,16 @@ def gather_data(neuron_name, dir_data, sim):
     """
     Gathers data from the simulations into lists.
     """
-    # global cnt_int
-    # global cnt_pyr
-    # if 'PC' in neuron_name:
-    #     cnt_pyr += 1
-    #     if cnt_pyr > 20:
-    #         return
-    # else:
-    #     cnt_int += 1
-    #     if cnt_int > 20:
-    #         return
+    global cnt_int
+    global cnt_pyr
+    if 'PC' in neuron_name:
+        cnt_pyr += 1
+        if cnt_pyr > 20:
+            return
+    else:
+        cnt_int += 1
+        if cnt_int > 20:
+            return
     global dt
 
     print neuron_name
@@ -154,29 +154,6 @@ def get_roc(negative, positive, thresholds):
         tp[k] = (positive <= thresh).sum() / true_area
         fp[k] = (negative <= thresh).sum() / false_area
     return fp, tp
-
-# {{{ Save some data to text file.
-info = open(dir_output+'/data.txt', 'w')
-y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
-score_I = metrics.auc(x, y)
-y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
-score_II = metrics.auc(x, y)
-
-soma_width_mean = np.mean(soma_widths_II)
-soma_width_std = np.sqrt(np.var(soma_widths_II))
-
-info.write('mean soma width II = {}\n'.format(soma_width_mean))
-info.write('std soma width II = {}\n'.format(soma_width_std))
-info.write('roc_auc_width_I = {}\n'.format(score_I))
-info.write('roc_auc_width_II = {}\n'.format(score_II))
-info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))
-info.write('overlap_width_amp = {}\n'.format(
-    overlap(
-        int_hist_2d.flatten(), 
-        pyr_hist_2d.flatten()
-        )))
-info.close()
-# }}} 
 
 # {{{ ROC curves
 fig = plt.figure(figsize=lplot.size_square)
@@ -384,11 +361,16 @@ for i, hist in enumerate([hist_TTPC1, hist_TTPC2, hist_UTPC, hist_STPC]):
             )
     ax[i].set_aspect('auto');
 
-# cax, kw = mpl.colorbar.make_axes(ax.flatten().tolist())
-# plt.colorbar(im, cax=cax, **kw)
+ticks = np.arange(0, width_bins.max(), 0.5)
+ax1.set_xticks(ticks)
+ax2.set_xticks(ticks)
+ax3.set_xticks(ticks)
+ax4.set_xticks(ticks)
 
-# lplot.save_plt(plt, "pyr_hist", dir_output)
-# plt.close()
+ax3.set_xlabel(r"Width \textbf{[\si{\milli\second}]}")
+ax4.set_xlabel(r"Width \textbf{[\si{\milli\second}]}")
+ax1.set_ylabel(r"Amplitude \textbf{[\si{\micro\volt}]}")
+ax3.set_ylabel(r"Amplitude \textbf{[\si{\micro\volt}]}")
 
 histograms = [hist_TTPC1, hist_TTPC2, hist_UTPC, hist_STPC]
 overlap_mat = np.zeros([len(histograms), len(histograms)])
@@ -405,4 +387,27 @@ plt.yticks(np.arange(4), ('TTPC1', 'TTPC2', 'UTPC', 'STPC'))
 lplot.save_plt(plt, "pyr_overlap", dir_output)
 plt.close()
 
+# }}} 
+
+# {{{ Save some data to text file.
+info = open(dir_output+'/data.txt', 'w')
+y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
+score_I = metrics.auc(x, y)
+y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
+score_II = metrics.auc(x, y)
+
+soma_width_mean = np.mean(soma_widths_II)
+soma_width_std = np.sqrt(np.var(soma_widths_II))
+
+info.write('mean soma width II = {}\n'.format(soma_width_mean))
+info.write('std soma width II = {}\n'.format(soma_width_std))
+info.write('roc_auc_width_I = {}\n'.format(score_I))
+info.write('roc_auc_width_II = {}\n'.format(score_II))
+info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))
+info.write('overlap_width_amp = {}\n'.format(
+    overlap(
+        int_hist_2d.flatten(), 
+        pyr_hist_2d.flatten()
+        )))
+info.close()
 # }}} 
