@@ -1894,15 +1894,20 @@ classification criteria then half-amplitude.
     \begin{center}
         \includegraphics[width=\textwidth]{images/sec_4/int_pyr_widths_dist.pdf}
         \caption{
-            Spike widths by distance from soma. 
+            Comparison of the spike width by distance from soma using the peak-to-peak
+            and the half-amplitude definition.
+            Each measurement from the electrodes have been binned into 8 bins
+            and the mean and standard deviation was calculated. 
+            Half-width width shows a higher overlap at all distances than peak-to-peak
+            definition. 
         }
-        \label{fig:4_2_width}
+        \label{fig:4_width}
     \end{center}
 \end{figure}
 
 The two spike widths were recorded and binned according 
 to their distance from soma
-(\cref{fig:4_2_width}).
+(\cref{fig:4_width}).
 The lower and upper bounds of each graph is 
 $1$ s.t.d.
 It is immediately clear that the seperation 
@@ -1950,7 +1955,11 @@ durations which makes it easier to measure for real electrodes.
     \begin{center}
         \includegraphics[width=\textwidth]{images/sec_4/int_pyr_widths_snr.pdf}
         \caption{
-            Nothing.
+            Coefficient of variation, $c_v$, calculated from \cref{fig:4_width}.
+            A lower coefficient of variation entail a more precise measurement.
+            $c_v$ is lower at all distances for the peak-to-peak definition compared
+            to the hal-amplitude definitions for both
+            pyramidal neurons and interneurons. 
         }
         \label{fig:4_width_snr}
     \end{center}
@@ -1980,7 +1989,11 @@ classification parameter alone.
     \begin{center}
         \includegraphics[width=\textwidth]{images/sec_4/int_pyr_amps_dist.pdf}
         \caption{
-            Nothing.
+            Amplitude measurements by distance from soma. 
+            Analysis is done identical to spike width from soma (\cref{fig:4_width}). 
+            Based on seperation between neuron types
+            neither definition shows a clear advantage over the other
+            as the overlaps are similar. 
         }
         \label{fig:4_amp_distance}
     \end{center}
