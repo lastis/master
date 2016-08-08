@@ -18,13 +18,13 @@ def set_parameters():
     p = {}
 
     ## simulation parameters
-    p['T'] = 50.  ## simulation time (ms)
+    p['T'] = 15.  ## simulation time (ms)
     p['dt'] = 0.025  ## simulation time resolution (ms)
 
     ## stimulus parameters
     p['I_amp'] = 10.  ## input current amplitude (uA/cm2)
-    p['t_stim_on'] = 5.  ## stimulus-on time (ms)
-    p['t_stim_off'] = 30.  ## stimulus-off time (ms)
+    p['t_stim_on'] = 2.  ## stimulus-on time (ms)
+    p['t_stim_off'] = 3.  ## stimulus-off time (ms)
 
     ## neuron parameters
     p['V_rest'] = -65.  ## resting potential (mV)
@@ -219,31 +219,17 @@ if __name__ == "__main__":
     p = set_parameters()
 
     ## simulate
-    Vm, I = simulate(p)
-
-    ## plot results
-    plt.figure(1)
-    plt.clf()
+    p['I_amp'] = 6.0
+    Vm_0, I_0 = simulate(p)
+    p['I_amp'] = 10
+    Vm_1, I_1 = simulate(p)
 
     ### input current
-    sp1 = plt.subplot(211)
-    plt.plot(p['time'], I, 'k-', lw=3)
-    plt.ylabel('input current ($\mu$A/cm$^2$)')
-    plt.xlim(p['time'][0], p['time'][-1])
-    offset = 0.1 * np.abs(np.max(I) - np.min(I))
-    plt.ylim(np.min(I) - offset, np.max(I) + offset)
-    sp1.set_position([0.1, 0.65, 0.8, 0.3])
-    plt.setp(plt.gca(), xticklabels=[])
+    plt.figure()
+    plt.plot(p['time'], Vm_0)
+    plt.plot(p['time'], Vm_1)
 
-    ### membrane potential
-    sp2 = plt.subplot(212)
-    plt.plot(p['time'], Vm, 'k-', lw=3)
-    plt.ylabel('membrane potential (mV)')
-    plt.xlabel('time (ms)')
-    plt.xlim(p['time'][0], p['time'][-1])
-    offset = 0.1 * np.abs(np.max(Vm) - np.min(Vm))
-    plt.ylim(np.min(Vm) - offset, np.max(Vm) + offset)
-    sp2.set_position([0.1, 0.1, 0.8, 0.5])
-
-    plt.savefig('hh_membrane_pot', format='pdf', bbox_inches='tight')
+    import LFPy_util
+    # plt.savefig('action_potential', format='pdf', bbox_inches='tight')
+    LFPy_util.plot.save_plt(plt, 'action_potential', 'output')
     plt.show()

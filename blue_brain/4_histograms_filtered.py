@@ -10,6 +10,8 @@ import LFPy_util.colormaps as lcmaps
 import LFPy_util.data_extraction as de
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import sklearn.metrics as metrics
+from itertools import chain
 
 dir_input = "width_sim_all"
 dir_output = "4_histograms_filtered"
@@ -35,9 +37,6 @@ pyram = 'pyramidal'
 inter = 'inter'
 cnt_pyr = 0
 cnt_int = 0
-max_amp = 0
-max_width_I = 0
-max_width_II = 0
 # Specify data gather function.
 def gather_data(neuron_name, dir_data, sim):
     """
@@ -54,9 +53,6 @@ def gather_data(neuron_name, dir_data, sim):
     #     if cnt_int > 20:
     #         return
     global dt
-    global max_amp
-    global max_width_I
-    global max_width_II
 
     print neuron_name
 
@@ -75,17 +71,11 @@ def gather_data(neuron_name, dir_data, sim):
         raise ValueError("Mismatching simulations.")
     dt = data['dt']
 
-    max_amp = max(data['amps_I'].max(), max_amp)
-    max_width_I = max(data['widths_I'].max(), max_width_I)
-    max_width_II = max(data['widths_II'].max(), max_width_II)
-
 # Collect data
 LFPy_util.other.collect_data(dir_input, sim_sphere, gather_data)
 
-max_amp = 100
-max_width_I = 2
-width_bins = np.arange(0, max_width_I, dt)
-ampli_bins = np.linspace(0, max_amp, len(width_bins))
+width_bins = np.arange(0, 2.5, dt)
+ampli_bins = np.linspace(0,300, len(width_bins))
 bins = [ampli_bins, width_bins]
 
 # {{{ Compute amp. and width histograms.
@@ -101,6 +91,11 @@ pyr_hist = np.zeros(len(width_bins)-1)
 int_hist = np.zeros(len(width_bins)-1)
 pyr_hist_II = np.zeros(len(width_bins)-1)
 int_hist_II = np.zeros(len(width_bins)-1)
+
+pyr_widths_I = []
+pyr_widths_II = []
+int_widths_I = []
+int_widths_II = []
 for i, name in enumerate(neuron_names):
     if 'PC' in name:
         hist_I, _ = np.histogram(widths_I[i], width_bins)
@@ -110,6 +105,9 @@ for i, name in enumerate(neuron_names):
         pyr_hist_II += hist_II
 
         pyr_hist_2d += amp_width_hist[i]
+
+        pyr_widths_I.append(widths_I[i])
+        pyr_widths_II.append(widths_II[i])
     else:
         hist_I, _ = np.histogram(widths_I[i], width_bins)
         int_hist += hist_I
@@ -119,12 +117,21 @@ for i, name in enumerate(neuron_names):
 
         int_hist_2d += amp_width_hist[i]
 
+        int_widths_I.append(widths_I[i])
+        int_widths_II.append(widths_II[i])
+
 pyr_hist_2d /= pyr_hist_2d.sum()
 int_hist_2d /= int_hist_2d.sum()
 pyr_hist /= pyr_hist.sum()
 int_hist /= int_hist.sum()
 pyr_hist_II /= pyr_hist_II.sum()
 int_hist_II /= int_hist_II.sum()
+
+pyr_widths_I = np.fromiter(chain.from_iterable(pyr_widths_I), np.float)
+pyr_widths_II = np.fromiter(chain.from_iterable(pyr_widths_II), np.float)
+int_widths_I = np.fromiter(chain.from_iterable(int_widths_I), np.float)
+int_widths_II = np.fromiter(chain.from_iterable(int_widths_II), np.float)
+
 # }}} 
 
 lplot.set_rc_param(True)
@@ -132,7 +139,7 @@ lplot.plot_format = ['pdf', 'png']
 
 # {{{ Plot interneuron and pyramidal neuron histograms.
 fig, ax = plt.subplots(2,1, 
-        sharex=True, 
+        sharex=True,
         sharey=True, 
         figsize=lplot.size_common)
 dx = (width_bins[1]-width_bins[0])/2.0
@@ -153,36 +160,23 @@ ax[1].bar(width_bins[:-1] + dx, pyr_hist_II, width=dx)
 ax[1].spines['top'].set_visible(False)
 ax[1].spines['right'].set_visible(False)
 
-lplot.save_plt(plt, "int_pyr_width_I_II_filt", dir_output)
+lplot.save_plt(plt, "int_pyr_width_I_II", dir_output)
 plt.close()
 # }}} 
 
-# {{{ Plot interneuron and pyramidal neuron histograms.
-fig, ax = plt.subplots(2,2, 
-        sharex=True, 
-        sharey='col', 
-        figsize=lplot.size_common)
-ax[0][0].bar(width_bins[:-1], int_hist, width=width_bins[1]-width_bins[0])
-ax[0][0].spines['top'].set_visible(False)
-ax[0][0].spines['right'].set_visible(False)
-ax[1][0].bar(width_bins[:-1], pyr_hist, width=width_bins[1]-width_bins[0])
-ax[1][0].spines['top'].set_visible(False)
-ax[1][0].spines['right'].set_visible(False)
+# {{{ Plot interneuron and pyramidal neuron histograms 2d 
 
+fig = plt.figure(figsize=lplot.size_common)
+gs = mpl.gridspec.GridSpec(1, 2)
+ax1 = plt.subplot(gs[0])
+ax2 = plt.subplot(gs[1])
+
+# vmax = max(int_hist_2d.max(), pyr_hist_2d.max(), total_hist.max())
 vmax = max(int_hist_2d.max(), pyr_hist_2d.max())
-im = ax[0][1].imshow(int_hist_2d, 
-        interpolation="none", 
-        origin='lower',
-        vmin=0,
-        vmax=vmax,
-        extent=[
-            width_bins.min(), 
-            width_bins.max(), 
-            ampli_bins.min(), 
-            ampli_bins.max()])
-ax[0][1].set_aspect('auto');
 
-im = ax[1][1].imshow(pyr_hist_2d, 
+aspect = width_bins.max()/ampli_bins.max()
+
+im = ax1.imshow(int_hist_2d, 
         interpolation="none", 
         origin='lower',
         vmin=0,
@@ -192,21 +186,96 @@ im = ax[1][1].imshow(pyr_hist_2d,
             width_bins.max(), 
             ampli_bins.min(), 
             ampli_bins.max()])
-ax[1][1].set_aspect('auto');
-cax, kw = mpl.colorbar.make_axes([ax[0][1], ax[1][1]])
+
+im = ax2.imshow(pyr_hist_2d, 
+        interpolation="none", 
+        origin='lower',
+        vmin=0,
+        vmax=vmax,
+        extent=[
+            width_bins.min(), 
+            width_bins.max(), 
+            ampli_bins.min(), 
+            ampli_bins.max()])
+
+ax1.set_aspect(aspect)
+ax2.set_aspect(aspect)
+
+cax, kw = mpl.colorbar.make_axes([ax1, ax2])
 plt.colorbar(im, cax=cax, **kw)
 
-lplot.save_plt(plt, "int_pyr_hist_filt", dir_output)
+lplot.save_plt(plt, "int_pyr_hist", dir_output)
 plt.close()
 # }}} 
+
+# # {{{ Unused - Plot interneuron and pyramidal neuron histograms 2d 
+# fig, ax = plt.subplots(2,2, 
+#         sharex='col', 
+#         figsize=lplot.size_common)
+# ax[0][0].bar(width_bins[:-1], int_hist, width=width_bins[1]-width_bins[0])
+# ax[0][0].spines['top'].set_visible(False)
+# ax[0][0].spines['right'].set_visible(False)
+# ax[1][0].bar(width_bins[:-1], pyr_hist, width=width_bins[1]-width_bins[0])
+# ax[1][0].spines['top'].set_visible(False)
+# ax[1][0].spines['right'].set_visible(False)
+
+# vmax = max(int_hist_2d.max(), pyr_hist_2d.max())
+# im = ax[0][1].imshow(int_hist_2d, 
+#         interpolation="none", 
+#         origin='lower',
+#         vmin=0,
+#         vmax=vmax,
+#         extent=[
+#             width_bins.min(), 
+#             width_bins.max(), 
+#             ampli_bins.min(), 
+#             ampli_bins.max()])
+# ax[0][1].set_aspect('auto');
+
+# im = ax[1][1].imshow(pyr_hist_2d, 
+#         interpolation="none", 
+#         origin='lower',
+#         vmin=0,
+#         vmax=vmax,
+#         extent=[
+#             width_bins.min(), 
+#             width_bins.max(), 
+#             ampli_bins.min(), 
+#             ampli_bins.max()])
+# ax[1][1].set_aspect('auto');
+# cax, kw = mpl.colorbar.make_axes([ax[0][1], ax[1][1]])
+# plt.colorbar(im, cax=cax, **kw)
+
+# lplot.save_plt(plt, "int_pyr_hist", dir_output)
+# plt.close()
+# # }}} 
 
 def overlap(hist_x, hist_y):
     union = np.minimum(hist_x, hist_y)
     intersect = np.maximum(hist_x, hist_y)
     return sum(union)/float(sum(intersect))
 
+def get_roc(negative, positive, thresholds):
+    # Inputs all samples unbinned. 
+    bins = len(thresholds)
+    true_area = float(len(positive))
+    false_area = float(len(negative))
+    tp = np.zeros(bins)
+    fp = np.zeros(bins)
+    for k in xrange(bins):
+        thresh = thresholds[k]
+        tp[k] = (positive <= thresh).sum() / true_area
+        fp[k] = (negative <= thresh).sum() / false_area
+    return fp, tp
+
 # {{{ Save some data to text file.
 info = open(dir_output+'/data.txt', 'w')
+y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
+score_I = metrics.auc(x, y)
+y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
+score_II = metrics.auc(x, y)
+info.write('roc_auc_width_I = {}\n'.format(score_I))
+info.write('roc_auc_width_II = {}\n'.format(score_II))
 info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))
 info.write('overlap_width_amp = {}\n'.format(
     overlap(
@@ -215,6 +284,17 @@ info.write('overlap_width_amp = {}\n'.format(
         )))
 info.close()
 # }}} 
+
+fig = plt.figure(figsize=lplot.size_square)
+
+plt.axis('equal')
+y, x = get_roc(int_widths_I, pyr_widths_I, width_bins)
+plt.plot(x, y)
+y, x = get_roc(int_widths_II, pyr_widths_II, width_bins)
+plt.plot(x, y)
+
+lplot.save_plt(plt, "roc_curves", dir_output)
+plt.close()
 
 # {{{ Compute amp. and width histograms.
 hist_TTPC1 = np.zeros(amp_width_hist[0].shape)
@@ -301,7 +381,7 @@ plt.colorbar(im, ax=ax5)
 plt.xticks(np.arange(4), ('TTPC1', 'TTPC2', 'UTPC', 'STPC'))
 plt.yticks(np.arange(4), ('TTPC1', 'TTPC2', 'UTPC', 'STPC'))
 
-lplot.save_plt(plt, "pyr_overlap_filt", dir_output)
+lplot.save_plt(plt, "pyr_overlap", dir_output)
 plt.close()
 
 # }}} 

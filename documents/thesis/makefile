@@ -12,6 +12,15 @@ default:
 	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg \
    	tags _minted*
 
+debug: 
+	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg \
+   	tags _minted*
+	rubber -vvv -f --pdf -s --unsafe -c 'setlist arguments --shell-escape' thesis_debug
+	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
+	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg \
+   	tags _minted*
+
 clean:
 	rm -rf *.aux *.bbl *.blg *.log *.toc *.snm *.out *.bcf *.out *.gls \
 	*.ptc *.toc *.nav *.run.xml *.glo *.glg *.ilg *.ist *.xdy *.ind *.pyg \

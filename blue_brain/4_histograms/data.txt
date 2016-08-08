@@ -1,2 +1,6 @@
-overlap_width = 0.121663909403
-overlap_width_amp = 0.0510499737439
+mean soma width II = 0.7078125
+std soma width II = 0.101153020685
+roc_auc_width_I = 0.919746025
+roc_auc_width_II = 0.7602763975
+overlap_width = 0.138308682653
+overlap_width_amp = 0.055859914154
