@@ -14,7 +14,7 @@ import copy
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_output = os.path.join(dir_current, "4_sim_comparison")
+dir_output = os.path.join(dir_current, "4_sweep_sim")
 
 def get_cell(neuron_name):
     """
@@ -47,7 +47,7 @@ def get_simulator(neuron_name):
     sim_sweep = LFPy_util.sims.CurrentSweep()
     sim_sweep.run_param['pptype'] = 'ISyn'
     sim_sweep.run_param['duration'] = 1000
-    sim_sweep.run_param['delay'] = 100
+    sim_sweep.run_param['delay'] = -100
     sim_sweep.run_param['sweeps'] = 16
     sim_sweep.run_param['processes'] = 4
     sim_sweep.run_param['n_elec'] = 2
@@ -56,6 +56,9 @@ def get_simulator(neuron_name):
     if 'L5_TTPC1_cADpyr232_1' in neuron_name:
         sim_sweep.run_param['amp_start'] = 0.213
         sim_sweep.run_param['amp_end'] = 0.931
+    if 'L5_TTPC2_cADpyr232_1' in neuron_name:
+        sim_sweep.run_param['amp_start'] = 0.207
+        sim_sweep.run_param['amp_end'] = 0.989
 
     sim.push(sim_sweep)
 
@@ -71,49 +74,8 @@ if __name__ == '__main__':
 
     # Names of the neurons that also match the model folders.
     neurons = []
-    # neurons.append('L23_PC_cADpyr229_1')
-    # neurons.append('L4_PC_cADpyr230_1')
-    # neurons.append('L5_STPC_cADpyr232_1')
-    # neurons.append('L5_STPC_cADpyr232_2')
-    # neurons.append('L5_STPC_cADpyr232_3')
-    # neurons.append('L5_STPC_cADpyr232_4')
-    # neurons.append('L5_STPC_cADpyr232_5')
-    neurons.append('L5_TTPC1_cADpyr232_1')
-    # neurons.append('L5_TTPC2_cADpyr232_1')
-    # neurons.append('L5_UTPC_cADpyr232_1')
-    # neurons.append('L5_UTPC_cADpyr232_2')
-    # neurons.append('L5_UTPC_cADpyr232_3')
-    # neurons.append('L5_UTPC_cADpyr232_4')
-    # neurons.append('L5_UTPC_cADpyr232_5')
-    # neurons.append('L6_BPC_cADpyr231_1')
-    # neurons.append('L6_IPC_cADpyr231_1')
-    # neurons.append('L6_TPC_L1_cADpyr231_1')
-    # neurons.append('L6_TPC_L4_cADpyr231_1')
-    # neurons.append('L6_UTPC_cADpyr231_1')
-
-    # neurons.append('L5_LBC_bAC217_1')
-    # neurons.append('L5_LBC_cACint209_1')
-    # neurons.append('L5_LBC_cIR216_1')
-    # neurons.append('L5_LBC_cNAC187_1')
-    # neurons.append('L5_LBC_cSTUT189_1')
-    # neurons.append('L5_LBC_dNAC222_1')
-    # neurons.append('L5_LBC_dSTUT214_1')
-    # neurons.append('L5_LBC_dSTUT214_2')
-    # neurons.append('L5_LBC_dSTUT214_3')
-    # neurons.append('L5_LBC_dSTUT214_4')
-    # neurons.append('L5_LBC_dSTUT214_5')
-
-    # neurons.append('L5_LBC_bAC217_1')
-    # neurons.append('L5_TTPC2_cADpyr232_1')
-    # neurons.append('L5_NBC_cNAC187_1')
-    # neurons.append('L23_LBC_cSTUT189_1')
-    # neurons.append('L23_NBC_cNAC187_1')
-    # neurons.append('L23_PC_cADpyr229_1')
-
-    # neurons.append('L5_LBC_dSTUT214_2')
-    # neurons.append('L5_LBC_dSTUT214_3')
-    # neurons.append('L5_LBC_dSTUT214_4')
-    # neurons.append('L5_LBC_dSTUT214_5')
+    # neurons.append('L5_TTPC1_cADpyr232_1')
+    neurons.append('L5_TTPC2_cADpyr232_1')
 
     # Compile and load the extra mod file(s). The ISyn electrode.
     mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')

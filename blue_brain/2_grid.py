@@ -14,7 +14,7 @@ import copy
 # Gather directory paths.
 dir_model = blue_brain.DIR_MODELS
 dir_current = os.path.dirname(os.path.realpath(__file__))
-dir_output = os.path.join(dir_current, "grid")
+dir_output = os.path.join(dir_current, "2_grid")
 
 def get_cell(neuron_name):
     """
@@ -44,25 +44,22 @@ def get_simulator(neuron_name):
     sim.set_output_dir(dir_output)
     sim.verbose = True
 
-    sim_multi = LFPy_util.sims.MultiSpike()
-    sim_multi.run_param['pptype'] = 'ISyn'
-    sim_multi.run_param['threshold'] = 4
-    sim_multi.run_param['delay'] = -100
-    sim_multi.run_param['duration'] = 1000
-    sim_multi.run_param['spikes'] = 3
-    sim_multi.run_param['init_amp'] = 0.50
-    sim_multi.verbose = True
-    sim.push(sim_multi, False)
-
-    sim_intra = LFPy_util.sims.Intracellular()
-    sim.push(sim_intra)
-
-    sim_morph = LFPy_util.sims.Morphology()
-    sim.push(sim_morph)
+    sim_spike = LFPy_util.sims.MultiSpike()
+    sim_spike.run_param['pptype'] = 'ISyn'
+    sim_spike.run_param['threshold'] = 4
+    sim_spike.run_param['delay'] = 0
+    sim_spike.run_param['duration'] = 100
+    sim_spike.run_param['spikes'] = 3
+    sim_spike.verbose = True
+    sim.push(sim_spike, False)
 
     sim_grid = LFPy_util.sims.Grid()
-    sim_grid.run_param['n_elec_x'] = 7
+    sim_grid.run_param['n_elec_x'] = 4
     sim_grid.run_param['n_elec_y'] = 7
+    sim_grid.run_param['x_lim'] = [-50, 50]
+    sim_grid.run_param['y_lim'] = [-50, 250]
+    sim_grid.process_param['pre_dur'] = 2 # ms
+    sim_grid.process_param['post_dur'] = 3 # ms
     sim_grid.process_param['spike_to_measure'] = 2
     sim.push(sim_grid)
 
@@ -75,37 +72,7 @@ if __name__ == '__main__':
 
     # Names of the neurons that also match the model folders.
     neurons = []
-    # neurons.append('L23_PC_cADpyr229_1')
-    # neurons.append('L4_PC_cADpyr230_1')
-    # neurons.append('L5_STPC_cADpyr232_1')
     neurons.append('L5_TTPC1_cADpyr232_1')
-    # neurons.append('L5_TTPC2_cADpyr232_1')
-    # neurons.append('L5_UTPC_cADpyr232_1')
-    # neurons.append('L6_BPC_cADpyr231_1')
-    # neurons.append('L6_IPC_cADpyr231_1')
-    # neurons.append('L6_TPC_L1_cADpyr231_1')
-    # neurons.append('L6_TPC_L4_cADpyr231_1')
-    # neurons.append('L6_UTPC_cADpyr231_1')
-
-    # neurons.append('L5_LBC_bAC217_1')
-    # neurons.append('L5_LBC_cACint209_1')
-    # neurons.append('L5_LBC_cIR216_1')
-    # neurons.append('L5_LBC_cNAC187_1')
-    # neurons.append('L5_LBC_cSTUT189_1')
-    # neurons.append('L5_LBC_dNAC222_1')
-    # neurons.append('L5_LBC_dSTUT214_1')
-
-    # neurons.append('L5_LBC_bAC217_1')
-    # neurons.append('L5_TTPC2_cADpyr232_1')
-    # neurons.append('L5_NBC_cNAC187_1')
-    # neurons.append('L23_LBC_cSTUT189_1')
-    # neurons.append('L23_NBC_cNAC187_1')
-    # neurons.append('L23_PC_cADpyr229_1')
-
-    # neurons.append('L5_LBC_dSTUT214_2')
-    # neurons.append('L5_LBC_dSTUT214_3')
-    # neurons.append('L5_LBC_dSTUT214_4')
-    # neurons.append('L5_LBC_dSTUT214_5')
 
     # Compile and load the extra mod file(s). The ISyn electrode.
     mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -113,10 +80,10 @@ if __name__ == '__main__':
 
     # Simulation
     simm = LFPy_util.SimulatorManager()
-    simm.concurrent_neurons = 8
+    simm.concurrent_neurons = 4
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
-    simm.simulate()
+    # simm.simulate()
     simm.plot()
 

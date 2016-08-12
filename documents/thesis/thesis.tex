@@ -389,15 +389,15 @@ The information that is passed along depends on the type of synapse,
 and if it is of a chemical or electrical type.
 
 % TODO: Copy
-The neocortex represents the great majority of the cerebral cortex. 
-It has six layers and contains between 10 and 14 billion neurons. 
-The six layers of this part of the cortex are numbered with Roman numerals 
-from superficial to deep. Layer I is the molecular layer, which contains 
-very few neurons; layer II the external granular layer; 
-layer III the external pyramidal layer; layer IV the internal 
-granular layer; layer V the internal pyramidal layer; and layer VI the 
-multiform, or fusiform layer. Each cortical layer contains different neuronal 
-shapes, sizes and density as well as different organizations of nerve fibers.
+% The neocortex represents the great majority of the cerebral cortex. 
+% It has six layers and contains between 10 and 14 billion neurons. 
+% The six layers of this part of the cortex are numbered with Roman numerals 
+% from superficial to deep. Layer I is the molecular layer, which contains 
+% very few neurons; layer II the external granular layer; 
+% layer III the external pyramidal layer; layer IV the internal 
+% granular layer; layer V the internal pyramidal layer; and layer VI the 
+% multiform, or fusiform layer. Each cortical layer contains different neuronal 
+% shapes, sizes and density as well as different organizations of nerve fibers.
 
 % NOTE: Topic to mention:
 % Neuron cell types, pyramidal neurons, basket neurons interneurons, what 
@@ -481,40 +481,55 @@ and huxley in their original description of a neuron membrane.
 %{{{ Ciruit Model 
 \section{Circuit Model}
 Hudgking and Huxley originally tried to understand the
-electrical properties of neuron by studing squid axons. 
-Given spesific functions for the active conductances $g_\text{Na}$
-and $g_\text{K}$, this circuit is enough to describe an important feature
-of neurons, called action potentials.
-Alan Hodgkin and Andrew Huxley got the nobel price for their
-research on the biophysics of action potentials. 
+electrical properties of neuron by studing squid giant axons. 
+These axons are among the largest in the animal kingdom
+and permitted more easy access for the electrodes of their time. 
+They isolated the conductance of each of the channels
+and created mathematical models for them. 
+The model was published 1952 and erned 
+a Nobel prize in 1963. 
+
+The electrical circuit equivalent to a small piece of membrane 
+has a capcacitor in parallel with a resistor and battery 
+for each type of ion channel. 
+This kind of circuit is similar to a RC circuit and
+shares many features. 
+The ionic currents passing 
+($I_\text{Na}$, 
+$I_\text{K}$, 
+$I_\text{l}$) 
+through the membrane will charge the membrane capacitor. 
+The electromotive force from the ion channels will thus
+charge the membrane and resulting potential difference 
+is called the resting potenial, $V_\text{rest}$. 
+The resting potential of neurons are generally around
+\SI{-70}{\milli\volt}. 
 
 The current equation of this neuronal equivalent circuit is
-$$I = C_m \frac{dV}{dt} + I_\text{Na} + I_\text{K} + I_\text{l}.$$
+\begin{equation} \label{eq:hux_current_eq}
+I = C_m \frac{dV}{dt} + I_\text{Na} + I_\text{K} + I_\text{l}.
+\end{equation}
+Where the current through each channel is 
+\begin{equation} 
+    I_\text{Na} = g_\text{Na} \cdot (V - E_\text{Na}) \quad
+    I_\text{K} = g_\text{K}  \cdot (V - E_\text{K}) \quad
+    I_\text{l} = g_\text{l}  \cdot (V - E_\text{l}).
+\end{equation}
 
-
-
-
-% The model was developed by recording the activity of each
-% type channel in the membrane. 
-% The model of each channel was then constructed by fitting 
-% the data to functions. 
-% The final model of the cell membane was then constructed 
-% by incorperating each channel model. 
+The heart of the Hudgkin and Huxley model is 
+how the activive conductances change with the membrane potential
+and will not be covered here. 
+Given spesific functions for the active conductances $g_\text{Na}$
+and $g_\text{K}$, this circuit was enough to describe an important feature
+of neurons called action potentials.
+Other than reproducing the action potential, 
+the Hudgkin and Huxley model offered insight
+into the underlying mechanisms 
+which experiments were not able to do.
 
 %}}} 
 %{{{ Action Potential
 \section{Action Potential}
-Action potentials are sharp increases in the membrane potential
-followed by a less sharp decrease towards the resting potential. 
-They are generally accepted as the information carriers between neurons
-and as such has been a big focus of neuroscience since its discovery.
-
-The shape of the action potentials are directly 
-related to the types and densities
-of the ion channels present in the membrane. 
-This makes the action potential from neurons to look slightly differnt, 
-though they all have common features. 
-\Cref{fig:2_action_potential_anatomy} shows the anatomy of an action potential and some common definitions. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{images/sec_2/action_potential.pdf}
@@ -523,41 +538,93 @@ though they all have common features.
     \label{fig:2_action_potential_anatomy}
 \end{figure}
 
-In the the depolarization phase the potential rises towards the peak magnitude, 
-while in the repolarization phase the potential decreases towards
-the cells resting potential.
-When the potental is below the resting potential 
-it reaches the afterhyperpolarization phase before
-it returns to its resting potential.
+Action potentials are sharp increases in the membrane potential
+followed by a less sharp decrease towards the resting potential. 
+The action potentials propegate along the cell membrane and into
+the axon. 
+They are generally accepted as the information carriers between neurons
+and as such has been a big focus of neuroscience since its discovery.
+
+\Cref{fig:2_action_potential_anatomy} shows the hudgkin and huxley
+action potential
+and some common definitions. 
+Action potentials are initiated when the membrane potential is increase
+beyond a threshold, $V_\text{tresh}$. 
+If the membrane potential does not reach the threshold it will steadily 
+decrease to the neurons resting potential. 
+The source of input current that can increase the membrane potential
+are mainly synapes attached to the neuron which reacts to incomming
+action potentials from other neurons. 
+A differnt source could be excitement through a current electrode. 
+When the membrane potential reaches the threshold the membrane
+potential will rapidly increase. 
+
+The increase in potential is refered to as depolarization
+until it reaches its peak magnitude. 
+The potential then decreases towards the cells resting potential
+call the repolarization phase. 
+As the cell repolarizes the potenial will often decrease beyond the resting
+potential called the afterhyperpolarization. 
+
+The shape of the action potentials are directly 
+related to the types and densities
+of the ion channels present in the membrane. 
+This makes the action potential from neurons look slightly different, 
+though they all have common features. 
+Because neurons have sligthly differnt action potentials
+it has been proposed that they can be used to differentiate
+neuron cell types, which is the basis of this project. 
 
 %}}} end of Action Potential
 % Neuron Models {{{ %
 \section{Multi Compartmental Models}
-The circuit model represents a patch of a neuronal membrane
-where the potential across the membrane is the same. 
-If we want to study the voltage change across a longer piece of 
-membrane we want to divide the membrane into parts and have a model for
-each of them. 
-This is the basis for creating bigger models, where multiple pices
-of membrane equivalent circuits are combined into a multi-compartmental
-model. 
-The size of the compartments are small enough that the membrane potential is
-considered the same at all places. 
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{images/2_1/compartments.pdf}
     \caption{Compartmental model.}
     \label{fig:2_comp_mod}
 \end{figure}
+The circuit model represents a patch of a neuronal membrane
+where the potential across the membrane is the same. 
+If we want to study the voltage change across a longer piece of 
+membrane we need to divide the membrane into parts and have a model for
+each of them. 
+This is the basis for creating bigger models, where multiple pices
+of membrane equivalent circuits are combined into a multi-compartmental
+model
+(\cref{fig:2_comp_mod}).
+Each of the compartments use a Thevinin equivalent circuit 
+of the for generality.  
+The size of the compartments has to be small enough so that the membrane potential
+can be considered the same at all places. 
+
+At any point the sum of the axial currents are equal to
+the capacitive, ionic and electrode currents in the compartment. 
+The currents that go through the membrane are called transmembrane currents
+which is important for the calculation of the extracellular potential. 
+
+The calculation of the currents that pass into the adjacent compartments
+can be done using cable theory. 
+These kind of calculations are already available in multi-comparmental
+simulation software such as NEURON. 
+
+% Most reconstructed neuron models use the multi-compartmental approximation. 
+% This allows an insight into the dynamics of a neurons as for 
+% example when synapes activate at multiple places on the neuron. 
 % }}} 
 %{{{ Electrodes
 \section{Electrodes}
-In most cases the membrane potential is wanted when measuring neurons. 
-Though recording the membrane potental is not always feasable, 
-especially in living subjects. 
+The membrane potential is often desired 
+when measuring neurons in physical experiments. 
+Though recording the membrane potental is not always feasable 
+as neurons are small (soma around 
+\SI{30}{\micro\metre}) and the measurement electrode
+has to be in contact with the membrane. 
+To measure neuron activity electrodes can more simply be placed
+in the vicinity of neurons and pick up the extracellular
+potentials from the transmembrane currents. 
 Most knowledge about the physiological function of the brain is 
-based on the recordings from single point electrodes. 
+based on the recordings from such single point electrodes. 
 
 There are several types of electrodes and are always improving
 in quality. 
@@ -591,73 +658,103 @@ potential.
 %{{{ Extracellular
 \section{Calculating Extracellular Potential}
 The extracellular potential is the electric potential generated from the transmembrane
-currents in the neurons. When a neuron fires this can be seen from the extracellular
-potential which will have a spike which is similar to the intracellular spike.
+currents in the neurons. 
+It can be calculated 
+using Maxwell's equations and the continuity equation if the spatial
+distribution (morphology) of transmembrane currents and the extracellular conductivity
+is known. 
+When a neuron fires this can be seen from the extracellular
+potential which will have a spike with similar timing to the intracellular spike.
 
 By modelling the neuron as
 compartments and approximating each compartment as
-a spherical volume current source at position $\bf r_0$, the potential at 
-at position $\bf r$ at time $t$ will be,
+a spherical volume current source at a distance $r$, the potential at 
+will be,
 \begin{align}
-    {\bf E(r, t)} = \frac{1}{4\pi\sigma}\frac{I_0(t)}{\abs{\bf r - r_0}}
+    \phi(r, t) = \frac{1}{4\pi\sigma}\frac{I(t)}{r}. 
 \end{align}
+Where $I(t)$ is the transmembrane currents at time $t$ 
+and $\sigma$
+is the extracellular conductivity. 
+This is the potential of a simple point charge in a isotropic 
+medium, also known as Colomb's Law. 
+As the compartments are positioned in descrete points in space
+and the sources add linearly, 
+the equation can be expanded to include all 
+$N$
+compartments of the morphology. 
 
 \begin{align}
-    {\bf E(r, t)} = \sum^N_{n=1} \frac{1}{4\pi\sigma}\frac{I_n(t)}{\abs{\bf r - r_0}}
+    \phi(r, t) = \sum^N_{n=1} \frac{1}{4\pi\sigma}\frac{I_n(t)}{r_n}
 \end{align}
 
-Potential from compartments modelled as line sources. 
+% NEURON models all compartments as cylindrical geometries with varying
+% diameters. 
+To further improve the extracellular calculation the compartments
+can be approximated as line sources instead of point sources. 
+For a linear current source of length $\Delta s_n$, 
+the potential is given by, 
+
 \begin{align}
-    {\bf E(r, t)} &= \frac{1}{4\pi\sigma}\sum^N_{n=1}I_n(t)\frac{dr_n}{\abs{\bf r - r_0}}\\
-    &= \frac{1}{4\pi\sigma}\sum^N_{n=1}I_n(t)
+    \phi(r, t) &= \frac{1}{4\pi\sigma}\sum^N_{n=1} \int^0_{-\Delta s_n}
+        \frac{I_n(t) \, ds_n}{\Delta s_n \sqrt{r_n^2 + (h_n - s_n)^2}}\\
+    \phi(r, t) &= \frac{1}{4\pi\sigma}\sum^N_{n=1}I_n(t)
         \frac{1}{\Delta s_n}
-        \log\abs{\frac{\sqrt{h_n^2 + \rho_n^2} - h_n}{\sqrt{l_n^2 + \rho_n^2} - l_n}}
+        \log\abs{\frac{\sqrt{h_n^2 + r_n^2} - h_n}{\sqrt{l_n^2 + r_n^2} - l_n}}.
 \end{align}
-Taken from \textcite{linden_lfpy:_2013}
 
+Where $h_n$ is the longitudial distance from the end of the line
+to compartment $n$
+and $l_n = \Delta s_n + h_n$ is the distance from the start of the line
+(\textcite{gold_high-amplitude_2009}).
 
-This equation rests on two assumptions,
+This equation rests on two assumptions
+(\textcite{hamalainen_magnetoencephalography-_1993}),
 \begin{enumerate}
 	\item The permeability $\mu $ of 
 	the extracellular medium is the same as that of vacuum $\mu_0$.
 	\item The quasistatic approximation which lets the 
 	time derivatives, $\partial E/\partial t$, 
-	be ignored as source terms.  See \cref{sec:quasi}
+	be ignored as source terms, derivation not cowered here.
 \end{enumerate}
-
-The extracellular potential can be calculated
-using Maxwell's equations and the continuity equation if the spatial
-distribution (morphology) of transmembrane currents and the extracellular conductivity
-is known. 
-
-
 
 In the quasistatic approximation, since $\nabla\times\bf E = 0$, the
 electric field can be expressed with a scalar potential.
 
-Forward problem = calculate the potential from the current source, inverse problem is used
-in magnetoenchephalography (important).
-The amplitude of a spike in the
-extracellular potential is usually in the magnintude of
-$< 200 \upmu$V.  
-The noise of electrodes vary, but can be as much as $20 \upmu$V. 
-This limits the range electrodes can record from. 
+This solution of the extracelluar potential is called the 
+forward solution. 
+The inverse problem is used
+in magnetoenchephalography (MEG) which approximates the current sources
+based on the magnetic field that is accompanied 
+by the electric potential. 
+% The amplitude of a spike in the
+% extracellular potential is usually in the magnintude of
+% $< 200 \upmu$V.  
+% The noise of electrodes vary, but can be as much as $20 \upmu$V. 
+% This limits the range electrodes can record from. 
 
-The currents sum to zero, while the spike is very visible, there are many small currents
-in the dendrites with opposite current. 
-(\cite{hamalainen_magnetoencephalography-_1993})
+% The currents sum to zero, are many small currents
+% in the dendrites with opposite current. 
 
-The extracellular spike width tend to increase with distance from soma because of the
-neuronal morphology. 
-This article used a passive neuron model with different morphologies to show
-that the spike width increases with distance to soma. The spike amplitude also
-decreases with distance to soma and seems to follow a power law. 
-(\cite{pettersen_amplitude_2008} \hspace{-3pt}).
+Recordings are often done using single point electrodes, this makes recording the 
+intracellular membrane potential
+more challenging than recording from the extracellular medium. 
+Recording the membrane potential of a concious subject is nearly impossible,
+this makes understanding extracellular potentials vital for current research. 
 
-The shape of extracellular spikes are mainly depedent on the membrane currents
-and the morphology of the cell. 
-Some of the effects from the morphology of the cell are increased spike width and
-decreased amplitude from distance to soma. 
+(\textcite{linden_lfpy:_2013, nunez_electric_2006, pettersen_amplitude_2008, gold_high-amplitude_2009}).
+% The extracellular spike width tend to increase with distance from soma because of the
+% neuronal morphology. 
+% This article used a passive neuron model with different morphologies to show
+% that the spike width increases with distance to soma. 
+% The spike amplitude also
+% decreases with distance to soma and seems to follow a power law. 
+% (\cite{pettersen_amplitude_2008} \hspace{-3pt}).
+
+% The shape of extracellular spikes are mainly depedent on the membrane currents
+% and the morphology of the cell. 
+% Some of the effects from the morphology of the cell are increased spike width and
+% decreased amplitude from distance to soma. 
 
 % Many things here from around page 245. 
 % When the conductivity $\sigma$ and the current generators are know, Maxwell's
@@ -672,37 +769,100 @@ decreased amplitude from distance to soma.
 %Recording the membrane potential is easier to interpret but harder to execute 
 %while 
 %extracellular recordings are harder to interpret but easier to execute. 
-Recording is usually done using electrodes, this makes recording the membrane potential
-more challenging than recording from the extracellular medium as the electrode
-has to be very close or inside the cell. 
-At the time of writing,
-recording the membrane potential of a concious subject is nearly impossible,
-this makes understanding extracellular potentials vital for current research. 
 
 
-Early calculations was done by Rall 1962 investigating 
-the interaction between action potentials and synapes using cylinders
-as the current source. (TODO: Read article, make more understandble.)
-Holt and Koch 1999 added comparmental models to reconstruct pyramidal neurons. 
+% Early calculations was done by Rall 1962 investigating 
+% the interaction between action potentials and synapes using cylinders
+% as the current source. (TODO: Read article, make more understandble.)
+% Holt and Koch 1999 added comparmental models to reconstruct pyramidal neurons. 
 
-The information about the transmembrane current is usually difficult to obtain,
-as well as the morphology.
+% The information about the transmembrane current is usually difficult to obtain,
+% as well as the morphology.
 
 
 %}}} end of Extracellular
+% Example spike shapes {{{ %
+\newpage
+\section{Extracellular Action Potentials}
+\begin{wrapfigure}[16]{r}{.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/sec_2/eap.pdf}
+        \vspace{-20pt}
+        \caption{%
+            Portrayal of an extracellular action potential. 
+        }
+        \label{fig:2_eap}
+        \vspace{-10pt}
+    \end{center}
+\end{wrapfigure}
+
+Extracellular action potentials (EAPs)
+are quite different than their intracellular correlates. 
+The shape that is most often associated with an EAP is 
+shown in \cref{fig:2_eap}. 
+This shape is similar to the first derivative of the intracellular
+action potenial and has been 
+attributed to the resistive
+and capacitive properties of the neuron membrane
+(\textcite{brooks_electrical_1947, henze_intracellular_2000}). 
+Though 
+only the capacitive current is proportional to the
+the extracellular potential, 
+(as can bee seen from \cref{eq:hux_current_eq}).
+This is only the case in simple models. 
+As the complexity of the morphology increases 
+and the potential has increasingly many contributions 
+the EAP can change. 
+% For a two-compartmental mode, the smallest
+% possible model that creates an extracellular potential, 
+% the 
+
+The fact is that EAPs can vary greatly in shape which is 
+apparent when looking at a models of the extracelluar potential. 
+Though the transmembrane currents dissepate quickly 
+the further away the compartments are from the soma.
+This results in EAPs relatively far away from soma but close
+to dendrites are practically indetectable as the amplitude 
+is lower than the noise of the instrument. 
+The part of the EAP that can be measured usually has a positive 
+polarity.
+\begin{wrapfigure}[19]{R}{.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/sec_2/grid_y_x_signals_2d_normalized.pdf}
+        \vspace{-20pt}
+        \caption{%
+            %
+        }
+        \label{fig:2_eap_grid}
+        \vspace{-10pt}
+    \end{center}
+\end{wrapfigure}
+% }}} Example spike shapes %
 %{{{ Neuron and lfpy
 \section{Neuron \& LFPy }
-LFPy is a Python module that uses Neuron and the mentioned methods to calculate the 
+NEURON is a neuron simulation environment 
+based upon multi-compartmental modeling. 
+It was first released in 1997 and
+has become a mainstream simulation tool 
+for multi-compartmental simulations since then. 
+
+NEURON supports custom mechanisms for the neuron membrane
+which can be inserted in any neuron compartments. 
+Originally the software used a scripting language called HOC to
+set up and run simulations. 
+HOC is much used for NEURON simulations today, but
+has long since died out in all
+other softwares.
+NEURON also features a python interface which can be used instead of
+scripting in HOC. 
+
+LFPy is a Python package that uses NEURON to calculate the 
 electric field outside the neuron. 
 \cite{linden_lfpy:_2013}
 
 %}}} end of Neuron and lfpy
-% Example spike shapes {{{ %
-\section{Extracellular Action Potentials}
-Most extracellular spikeshapes has a minimum value greater than the maximum 
-value,
-but this is not always the case at certain positions of the neuron. 
-% }}} Example spike shapes %
 %{{{ Cell classification
 
 \section{Cell Type Classification}
@@ -735,12 +895,32 @@ Factors that change action potentials width:
 %}}} end of Theory
 %{{{ Methods
 \chapter{Methods}
-Methods mentioned here have been developed spesifically for this research. 
+This section embodies methods that I have implemented into
+the simulations myself and most of which did not 
+have finished solutions I could use. 
+In general I have tried to use programming packages to
+do lower level calculations and tie them together to create
+a bigger software which I have used to set up and run 
+simulations in. 
+The product of this is the python package I have created
+which is called LFPy\_util, which is ment to be an extension
+to the packge LFPy. 
+
 \vspace{1em} 
 \startcontents
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
 % Spike Width Measurement {{{ %
 \section{Spike Width Measurement}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/sec_3/ap_eap.pdf}
+    \caption{Depiction of an extracellular action potential with
+    different width and amplitude definitions. 
+    As there are multiple definitions used in the literature
+    it is not self-evident which ones to use. 
+    }
+    \label{fig:3_ap_eap}
+\end{figure}
 There
 are several definitions of spike width used in neuroscience. 
 In some cases the definition of the spike width is not mentioned
@@ -748,11 +928,6 @@ and simply addressed as the spike duration.
 The most commonly used spike width definition is the spike width at half 
 amplitude
 (\textcite{bean_action_2007}).
-% Of the most common definitons are 
-% peak-to-peak spike width 
-% and 
-% spike width measured at half ampltiude 
-% (\textcite{bean_action_2007}, \cref{fig:4_width_def}).
 
 Often the choice of spike width definition is chosen by
 seeing which gives the best bimodal distribution. 
@@ -763,13 +938,9 @@ peak-to-peak width,
 width at base
 and 
 width of afterhyporalization phase. 
+Each of the width and amplitude definitions evaluated here
+can bee seen in \cref{fig:3_ap_eap}.
 \\
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{images/sec_3/action_potential_widths.pdf}
-    \caption{}
-    \label{fig:2_1_neuron}
-\end{figure}
 
 \noindent 
 {\bf Peak-to-peak Width:} 
@@ -805,7 +976,7 @@ but here the baseline can simply be set as 0.
 
 \noindent 
 {\bf Width at Base:} 
-Experimentally the width at the baseline is commenly used.
+The width at the baseline is commenly used in experiments.
 It can be difficult to get a good resolution as spikes are very short
 and measured width at baseline gives a longer duration than width at half 
 amplitude. 
@@ -826,38 +997,58 @@ it makes the threshold be chosen trivially.
 \newline
 
 \noindent 
-{\bf Width of afterhyporalization:} 
+{\bf Width of Afterhyporalization (AHP):} 
 Certain features of an action potential can be connected
 to the 
 activation of some ion channels. 
 That is why in some cases the duration of the afterhyperpolarization 
 desired. 
-Two ways to define this duration is the width at base or width at half 
-amplitude. 
 \newline
 
 %}}} end of 
 % Spike Amp. Measurement {{{ %
 \section{Spike Amplitude Measurement}
 Amplitude is easier to calculate than the width of a spike, 
-but there are still different ways to define the amplitude. 
+but there are still a few different ways to define the amplitude. 
+\Cref{fig:3_ap_eap} shows the two amplitude definitons inspected here. 
+\newline
+
+\noindent 
+{\bf Base-to-peak Amplitude:} 
 In most cases the amplitude is defined as the distance from a baseline,
 in a similar manner as a sinusoid.
+As with some of the width definitions the baseline is not always
+accuratly defined. 
+For the EAP, shown in \cref{fig:3_ap_eap}, the baseline can
+bet set to 0. 
+For the intracellular AP
+the baseline must be further defined as the start of the
+signal or at the firing threshold. 
+\newline
+
+\noindent 
+{\bf Peak-to-peak Amplitude:} 
+Amplitude is defined as the difference of 
+the minimum and maximum value. 
+This amplitude definition is the easiest one to implement and
+offers no ambiguousness in EAPs or intracellular APs. 
+
 
 % }}} Spike Amp. Measurement %
 % Similiarty measure {{{ %
+\newpage
 \section{Histogram Similarity Measure}
 \label{sec:similarity_measure}
 To asses width and amplitude definitions on how well they 
 classify interneuron from pyramidal neurons
 one needs a way to analyze the resulting data. 
 To asses how well a variables can be seperated into groups,
-such as the width from either pyramidal neurons or 
+such as the width from pyramidal neurons or 
 interneurons,
 is a classification problem. 
-Classification is a big field and 
+Classification is a big field in itself and 
 a high quality classification algorithm is beyond the scope of this project. 
-If the seperation between two variables are clear and bimodal
+But if the seperation between two variables are clear and bimodal
 there should still be possible to declare that this variable can
 be used as a classification parameter. 
 
@@ -870,10 +1061,10 @@ that bin.
 By normalizing this distribution we get the measured probability distribution
 of that variable. 
 
-% TODO: rewrite. 
-Comparing histograms is of fundamental importance in patter classification, 
+Comparing histograms is of fundamental importance in pattern classification, 
 clustering and information retrival problems. 
-From this field we can borrow a measure of the difference betweeen histograms. 
+From this field we can borrow a
+measure of the difference betweeen histograms. 
 This measure is frequently refered to as the histogram distance. 
 As histograms can be viewed as points in multidimensional space 
 the histogram distance are also commonly refered to as a metric. 
@@ -881,34 +1072,35 @@ the histogram distance are also commonly refered to as a metric.
 Choosing an aproptiate metric should be fit to the spesific data and results
 desired. 
 To keep things simple two metrics have been choosen for this project, 
-the (ROC AUC) and a simple intersection metric. 
-
-\noindent
-{\bf Receiver Operator Characteristic Area under Curve}
-Useful binary classifier. 
+the Receiver Operator Characteristic Area under Curve
+(ROC AUC) and a simple intersection metric. 
+\newline
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.5\textwidth]{images/sec_3/roc_curve.pdf}
+        \includegraphics[width=\textwidth]{images/sec_3/roc_curve.pdf}
         \caption{
-            ROC curve. 
+            The calculation of two densities into a ROC curve. 
+            In terms of probabiity 
+            a ROC curve measures the True Positive (TP) rate over the
+            False Positive (FP) rate. 
+            The TP and FP values are calculated at multiple criterias, 
+            where each criteria value gives one point on the ROC curve. 
+            The area under a ROC curve (ROCAUC) is used as a measure of how well
+            two distributions can be seperated from each other. 
+            If two identical distributions or histograms are compared
+            the TP value is equal to the FP value at all thresholds. 
+            The ROC cureve would then be a line from $(0,0)$
+            to $(1,1)$ and the AUC would be $0.5$ which indicated that
+            catagorization could be done no better than chance.
         }
         \label{fig:3_roc_auc}
     \end{center}
 \end{figure}
-\newline 
 
 \noindent
-{\bf Simple Overlap}
-The metric is simply defined as the overlap
-of two histograms. 
-It can be defined similar to the intersection divided by the union of sets, 
-the Jaccard Index. 
-One source named this metric the histogram jaccard metric. 
-
-This metric was chosen because ROCAUC is only defined for one
-dimenensional data and because of its simplicity.
-The metric measures 0 when the two variables share no data in common 
-and 1 if compared to itself. 
+{\bf Receiver Operator Characteristic Area under Curve:}
+The ROC curve has been used a lot for evaluating the 
+grade of binary classifiers. 
 \newline 
 
 \begin{figure}[h]
@@ -917,10 +1109,36 @@ and 1 if compared to itself.
         \caption{
             An intersection metric as a way to measure the similarity
             between two distributions.
+            ROC curves are only defined for 1d densities so this
+            metric was chosen as it can be used for 2d histograms. 
         }
         \label{fig:3_hist_inter}
     \end{center}
 \end{figure}
+
+\noindent
+{\bf Simple Overlap:}
+The metric is simply defined as the overlap
+of two histograms. 
+It can be defined similar to the intersection divided by the union of sets, 
+the Jaccard Index. 
+One source named this metric the histogram jaccard metric. 
+
+If 
+$\bm{x} = (x_1, x_2, \ldots, x_n)$ and
+$\bm{y} = (y_1, y_2, \ldots, y_n)$
+are the vectors of two histograms 
+the overlap $O$ is defined as, 
+$$O(x, y) = \frac{\sum_i \min(x_i, y_i)}{\sum_i \max(x_i, y_i)},$$
+
+This metric was chosen because ROCAUC is only defined for one
+dimenensional data and because of its simplicity.
+The metric measures 0 when the two variables share no data in common 
+and 1 if compared to itself. 
+A 2d histogram metric was needed because the width and amplitude from
+interneurons and pyramidal neurons are being compared simultaniously. 
+\newline 
+
 % }}} Similiarty measure %
 % PCA analysis {{{ %
 \section{Rotate Cells using PCA}
@@ -982,6 +1200,7 @@ team.
 
 %}}} end of Blue Brain
 % LFPyUtil{{{ 
+\newpage
 \section{LFPyUtil}
 % Content {{{ %
 \subsection{About}
@@ -993,10 +1212,6 @@ Simulations can be run in parallel and data from simulations can
 automatically be saved and loaded to avoid unnecessary processing time.
 LFPyUtil has 9000 lines of code, documentation can be found at
 \url{www.documentation.lastis}. 
-% TODO
-% Some features of LFPyUtil are running simulations in parallel,
-% and automatic saving and loading run parameters and data from simulations.
-
 % TODO: Link to where the programming package is saved, pypi, 
 % and that it uses python 2 because of NEURON.
 
@@ -1175,8 +1390,6 @@ requires less code and are compatible with classes
 like the one defined in
 \cref{code:new_simulation_class}.
 
-
-%TODO: Include sentence about how LFPyUtil makes this easier.
 
 The class
 \verb+LFPyUtil.Simulator+
@@ -1381,7 +1594,8 @@ The final simulation uses three files:
 \printcontents{}{1}{\setcounter{tocdepth}{3}}
 
 %{{{ Pettersen and Einvoll
-\section{Pettersen \& Einevoll (2008) Reproduction}
+% \section{Pettersen \& Einevoll (2008) Reproduction}
+\section{Model Validation}
 \begin{wrapfigure}[24]{r}{.5\textwidth}
     \vspace{-20pt}
     \begin{center}
@@ -1398,7 +1612,7 @@ The final simulation uses three files:
 %
 To verify that the simulation environment could be trusted 
 some results from 
-\textcite{pettersen_amplitude_2008} was replicated.
+\textcite{pettersen_amplitude_2008} were replicated.
 Spesifically the spike width and amplitude dependency in relation to 
 the distance from soma was compared to current results. 
 
@@ -1496,8 +1710,9 @@ vector function in Neuron.
 This "excites" the neuron even though there are no
 ion channels in the model.
 
-Membrane resistance 
-$R_m = \SI{30}{\kilo\ohm\per\centi\metre\squared}$, 
+According to the model specifications
+we used a membrane resistance of 
+$R_m = \SI{30}{\kilo\ohm\per\centi\metre}$, 
 membrane capacitance 
 $C_m=\SI{1}{\micro\farad\per\centi\metre\squared}$, 
 axial resistance 
@@ -1537,7 +1752,10 @@ the xz-plane.
 A baseline was set as the value at the start of the signal. 
 Amplitude was calculated as the difference between the maximum value and the
 baseline.
-The spike width was calculated at as the width at half maximum value. 
+The spike width was defined as the duration the potential was above
+$25\%$ of the maximal absolute amplitude. 
+This was accomplished by using the half-amp. width
+python function but with the threshold set at $25 \%$. 
 
 At 
 $dt = \SI[exponent-base=2]{e-5}{\milli\second}$,
@@ -1546,11 +1764,11 @@ the spike width from the Connor-Steven model was
 This is similar to the reported spike width from
 \textcite{pettersen_amplitude_2008} which was
 was \SI{0.55}{\milli\second}.
-Because the $dt$ used in their simulations was
-$dt = \SI[exponent-base=2]{e-5}{\milli\second} = \SI{0.03125}{\milli\second}$,
-their resulting spike width 
-must have been rounded to
-the nearest \SI{0.05}{\milli\second}.
+% Because the $dt$ used in their simulations was
+% $dt = \SI[exponent-base=2]{e-5}{\milli\second} = \SI{0.03125}{\milli\second}$,
+% their resulting spike width 
+% must have been rounded to
+% the nearest \SI{0.05}{\milli\second}.
 
 % }}}  %
 % {{{ Results %
@@ -1590,8 +1808,8 @@ the results match nearly perfectly, though the importance
 of this is unclear. 
 
 Sudden changes in spike width was experienced with increased distance from
-soma. Above $200\mu V$ the
-most of the spikes shapes are not well defined. 
+soma. Above $200\mu V$
+most of the spikes shapes were not well defined. 
 This was also reported in \textcite{pettersen_amplitude_2008}\@.
 
 \Cref{fig:4_1_spike_amp} shows the spike amplitude with logarithmic axes.  
@@ -1633,7 +1851,14 @@ at
 \end{figure}
 % }}}  %
 % {{{ Discussion%
-% \subsection{Discussion}
+\subsection{Conclusion}
+The current results are qualitativly similar 
+to the results in 
+\textcite{pettersen_amplitude_2008}
+however there are quantitative differences. 
+These differences are probably due to 
+differences in methodology we have not been able to
+identify since we have been unable to obtain the source code. 
 
 % }}}  %
 %}}} end of Pettersen and Einvoll
@@ -1651,13 +1876,13 @@ This is one of the first simulations where
 the extracellular action potentials
 of a large number of different neuronal types are being compared. 
 
-Spike widht and amplitude are known to be markers 
+Spike width and amplitude are known to be markers 
 for pyramidal neurons and interneurons. 
 
 Many different definitions of spike width has been used to differentiate neurons
 and it is not clear which spike definitions are better suited for classification.
 Here models from the Human Brain Project
-has been used to question
+has been used to investigate
 if some spike width definition prove better than others for classification.
 % In order to investigate the difference in
 % spike width and amplitude 
@@ -1675,7 +1900,6 @@ The interneuron models consisted of the remainding 48 me-types.
 Each me-type had 5 models which in total summed to 20
 pyramidal models and 240 interneuron models. 
 
-%TODO:
 In this interneuron group many of the 
 me-types represent only
 a small portion of the number of neurons found in L5. 
@@ -1689,7 +1913,7 @@ baskets cells (LBC and NBC).
 The interneurons from L5 were seperated into 
 9 m-types (morphological) and 10 e-types (electrophysiological)
 which gave a total number
-of 48 uniquie models.
+of 48 me-types.
 
 Each of the 5 models in a me-type 
 have a slightly different morphological
@@ -1795,7 +2019,8 @@ any electrodes within this distance.
             the simulations. 
             Top is peak-to-peak spike width; bottom is 
             width at half amplitude.
-            Width measurements has been binned by the size of the simulation timestep 
+            Width measurements has been binned according to 
+            the size of the simulation timestep 
             $dt$.
             Width of the bars are half $dt$.
             The histograms represent a probability distribution of measuring a width
@@ -1846,7 +2071,7 @@ A good width definition is recoqnized by having a better
 seperation between interneurons
 and pyramidal neurons. 
 The extracellular spike width was recorded from each of the
-electrodes and binned by according to the spike width.
+electrodes and binned according to the simulation timestep.
 The resulting histogram was then used for the basis
 of measuring the seperation between neuron models 
 (\cref{fig:4_width_I_II_histograms}).
@@ -2124,7 +2349,7 @@ histogram.
 %}}}
 % Filterig effects {{{ %
 \newpage
-\subsection{Effect of Filtering}
+\subsection{Effects of Filtering}
 As filtering is a common manipulation of the signal
 to remove noise
 it is interesting to see if the separation between interneurons
@@ -2167,7 +2392,7 @@ though they still retain the seperation between them similar as before
     \begin{center}
         \includegraphics[width=\linewidth]{images/sec_4/pyr_overlap_filt.pdf}
         \caption{
-            Comparisong of the individual pyramidal types using the filtered signals.
+            Comparison of the individual pyramidal types using the filtered signals.
             Overlap between the histograms are still maintained.
         }
         \label{fig:4_pyr_overlap_filt}
@@ -2179,6 +2404,7 @@ though they still retain the seperation between them similar as before
 \newpage
 \subsection{Comparing Results}
 Results have been compared to some online sources and a number of articles. 
+\newpage
 % The free variables in current simulations are
 % the extracellular conductivity and other options to LFPy. 
 
@@ -2205,7 +2431,7 @@ neocortex layer 5-6 pyramidal cells.
 The half-amplitude width of these cells were
 \SI[separate-uncertainty = true]{1.2 \pm 0.53}{\milli\second}.
 This is a very large variance as the 
-as the intracellular spike widths for the simulations 
+as the intracellular spike widths for current simulations 
 were
 \SI[separate-uncertainty = true]{0.70 \pm 0.10}{\milli\second}.
 The sources of this variation is hard to approximate. 
@@ -2233,6 +2459,37 @@ increases.
 It has been reported that the spike width of neurons
 increase as the firing rate increases. 
 
+Fig. 4c in 
+\textcite{anastassiou_cell_2015}.
+shows spike width and amplitude intracellulary and
+extracellular for a pyramidal cell. 
+The same simulation was carried out for one
+pyramidal neuron (TTPC1\_cADpyr232\_1), results shown in 
+\cref{fig:4_width_amp_frequency}.
+
+The shapes of functions seen in 
+\cref{fig:4_width_amp_frequency}
+has little in common with 
+\textcite{anastassiou_cell_2015}.
+It is likely that the models were not created to
+replicate these neuronal features. 
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/sec_4/freq_amp_soma_elec.pdf}
+        \includegraphics[width=\linewidth]{images/sec_4/freq_width_soma_elec.pdf}
+        \caption{
+            Reconstruction of experiments carried out by 
+            \textcite{anastassiou_cell_2015}, 
+            fig 4c in their article. 
+            Simulation are from a single pyramidal neuron with an electrode placed
+            at a distance of 
+            \SI{20}{\micro\metre}.
+        }
+        \label{fig:4_width_amp_frequency}
+    \end{center}
+\end{figure}
+
 The article also gives an estimate of the extracellular conductivity
 which was estimated by fitting the spike amplitude data to the 
 function of the potential of a point source. 
@@ -2241,11 +2498,39 @@ The values given for the conductivity $\sigma$ in L5 was
 \SI[separate-uncertainty = true]{0.41 \pm 0.24}{\per\ohm\per\metre}.
 The high uncertainty was attributed to the estimation of 
 the membrane capacity $C$.
+\newline
 
 \noindent
-{\bf \Textcite{bartho_characterization_2004}:}
-spike widths  = 0.43 +- 0.27 ms than that of the
-putative pyramidal cells 0.86 +- 0.17 ms.
+{\bf Bartho et al.:}
+\Textcite{bartho_characterization_2004}
+did a comparison of half amplitude spike width and peak-to-peak spike
+width of multiple neurons in areas including the 
+L5 somatosensory cortex of rats 
+so results should be comparable. 
+
+For putative pyramidal neurons the 
+spike widths ranged from 
+\SI{0.50}{\milli\second} 
+to about
+\SI{1.50}{\milli\second} 
+for the peak-to-peak duration 
+and
+\SI{0.20}{\milli\second} 
+to about
+\SI{0.40}{\milli\second} 
+for the half amplitude duration. 
+These are quite different from current results where
+most peak-to-peak pyramidal spike widths lie above
+\SI{1.5}{\milli\second}, 
+and the half-amplitude spikes are mostly above
+\SI{0.5}{\milli\second} 
+(\cref{fig:4_width_I_II_histograms}).
+
+For putative interneurons the 
+spike widths are also shorter. 
+All interneuron peak-to-peak widths found to be less than
+\SI{0.5}{\milli\second} 
+which is significantly lower than current results. 
 \newline
 
 % }}} Comparing results %
@@ -2253,58 +2538,66 @@ putative pyramidal cells 0.86 +- 0.17 ms.
 %}}}
 %{{{ Discussion
 \chapter{Discussion}
+% Spike Width and Spike Amplitude:
+It has been discovered that of the spike width definitions 
+investigated here, 
+the peak-to-peak width definition is
+better suited to classify interneurons and pyramidal neurons. 
+This is in agreement with results from 
+\textcite{bartho_characterization_2004} 
+that suggested the peak-to-peak width gave improved
+bimodal distributions. 
+
+A similar investigation was done using the spike amplitude.
+Of the 
+definitions investigated here the peak-to-peak amplitude 
+was found to have a better precision
+then the base-to-peak amplitude in addition to having a
+simple implementation. 
+The peak-to-peak amplitude also avoided
+having to define the baseline of the signal. 
+
+% It has been previously shown that using only spike width as 
+% a way to classify neurons is not the best. 
+% Several papers have stated that other methods can be used to give 
+% a clearer distinction, such as considering the interspike interval. 
+% Also one group looked at the spike width from axons which gave a short 
+% durtion. 
+
+Spike widths from interneurons and pyramidal neurons
+give clear bimodal distributions. 
+When amplitude is used as an additional parameter the overlap
+between histograms went down from $12\%$ to $5\%$, 
+which suggests that amplitude should be considered when 
+doing classification 
+
+It was seen that the group pyramidal neurons showed
+an additional bimodal distribution in the amplitude and 
+width histogram, 
+implying that further subclassification could be possible. 
+
+The python package 
+LFPy\_til was created to set up and run simulations, 
+and 
+is a useful tool for creating new
+simulations for NEURON and LFPy. 
+
 
 % TODO: Fill
-Spike Width and Spike Amplitude:
-It has been seen that of the spike width definitions investigated here, 
-one type of spike width definition is overall
-better suited to classify this set of neurons. 
-This has also been seen in the literature. 
-A similar investigation was done using the spike amplitude and of the
-definitions investigated here the peak-to-peak amplitude gave the best
-seperation between interneuron and pyramidal neurons. 
-
-Classification:
-It has been previously shown that using only spike width as 
-a way to classify neurons is not the best. 
-Several papers have stated that other methods can be used to give 
-a clearer distinction, such as considering the interspike interval. 
-Also one group looked at the spike width from axons which gave a short 
-durtion. 
-
-Using a simple measure of the similarity between populations
-neuron models it can be clearly stated that interneurons can be seperated
-from pyramidal neurons. 
-Excitatory interneurons cannot be clearly distinguished from the rest of the
-interneurons. 
-Using machine learning algorithms it might be possible to divide these
-into even small groups, how can I show this?
-Neurons could probably be seperated into smaller groups based on
-spike width and spike amplitude. 
-
-% TODO: Fill
-LFPyUtil: 
-LFPyUtil is a useful tool that can be used to easily gather
-new data when new models arrive. 
-As long as a model has the mechanics defined with NEURON and has
-a morphology the same simulations and data as seen here can be ran 
-and extraced.
-
-% TODO: Fill
-The models did now show the expected variance with firing frequency. 
+% The models did now show the expected variance with firing frequency. 
 % Article anastassiou is consistent with Nature review, spike shape increases with 
 % frequency. 
 % This is not the case the models from Blue Brain.
 
 % TODO: Fill
-Comparisons with other data:
-several articles was investigated to compare current data with.
-There is a large variance in the literature of spike widths and amplitude. 
-All in all the data fall within the variance of the investigated articles. 
-The number range between this and that.
+% Comparisons with other data:
+% several articles was investigated to compare current data with.
+% There is a large variance in the literature of spike widths and amplitude. 
+% All in all the data fall within the variance of the investigated articles. 
+% The number range between this and that.
 
 
-Sources of variation:
+% Sources of variation:
 
 % Results are based on spike width and amplitude.
 % The basis for all spike shapes are the types and concentrations of

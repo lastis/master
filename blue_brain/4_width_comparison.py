@@ -249,6 +249,11 @@ ax[1].legend(handles,
           loc='lower right',
           # bbox_to_anchor=(1, 0.5), 
           )
+
+ax[0].set_ylabel(r"$c_v$")
+ax[0].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax[1].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+
 lplot.save_plt(plt, "int_pyr_amps_snr", dir_output)
 plt.close()
 # }}} 
@@ -306,6 +311,10 @@ ax[1].legend(handles,
           loc='lower right',
           # bbox_to_anchor=(1, 0.5), 
           )
+ax[0].set_ylabel(r"$c_v$")
+ax[0].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax[1].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+
 lplot.save_plt(plt, "int_pyr_widths_snr", dir_output)
 plt.close()
 # }}} 
@@ -391,6 +400,11 @@ ax[1].legend(handles,
           loc='upper right',
           # bbox_to_anchor=(1, 0.5), 
           )
+
+ax[0].set_ylabel(r"Width \textbf{[\si{\milli\second}]}")
+ax[0].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax[1].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+
 lplot.save_plt(plt, "int_pyr_widths_dist", dir_output)
 plt.close()
 # }}} 
@@ -476,6 +490,11 @@ ax[0].legend(handles,
           loc='upper right',
           # bbox_to_anchor=(1, 0.5), 
           )
+
+ax[0].set_ylabel(r"Amplitude \textbf{[\si{\micro\volt}]}")
+ax[0].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+ax[1].set_xlabel(r"Distance from Soma \textbf{[\si{\micro\metre}]}")
+
 lplot.save_plt(plt, "int_pyr_amps_dist", dir_output)
 plt.close()
 # }}} 
