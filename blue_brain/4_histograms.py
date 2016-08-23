@@ -41,16 +41,16 @@ def gather_data(neuron_name, dir_data, sim):
     """
     Gathers data from the simulations into lists.
     """
-    global cnt_int
-    global cnt_pyr
-    if 'PC' in neuron_name:
-        cnt_pyr += 1
-        if cnt_pyr > 20:
-            return
-    else:
-        cnt_int += 1
-        if cnt_int > 20:
-            return
+    # global cnt_int
+    # global cnt_pyr
+    # if 'PC' in neuron_name:
+    #     cnt_pyr += 1
+    #     if cnt_pyr > 20:
+    #         return
+    # else:
+    #     cnt_int += 1
+    #     if cnt_int > 20:
+    #         return
     global dt
 
     print neuron_name
@@ -96,6 +96,9 @@ pyr_widths_I = []
 pyr_widths_II = []
 int_widths_I = []
 int_widths_II = []
+
+pyr_soma_widths_II = []
+int_soma_widths_II = []
 for i, name in enumerate(neuron_names):
     if 'PC' in name:
         hist_I, _ = np.histogram(widths_I[i], width_bins)
@@ -108,6 +111,8 @@ for i, name in enumerate(neuron_names):
 
         pyr_widths_I.append(widths_I[i])
         pyr_widths_II.append(widths_II[i])
+
+        pyr_soma_widths_II.append(soma_widths_II[i])
     else:
         hist_I, _ = np.histogram(widths_I[i], width_bins)
         int_hist += hist_I
@@ -119,6 +124,8 @@ for i, name in enumerate(neuron_names):
 
         int_widths_I.append(widths_I[i])
         int_widths_II.append(widths_II[i])
+
+        int_soma_widths_II.append(soma_widths_II[i])
 
 pyr_hist_2d /= pyr_hist_2d.sum()
 int_hist_2d /= int_hist_2d.sum()
@@ -398,9 +405,20 @@ score_II = metrics.auc(x, y)
 
 soma_width_mean = np.mean(soma_widths_II)
 soma_width_std = np.sqrt(np.var(soma_widths_II))
+pyr_soma_width_mean = np.mean(pyr_soma_widths_II)
+pyr_soma_width_std = np.sqrt(np.var(pyr_soma_widths_II))
+int_soma_width_mean = np.mean(int_soma_widths_II)
+int_soma_width_std = np.sqrt(np.var(int_soma_widths_II))
+
+info.write('mean pyr soma width II = {}\n'.format(pyr_soma_width_mean))
+info.write('std pyr soma width II = {}\n'.format(pyr_soma_width_std))
+
+info.write('mean int soma width II = {}\n'.format(int_soma_width_mean))
+info.write('std int soma width II = {}\n'.format(int_soma_width_std))
 
 info.write('mean soma width II = {}\n'.format(soma_width_mean))
 info.write('std soma width II = {}\n'.format(soma_width_std))
+
 info.write('roc_auc_width_I = {}\n'.format(score_I))
 info.write('roc_auc_width_II = {}\n'.format(score_II))
 info.write('overlap_width = {}\n'.format(overlap(int_hist, pyr_hist)))

@@ -1,4 +1,0 @@
-LFPy-util
-neo >= 0.3.3
-tables >= 2.2
-quantities

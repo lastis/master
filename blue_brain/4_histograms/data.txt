@@ -1,6 +1,10 @@
-mean soma width II = 0.7078125
-std soma width II = 0.101153020685
-roc_auc_width_I = 0.919746025
-roc_auc_width_II = 0.7602763975
-overlap_width = 0.138308682653
-overlap_width_amp = 0.055859914154
+mean pyr soma width II = 0.7015625
+std pyr soma width II = 0.0334754457588
+mean int soma width II = 0.671354166667
+std int soma width II = 0.115560464347
+mean soma width II = 0.673677884615
+std soma width II = 0.111704832299
+roc_auc_width_I = 0.931278787187
+roc_auc_width_II = 0.782370435104
+overlap_width = 0.121706504849
+overlap_width_amp = 0.0518730161789
