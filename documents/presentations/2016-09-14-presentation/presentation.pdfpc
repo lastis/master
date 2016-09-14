@@ -2,7 +2,57 @@
 presentation.pdf
 [notes]
 ### 1
-This is notes
-n
-### 2
-Class neurons
+Welcome to this presentation### 2
+Two types of neurons, p i
+
+Pulses, spikes, firing
+
+The shapes of these are differnt, short long. 
+
+Though the general consus is that neurons are responsible for all brain functions, we actually know little about how they do it. Different types of neurons have differnt functions so classying which are which are important.
+
+Electrodes only record the electrical potential bla bla.
+
+There was a consensus that interneurons had shorter spikes, but recently
+that black and white image has been under debate. ### 3
+To start this of I would like to give a very short introduction to neuron modelling. Behind me here is a diagram of the anatomy of a neuron. The
+neuron consists of bla bla. 
+The axon connect to bla bla. 
+There are an estimated 100 billion neurons in the brain where each
+neuron connects to an average 1000 other neurons. ### 4
+The source of the electrical acitivy in neurons is the properties of the neuron membrane. 
+The membrane itself is made from a kind of fat molekule called lipids and
+they form an insulating barrier between the inside and outside. 
+The fluid the cells sits in contain multiple ions that are the charge carriers
+of the neurons. 
+The main ions are sodium and potassium, with other important ion as well. 
+In the membrane are ion channels that can change permiability depending on the voltage across the membrane. 
+There are several types of these ion channels and pumps and their density along the memrbane varies from different types of neurons. 
+To model a neuron one must model this neuron membrane, and the first
+accurate model of a piece of neuron membrane was created by Hudgking and huxley who won the nobel price for their work in 1963.  ### 5
+The heart of the model is this circuit here. This is the hudking and huxkley membrane equivalent curcuit. This cirucit has many similarities with a RC circuit. 
+The neuron membrane acts as a capacitor while the ion channels sets up a potential differential signified by the emf symbols. The basis of the models is the mathematical functions of how the resitances changes with the potential across the membrane. 
+
+I will not go through the  HH. model here, but the model replicates the electrical pulses from neurons called action potentials. 
+
+Action potetials are steep increases and decreseases in the membrane potential. The AP can travel along the neuron membrane and reaches other neurons the neuron is connected to.  ### 6
+To start an action potential there must be a high enough mem. pot. 
+
+This can be seen with the toilet model analogy.### 7
+Go through the anatmory of an action potential. ### 9
+Volume Conductor Theory, 
+Volume current sources. 
+As a simplitifaction these can be seen as point sources 
+and calculated by columbs law. 
+Extracellular conductivity.
+
+Further use line sources instead.### 19
+1985, stellate pyramidal.### 25
+Receiver operator characteric curve. 
+Binary classififyer, how well can two probability distributions be distinguished. 
+
+TP rate is plottet against FP, the area under this curve is a number from 0 to 1.### 30
+Using the intersection similarity metric. 
+The overlap was 5.10% in 2d histograms and 12.15% using only spike width. ### 31
+Besselfilter 300hz 6.6 khz rank 1 lfilt
+The overlap was 9.90%, unfiltered had 5.10%

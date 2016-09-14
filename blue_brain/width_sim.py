@@ -69,12 +69,12 @@ def get_simulator(neuron_name):
     sim_sphere.run_param['R'] = 60
     sim_sphere.run_param['seed'] = 4321
     sim_sphere.process_param['spike_to_measure'] = 2
-    sim_sphere.process_param['assert_width'] = True
-    sim_sphere.plot_param['use_tex'] = False
+    # sim_sphere.process_param['assert_width'] = True
+    # sim_sphere.plot_param['use_tex'] = False
     sim.push(sim_sphere)
 
     sim_morph = LFPy_util.sims.Morphology()
-    sim_morph.plot_param['use_tex'] = False
+    # sim_morph.plot_param['use_tex'] = False
     sim.push(sim_morph)
 
     return sim
@@ -86,11 +86,13 @@ if __name__ == '__main__':
     # Names of the neurons that also match the model folders.
     neurons = []
 
-    neurons.append('L5_TTPC1_cADpyr232_1')
-    neurons.append('L5_TTPC1_cADpyr232_2')
-    neurons.append('L5_TTPC1_cADpyr232_3')
-    neurons.append('L5_TTPC1_cADpyr232_4')
-    neurons.append('L5_TTPC1_cADpyr232_5')
+    neurons.append('L5_LBC_dSTUT214_1')
+
+    # neurons.append('L5_TTPC1_cADpyr232_1')
+    # neurons.append('L5_TTPC1_cADpyr232_2')
+    # neurons.append('L5_TTPC1_cADpyr232_3')
+    # neurons.append('L5_TTPC1_cADpyr232_4')
+    # neurons.append('L5_TTPC1_cADpyr232_5')
 
     # neurons.append('L5_TTPC2_cADpyr232_1')
     # neurons.append('L5_TTPC2_cADpyr232_2')
@@ -98,17 +100,17 @@ if __name__ == '__main__':
     # neurons.append('L5_TTPC2_cADpyr232_4')
     # neurons.append('L5_TTPC2_cADpyr232_5')
 
-    neurons.append('L5_UTPC_cADpyr232_1')
-    neurons.append('L5_UTPC_cADpyr232_2')
-    neurons.append('L5_UTPC_cADpyr232_3')
-    neurons.append('L5_UTPC_cADpyr232_4')
-    neurons.append('L5_UTPC_cADpyr232_5')
+    # neurons.append('L5_UTPC_cADpyr232_1')
+    # neurons.append('L5_UTPC_cADpyr232_2')
+    # neurons.append('L5_UTPC_cADpyr232_3')
+    # neurons.append('L5_UTPC_cADpyr232_4')
+    # neurons.append('L5_UTPC_cADpyr232_5')
 
-    neurons.append('L5_STPC_cADpyr232_1')
-    neurons.append('L5_STPC_cADpyr232_2')
-    neurons.append('L5_STPC_cADpyr232_3')
-    neurons.append('L5_STPC_cADpyr232_4')
-    neurons.append('L5_STPC_cADpyr232_5')
+    # neurons.append('L5_STPC_cADpyr232_1')
+    # neurons.append('L5_STPC_cADpyr232_2')
+    # neurons.append('L5_STPC_cADpyr232_3')
+    # neurons.append('L5_STPC_cADpyr232_4')
+    # neurons.append('L5_STPC_cADpyr232_5')
 
     # Compile and load the extra mod file(s). The ISyn electrode.
     mod_dir = os.path.join(blue_brain.DIR_RES, 'extra_mod')
@@ -120,6 +122,6 @@ if __name__ == '__main__':
     simm.set_neuron_names(neurons)
     simm.set_sim_load_func(get_simulator)
     print simm
-    simm.simulate()
+    # simm.simulate()
     simm.plot()
 

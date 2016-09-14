@@ -165,13 +165,15 @@
 % - Blue brain article
 
 \begin{frame}{Topic and Motivation}
-    Topic: Differentiate the shape of neurons based on extracellular spike shape using modelling.
+    Topic: Differentiate 2 types of neurons, pyramidal neurons and interneurons, 
+    based on extracellular spike shape using computer modelling.
     \newline
 
     Motivation: 
     \begin{itemize}
         \item Neurons of different types have different functions. Classifying them is important.
         \item Some neurons have shorter spikes than others. 
+        \item Electrodes only record electrical potential, they listen in the "dark".
         \item There has been debate wether using spike width can reliably classify neurons. 
     \end{itemize}
 \end{frame}
@@ -210,7 +212,10 @@
         \end{column}
         \begin{column}{0.68\textwidth}
             \begin{itemize}
-                \item Toilet
+                \item Flushing requires a "strong" push on the button. 
+                \item Too little and water will only trickle down. 
+                \item When flushed, the intensity is the same every time. 
+                \item After a flushing there is a recovery period before we can flush again.
             \end{itemize}
         \end{column}
     \end{columns}
@@ -294,15 +299,10 @@
 \end{frame}
 
 \begin{frame}{Results Part I: Model Validation}
-    % Introduction
+    Goal: Reproduce spike width and amplitude at increasing distance from soma.
+    Setup:
     \begin{itemize}
-        \item Verify the simulation environment.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Pettersen and Einevoll 2008}
-    \begin{itemize}
-        \item Play back
+        \item "Play back" an action potential into soma. 
     \end{itemize}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{images/cs_ap_scaled.pdf}
@@ -315,7 +315,7 @@
         \begin{column}{0.48\textwidth}
             \begin{itemize}
                 \item Electrodes placed in the same way as the article.
-                \item Spike width and amplitude measred at every position.
+                \item Spike width and amplitude measured at every position.
             \end{itemize}
         \end{column}
         \begin{column}{0.48\textwidth}
@@ -331,11 +331,11 @@
         \begin{column}{0.48\textwidth}
             \begin{itemize}
                 \item Electrodes placed in the same way as the article.
-                \item Spike width and amplitude measred at every position.
+                \item Spike width and amplitude measured at every position.
             \end{itemize}
             Conlusion:
             \begin{itemize}
-                \item Results are kvantativly similar. 
+                \item Results are quantitatively similar. 
             \end{itemize}
         \end{column}
         \begin{column}{0.48\textwidth}
@@ -390,8 +390,10 @@
     \begin{itemize}
         \item Does computer models show a difference between interneuron
             and pyramidal neurons.
-        \item Are certain width and a amplitude definitions better suited for 
+        \item Are certain width and amplitude definitions better suited for 
             differention.
+        \item Can amplitude be used to improve classification.
+        \item How does filtering effect the results.
     \end{itemize}
 \end{frame}
 
@@ -425,15 +427,42 @@
 \end{frame}
 
 \begin{frame}{Placing Electrodes}
-    \begin{center}
-        \includegraphics[width=.5\textwidth]{images/sphere_morph_elec_xy.pdf}
-    \end{center}
+    % \begin{center}
+    %     \includegraphics[width=.5\textwidth]{images/sphere_morph_elec_xy.pdf}
+    % \end{center}
+    \begin{columns}
+        \begin{column}{0.28\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/sphere_morph_elec_xy.pdf}
+            \end{center}
+        \end{column}
+        \begin{column}{0.68\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/sphere_r_hist.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}{Histogram}
-    \begin{center}
-        \includegraphics[width=.5\textwidth]{images/sphere_spike_width_II_hist_mod.pdf}
-    \end{center}
+\begin{frame}{Gather Data}
+    % \begin{center}
+    %     \includegraphics[width=.5\textwidth]{images/sphere_spike_width_II_hist_mod.pdf}
+    % \end{center}
+    \begin{columns}
+        \begin{column}{0.68\textwidth}
+            \begin{itemize}
+                \item 20 pyramidal models and 240 interneuron models.
+                \item Excite the neurons using a square pulse current. 
+                \item Record spike width and amplitude using all definitions. 
+                \item Binned data into histograms. 
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.28\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/sphere_spike_width_II_hist_mod.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Histogram Comparison: ROC Curve}
@@ -455,9 +484,20 @@
 \end{frame}
 
 \begin{frame}{Choosing the Optimal Width Definition}
-    \begin{center}
-        \includegraphics[width=.5\textwidth]{images/roc_curves.pdf}
-    \end{center}
+    \begin{columns}
+        \begin{column}{0.48\textwidth}
+            \begin{itemize}
+                \item ROC area under curve (ROC AUC).
+                \item ROC AUC Peak-to-peak: $0.94$.
+                \item ROC AUC Half-amp: $0.78$.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/roc_curves.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Choosing the Optimal Width Amplitude}
@@ -481,22 +521,59 @@
 \begin{frame}[fragile]{Comparison to Other Sources}
     \verb+www.neuroelectro.org+:
     \begin{itemize}
-        \item A vide variance in neuroscience data.
+        \item Database of AP data and related properties gather from published articles. 
+        \item Intracellular AP half-amp width 
+            \SI[separate-uncertainty = true]{1.20 \pm 0.53}{\milli\second}.
+        \item Current results found an AP half-amp width of
+            \SI[separate-uncertainty = true]{0.70 \pm 0.10}{\milli\second}.
     \end{itemize}
     Anastassiou et al 2015:
     \begin{itemize}
-        \item A vide variance in neuroscience data.
+        \item Measured extracellulary and intracellulary at the same time. 
+        \item Measured the shape of the AP at increasing firing frequency. 
+        \item Current results did not match in shape or value. 
     \end{itemize}
     Bartho et al 2004:
     \begin{itemize}
-        \item A vide variance in neuroscience data.
+        \item Measured half-amp and peak-to-peak width. 
+        \item Pyramidal neurons: \SI{0.5}{\milli\second} - \SI{1.5}{\milli\second}.
+            Current: $>$\SI{1.5}{\milli\second}
+        \item Interneurons: \SI{0.2}{\milli\second} - \SI{0.4}{\milli\second}.
+            Current: $>$\SI{0.5}{\milli\second}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Summary}
+    \begin{itemize}
+        \item Reproduced Pettersen and Einevoll 2008. 
+        \item Qualitativivly similar but not idenentical. 
+        \item Used models from Blue Brain to compare interneurons and pyramidal neurons.
+        \item Placed electrodes and gathered data in histograms. 
+        \item Spike peak-to-peak width gave better seperation between the types.
+        \item Using the spike amplitude gave less overlap, suggesting it is a valuable 
+            parameter for classification. 
+        \item Seperation still possible after filtering, but values are changed.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusion}
+    \begin{itemize}
+        \item Modelling EAPs is a valuable tool for neuroscience. 
+        \item Supports that spike width can differentiate interneurons and pyramidal neurons.
+        \item Certain spike width definitions are better suited for classification.
+        \item Spike amplitude increases seperation between interneuron and pyramidal neurons.
+    \end{itemize}
+
+    Other remarks: 
+    \begin{itemize}
+        \item Might be possible to designate areas in the amp. width space to certain kinds
+            of neurons. 
+        \item LFPy\_util
+        \begin{itemize}
+            \item Can help the workflow of creating and running simulations.
+            \item Can be used as a template for creating and sharing simulations. 
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \end{document}
